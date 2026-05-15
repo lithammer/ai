@@ -1,0 +1,13 @@
+{
+  "name": "waterfall",
+  "description": "Waterfall feature development: design, plan, challenge, implement, review. Each phase is a separate skill, with refactor available as a supporting analysis.",
+  "author": { "name": "Peter Lithammer" },
+  "skills": [
+    "./skills/waterfall-design",
+    "./skills/waterfall-plan",
+    "./skills/waterfall-challenge",
+    "./skills/waterfall-implement",
+    "./skills/waterfall-review",
+    "./skills/waterfall-refactor"
+  ]
+}
