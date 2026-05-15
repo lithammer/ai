@@ -133,6 +133,13 @@ For each selected reviewer, spawn a subagent. Pass it
 specification. Run them in parallel if the harness supports it; otherwise
 serialize.
 
+Reviewers are judgment work, not execution. If the harness supports
+per-subagent model or profile selection, use the same reasoning-capable
+model/profile as the orchestrator when spawning each reviewer. Do not
+downgrade reviewers for cost or throughput. If model selection is
+unavailable, or subagents already inherit the caller's model, use the
+harness default.
+
 Give each reviewer:
 
 - The list of changed files (paths only).

@@ -44,6 +44,13 @@ Spawn a subagent. Pass it [CHALLENGER_BRIEF.md](./CHALLENGER_BRIEF.md) as its
 persona and [CHALLENGER_REPORT_FORMAT.md](./CHALLENGER_REPORT_FORMAT.md) as
 its output specification.
 
+The challenger is judgment work, not execution. If the harness supports
+per-subagent model or profile selection, use the same reasoning-capable
+model/profile as the orchestrator when spawning the challenger. Do not
+downgrade the challenger for cost or throughput. If model selection is
+unavailable, or subagents already inherit the caller's model, use the
+harness default.
+
 Send it as initial input:
 
 - **Review level**:
