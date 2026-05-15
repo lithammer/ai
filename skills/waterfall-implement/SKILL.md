@@ -68,10 +68,11 @@ implementor's narrow context keeps it focused on the increment without
 scope creep; the orchestrator keeps the bigger picture for triage and
 oversight. This separation holds regardless of model choice.
 
-If the harness supports per-subagent model selection, also prefer a
-cheaper model for the implementor (e.g., Sonnet) and keep the
-orchestrator on a stronger one (e.g., Opus): implementation is execution;
-the strategic work already happened in design, plan, and challenge.
+If the harness supports per-subagent model or profile selection, prefer a
+cost- and throughput-efficient model/profile for the implementor. The
+implementor executes an already-approved plan; the strategic reasoning
+happened in design, plan, and challenge. If model selection is unavailable,
+or subagents already inherit the caller's model, use the harness default.
 
 The subagent makes the changes, writes tests, runs the suite, and returns
 a structured report. After it returns and tests pass, **commit the
