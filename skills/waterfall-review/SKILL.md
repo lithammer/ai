@@ -90,7 +90,8 @@ reviewers are relevant. For each reviewer below, ask: "based on what
 changed, is there anything for this reviewer to examine?" Skip reviewers
 where the answer is clearly no.
 
-Available reviewers (each lives at `reviewers/<name>.md`):
+Available reviewers (each lives at `reviewers/<NAME>_BRIEF.md`, e.g.
+`runtime-bugs` → `reviewers/RUNTIME_BUGS_BRIEF.md`):
 
 - **runtime-bugs** — merged: correctness (sequential bugs, wrong results,
   crashes, data loss) + concurrency (races, synchronization, leaks)
@@ -128,7 +129,7 @@ Keep a note of which reviewers were skipped and why (one line each) — include
 it in the final report under a "Skipped reviewers" heading.
 
 For each selected reviewer, spawn a subagent. Pass it
-`reviewers/<name>.md` as its persona and
+`reviewers/<NAME>_BRIEF.md` as its persona and
 [REVIEWER_REPORT_FORMAT.md](./REVIEWER_REPORT_FORMAT.md) as its output
 specification. Run them in parallel if the harness supports it; otherwise
 serialize.
