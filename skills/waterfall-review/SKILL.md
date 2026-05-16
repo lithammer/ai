@@ -13,7 +13,7 @@ Collect their findings, triage, deduplicate, and present a unified report.
 
 If this skill has been run earlier in the same conversation, prior triage
 decisions (dismissals, user-ignored judgement calls) are already in the
-conversation history. Honor them during triage in Step 3 — skip findings
+conversation history. Honor them during triage in Step 4 — skip findings
 that match a previous decision unless the relevant code has changed since.
 
 Figure out what to review. Pick the first that applies:
@@ -61,7 +61,7 @@ Do NOT pass the raw diff to reviewers. They will read the changed files
 themselves, which forces them to understand the code in its full context
 rather than reviewing a narrow patch in isolation.
 
-## Step 1b: Determine operating context
+## Step 2: Determine operating context
 
 Describe the code's operating context so reviewers can calibrate what matters
 in practice vs. what is theoretical. Cover:
@@ -83,7 +83,7 @@ dimension, e.g.: "Internal CLI tool, run by developers on their own laptops,
 no network exposure, handles only source code in this repo. Correctness and
 convention adherence matter; confidentiality and availability do not."
 
-## Step 2: Select and dispatch reviewers
+## Step 3: Select and dispatch reviewers
 
 Before dispatching, skim the diff and changed file list to decide which
 reviewers are relevant. For each reviewer below, ask: "based on what
@@ -146,13 +146,13 @@ Give each reviewer:
 - The change-summary from Step 1.
 - The context summary (feature plan, what was implemented, surviving
   risks).
-- The operating context paragraph from Step 1b.
+- The operating context paragraph from Step 2.
 
 Do not include the diff, do not explain the implementation approach, and do
 not share what other reviewers are looking for. Each reviewer arrives at its
 conclusions independently.
 
-## Step 3: Triage
+## Step 4: Triage
 
 Reviewers operate without full context, so not every finding is valid.
 Before presenting results, review each finding against the actual code and
@@ -181,7 +181,7 @@ axis-summary entirely, treat the dimensions it should have covered as
 unreviewed — note them in the final report under "Skipped reviewers"
 rather than silently accepting partial coverage.
 
-## Step 4: Deduplicate
+## Step 5: Deduplicate
 
 After triage, for the remaining findings:
 
@@ -189,7 +189,7 @@ After triage, for the remaining findings:
    reasons, keep one entry and note which dimensions flagged it.
 2. Sort by file, then by line number.
 
-## Step 5: Resolve judgement calls
+## Step 6: Resolve judgement calls
 
 For each judgement call, ask the user for a decision and **wait for their
 response** before proceeding — do not continue or assume an answer. Present
@@ -200,7 +200,7 @@ relevant code, and why you are unsure. Offer options like "Fix it",
 Batch related judgement calls when they concern the same file or trade-off,
 but don't overload a single prompt — keep it to 2-4 questions at a time.
 
-## Step 6: Present results
+## Step 7: Present results
 
 Print a summary of all findings: what was found, what the user chose to
 ignore, and what was dismissed during triage (briefly, by dimension).
