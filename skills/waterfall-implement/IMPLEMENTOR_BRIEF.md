@@ -41,8 +41,8 @@ Not your job:
 - Write code that is readable and testable without excessive setup.
 - Do not introduce speculative abstractions or features beyond the
   increment.
-- Do not add comments, docstrings, or type annotations to code you did
-  not change.
+- Do not modify code outside the increment's scope, even to add
+  comments or types.
 
 The orchestrator reads your report to decide what to commit and what to
 review.
