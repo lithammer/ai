@@ -1,6 +1,6 @@
 ---
 name: waterfall-review
-description: Review a code change by dispatching specialized review subagents in parallel — each focused on a single dimension (correctness, security, architecture, etc.) — then triaging their findings into a unified report. Works standalone on a branch or as part of the waterfall flow after implementation. Use when reviewing changed code, when the user mentions "review the branch" or "review the diff", or as a step inside the waterfall-implement skill.
+description: Review a code change by dispatching specialized review subagents in parallel — each focused on a single dimension (correctness, security, architecture, etc.) — then triaging their findings into a unified report. Works standalone on a branch or as part of the waterfall flow after implementation. Invoke when the user explicitly asks to review a branch or diff, or as a step inside waterfall-implement; avoid auto-triggering on casual mentions of "review".
 ---
 
 # Review
