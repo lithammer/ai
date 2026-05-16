@@ -1,7 +1,6 @@
 ---
 name: waterfall-challenge
 description: Run an adversarial review that rejects soft justifications ("it's simpler", "less scope") and demands explicit articulation of both the chosen approach and why dismissed alternatives were ruled out. Spawns a challenger subagent operating in structured rounds with the orchestrator until design-level branches resolve or are accepted as surviving risks. Strategic mode reviews approaches before commitment; tactical mode reviews a detailed plan. Use when a plan or design needs rigorous adversarial review, when the user mentions "challenge", or as part of the waterfall flow.
-disable-model-invocation: true
 ---
 
 # Challenge

@@ -1,7 +1,6 @@
 ---
 name: waterfall-refactor
 description: Identify refactoring opportunities in code that a feature will touch. Runs at strategic level during design (looking for structural moves that could change which approach is chosen) or tactical level before implementation (looking for pre-work that gives the feature a better foundation). Use when planning a feature and you want to consider refactors that would change the design, or when the user mentions waterfall-refactor.
-disable-model-invocation: true
 ---
 
 # Refactor
