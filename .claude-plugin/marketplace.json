@@ -1,0 +1,32 @@
+{
+  "name": "lithammer-ai",
+  "owner": {
+    "name": "Peter Lithammer",
+    "url": "https://github.com/lithammer"
+  },
+  "plugins": [
+    {
+      "name": "waterfall",
+      "description": "Waterfall flow for feature work: design, plan, challenge, implement, refactor, review.",
+      "skills": [
+        "./skills/waterfall/waterfall-challenge",
+        "./skills/waterfall/waterfall-design",
+        "./skills/waterfall/waterfall-implement",
+        "./skills/waterfall/waterfall-plan",
+        "./skills/waterfall/waterfall-refactor",
+        "./skills/waterfall/waterfall-review"
+      ]
+    },
+    {
+      "name": "lithammer-skills",
+      "description": "General-purpose engineering and research skills.",
+      "skills": [
+        "./skills/draft-pr",
+        "./skills/librarian",
+        "./skills/nemesis",
+        "./skills/research",
+        "./skills/zero-tech-debt"
+      ]
+    }
+  ]
+}
