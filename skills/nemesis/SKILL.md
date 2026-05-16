@@ -1,6 +1,6 @@
 ---
 name: nemesis
-description: Challenge a plan, design, or half-formed idea with a conversational adversarial reviewer that walks the decision tree one branch at a time. Use when the user wants a rigorous adversarial review, mentions "nemesis" or "enemy", or when the current direction may be too safe, narrow, or prematurely committed.
+description: Conversational adversarial reviewer for plans, designs, or half-formed ideas. Walks the decision tree one branch at a time.
 disable-model-invocation: true
 ---
 

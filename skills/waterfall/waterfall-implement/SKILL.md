@@ -1,6 +1,6 @@
 ---
 name: waterfall-implement
-description: Implement a planned and challenged feature by delegating each increment to a subagent, then running a review-fix loop until the code is clean. The orchestrator stays in oversight mode; building happens in fresh subagent contexts. Use after a plan has been designed, planned, challenged, and approved; or when the user says "implement the plan" / mentions waterfall-implement.
+description: Implement a planned and challenged feature one increment at a time. Each increment is delegated to a subagent, then run through a review-fix loop until clean. Orchestrator stays in oversight.
 disable-model-invocation: true
 ---
 

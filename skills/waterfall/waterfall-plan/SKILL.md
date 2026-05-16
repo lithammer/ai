@@ -1,6 +1,6 @@
 ---
 name: waterfall-plan
-description: Detail a chosen design approach into an implementation plan with objective, file manifest, execution order, and test strategy. Auto-proceeds to the waterfall-challenge skill to pressure-test the plan. This is the convergent phase of the waterfall flow. Use after an approach has been selected via waterfall-design, or when the user mentions waterfall-plan.
+description: Detail a chosen design approach into an implementation plan (objective, file manifest, execution order, test strategy), then auto-proceed to waterfall-challenge. Convergent phase of the waterfall flow.
 disable-model-invocation: true
 ---
 

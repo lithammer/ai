@@ -1,6 +1,6 @@
 ---
 name: research
-description: Researches technical, academic, and open-source topics by grounding claims in primary evidence: docs, papers, standards, code, issues, and releases. Use when the user asks to research, survey, compare, evaluate, or understand a technology, library, algorithm, data structure, protocol, API, paper, or well-defined problem domain.
+description: Research technical, academic, or open-source topics by grounding claims in primary evidence: docs, papers, standards, code, issues, releases.
 disable-model-invocation: true
 ---
 

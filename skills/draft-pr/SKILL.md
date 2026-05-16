@@ -1,6 +1,6 @@
 ---
 name: draft-pr
-description: Creates draft PRs. Use when asked to draft, create, open, or prepare a PR.
+description: Create a draft PR for the current branch.
 disable-model-invocation: true
 ---
 

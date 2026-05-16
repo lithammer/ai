@@ -1,6 +1,6 @@
 ---
 name: waterfall-design
-description: Explore the codebase, evaluate its existing structure, and generate a range of approaches for a feature — from incremental to structural. Runs adversarial review of the approaches before presenting to the user. This is the divergent phase of the waterfall flow. Use when starting a new feature, when the user wants to consider multiple approaches before committing, or when the user mentions waterfall-design.
+description: Generate a range of approaches for a feature — from incremental to structural — with adversarial review before presenting. Divergent phase of the waterfall flow.
 disable-model-invocation: true
 ---
 
