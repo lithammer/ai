@@ -1,0 +1,10 @@
+{
+  "name": "rust-analyzer-lsp",
+  "version": "0.1.0",
+  "description": "Rust language support for Claude Code via rust-analyzer.",
+  "author": {
+    "name": "Peter Lithammer",
+    "url": "https://github.com/lithammer"
+  },
+  "keywords": ["rust", "rust-analyzer", "lsp", "language-server"]
+}

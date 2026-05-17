@@ -48,6 +48,11 @@
       "name": "gopls-lsp",
       "source": "./plugins/gopls-lsp",
       "description": "Go language support for Claude Code via gopls."
+    },
+    {
+      "name": "rust-analyzer-lsp",
+      "source": "./plugins/rust-analyzer-lsp",
+      "description": "Rust language support for Claude Code via rust-analyzer."
     }
   ]
 }
