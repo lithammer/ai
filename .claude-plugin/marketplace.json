@@ -37,6 +37,11 @@
       "name": "ty-lsp",
       "source": "./plugins/ty-lsp",
       "description": "Python type checker and language server from Astral (ty)."
+    },
+    {
+      "name": "pyrefly-lsp",
+      "source": "./plugins/pyrefly-lsp",
+      "description": "Python type checker and language server from Meta (Pyrefly)."
     }
   ]
 }

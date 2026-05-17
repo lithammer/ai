@@ -1,0 +1,10 @@
+{
+  "name": "pyrefly-lsp",
+  "version": "0.1.0",
+  "description": "Python type checker and language server from Meta (Pyrefly).",
+  "author": {
+    "name": "Peter Lithammer",
+    "url": "https://github.com/lithammer"
+  },
+  "keywords": ["python", "pyrefly", "lsp", "type-checker", "meta"]
+}

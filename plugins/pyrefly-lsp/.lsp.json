@@ -1,0 +1,10 @@
+{
+  "pyrefly": {
+    "command": "uvx",
+    "args": ["pyrefly@latest", "lsp"],
+    "extensionToLanguage": {
+      ".py": "python",
+      ".pyi": "python"
+    }
+  }
+}
