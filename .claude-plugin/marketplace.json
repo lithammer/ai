@@ -58,6 +58,11 @@
       "name": "tsgo-lsp",
       "source": "./plugins/tsgo-lsp",
       "description": "TypeScript/JavaScript language support for Claude Code via tsgo (Microsoft's native TypeScript port)."
+    },
+    {
+      "name": "sourcekit-lsp",
+      "source": "./plugins/sourcekit-lsp",
+      "description": "Swift language support for Claude Code via sourcekit-lsp."
     }
   ]
 }

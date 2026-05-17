@@ -1,0 +1,10 @@
+{
+  "name": "sourcekit-lsp",
+  "version": "0.1.0",
+  "description": "Swift language support for Claude Code via sourcekit-lsp.",
+  "author": {
+    "name": "Peter Lithammer",
+    "url": "https://github.com/lithammer"
+  },
+  "keywords": ["swift", "sourcekit-lsp", "lsp", "language-server"]
+}
