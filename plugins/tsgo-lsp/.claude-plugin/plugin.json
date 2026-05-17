@@ -1,0 +1,10 @@
+{
+  "name": "tsgo-lsp",
+  "version": "0.1.0",
+  "description": "TypeScript/JavaScript language support for Claude Code via tsgo (Microsoft's native TypeScript port).",
+  "author": {
+    "name": "Peter Lithammer",
+    "url": "https://github.com/lithammer"
+  },
+  "keywords": ["typescript", "javascript", "tsgo", "lsp", "language-server"]
+}

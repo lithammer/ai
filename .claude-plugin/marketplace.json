@@ -53,6 +53,11 @@
       "name": "rust-analyzer-lsp",
       "source": "./plugins/rust-analyzer-lsp",
       "description": "Rust language support for Claude Code via rust-analyzer."
+    },
+    {
+      "name": "tsgo-lsp",
+      "source": "./plugins/tsgo-lsp",
+      "description": "TypeScript/JavaScript language support for Claude Code via tsgo (Microsoft's native TypeScript port)."
     }
   ]
 }
