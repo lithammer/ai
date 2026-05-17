@@ -25,6 +25,7 @@
         "./skills/librarian",
         "./skills/nemesis",
         "./skills/research",
+        "./skills/simplify",
         "./skills/zero-tech-debt"
       ]
     },
