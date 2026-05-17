@@ -32,6 +32,11 @@
       "name": "zls-lsp",
       "source": "./plugins/zls-lsp",
       "description": "Zig language support for Claude Code via ZLS (the Zig Language Server)."
+    },
+    {
+      "name": "ty-lsp",
+      "source": "./plugins/ty-lsp",
+      "description": "Python type checker and language server from Astral (ty)."
     }
   ]
 }
