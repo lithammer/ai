@@ -27,6 +27,11 @@
         "./skills/research",
         "./skills/zero-tech-debt"
       ]
+    },
+    {
+      "name": "zls-lsp",
+      "source": "./plugins/zls-lsp",
+      "description": "Zig language support for Claude Code via ZLS (the Zig Language Server)."
     }
   ]
 }

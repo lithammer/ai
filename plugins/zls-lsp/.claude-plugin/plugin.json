@@ -1,0 +1,10 @@
+{
+  "name": "zls-lsp",
+  "version": "0.1.0",
+  "description": "Zig language support for Claude Code via ZLS (the Zig Language Server).",
+  "author": {
+    "name": "Peter Lithammer",
+    "url": "https://github.com/lithammer"
+  },
+  "keywords": ["zig", "zls", "lsp", "language-server"]
+}
