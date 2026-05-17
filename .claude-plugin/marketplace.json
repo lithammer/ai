@@ -43,6 +43,11 @@
       "name": "pyrefly-lsp",
       "source": "./plugins/pyrefly-lsp",
       "description": "Python type checker and language server from Meta (Pyrefly)."
+    },
+    {
+      "name": "gopls-lsp",
+      "source": "./plugins/gopls-lsp",
+      "description": "Go language support for Claude Code via gopls."
     }
   ]
 }

@@ -1,0 +1,10 @@
+{
+  "name": "gopls-lsp",
+  "version": "0.1.0",
+  "description": "Go language support for Claude Code via gopls.",
+  "author": {
+    "name": "Peter Lithammer",
+    "url": "https://github.com/lithammer"
+  },
+  "keywords": ["go", "gopls", "lsp", "language-server"]
+}
