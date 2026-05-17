@@ -1,5 +1,5 @@
 {
-  "name": "tsgo-lsp",
+  "name": "typescript-lsp",
   "version": "0.1.0",
   "description": "TypeScript/JavaScript language support for Claude Code via tsgo (Microsoft's native TypeScript port).",
   "author": {
