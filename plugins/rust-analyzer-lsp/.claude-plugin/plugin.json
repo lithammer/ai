@@ -1,6 +1,6 @@
 {
   "name": "rust-analyzer-lsp",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Rust language support for Claude Code via rust-analyzer.",
   "author": {
     "name": "Peter Lithammer",

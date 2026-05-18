@@ -1,6 +1,6 @@
 {
   "name": "ty-lsp",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Python type checker and language server from Astral (ty).",
   "author": {
     "name": "Peter Lithammer",

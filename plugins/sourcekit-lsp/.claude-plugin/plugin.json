@@ -1,6 +1,6 @@
 {
   "name": "sourcekit-lsp",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Swift language support for Claude Code via sourcekit-lsp.",
   "author": {
     "name": "Peter Lithammer",
