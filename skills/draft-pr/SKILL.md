@@ -22,8 +22,6 @@ It is not a changelog.
 
 ## Writing rules
 
-- Keep the body short and reviewer-useful.
-- Use reviewer-oriented language: concrete, direct, and easy to skim.
 - Start with a bold `**tl;dr:**` line: one sentence summarizing the outcome for skim readers.
 - `Abstract`: describe the bug, failure mode, feature, capability, or user outcome. Include only the smallest useful log output or traceback.
 - `Solution`: explain why and how the implementation solves the problem or enables the feature. Prefer design-level explanation over file-by-file detail.
@@ -32,36 +30,27 @@ It is not a changelog.
 - `Alternatives`: include discarded approaches only when they help reviewers understand the chosen solution.
 - `Follow-up`: include planned or expected next PRs only. Omit speculative wishlist or rainy-day ideas.
 - `Resolves`: include only issue tracker IDs or links that reviewers can access. Omit local-only references such as Beads tasks or private tracker IDs. Do not invent references.
-- When the PR is one in a series fulfilling a larger epic, make `tl;dr` self-locating by naming the role this PR plays in the chain ("the publisher side of ...", "the infra prerequisite for ...", "the scaffold-flag removal for ...").
-- Avoid timing claims about sibling PRs ("now that X is provisioned") -- siblings in a series often sit open in parallel, and a state claim can be wrong by the time a reviewer reads it.
+- For PRs in a series, make `tl;dr` self-locating by naming the role this PR plays in the chain ("the publisher side of ...", "the infra prerequisite for ..."). Avoid timing claims about siblings ("now that X is provisioned") -- siblings often sit open in parallel.
 - Lead `Abstract` with the user-visible problem or change, not a ticket or peer-PR reference. Cross-references belong in `Abstract` only when they carry load-bearing context (e.g. "SS-XXX added the flag we're now removing"). Pure positioning ("part of epic Y") goes in `Resolves` or `Follow-up`.
 - Omit optional sections when there is nothing meaningful to say.
 - Within a section, use prose for one point and bullets for multiple distinct points. `Resolves` is always a bullet list.
 - Do not hard-wrap paragraphs; rely on the PR UI's soft wrapping. Keep bullets on one line unless they become unreadable.
 - Avoid detailed inventories, commit summaries, and file-by-file lists such as "this changed X, Y, and Z."
-- Match description weight to change weight. For PRs that are mostly mechanical -- dependency bumps, code-mod sweeps, lint auto-fixes, generated-file regeneration -- name the bulk operation in one sentence and reserve narrative density for the small set of sites that required judgment (manual cleanups, suppressions kept, places the auto-fix wasn't safe). A "ran the new auto-fixes plus three manual follow-ups" PR should read like that, not like an architectural change. For purely mechanical PRs with no judgment calls worth narrating, the `tl;dr` alone may be the whole description -- `Abstract` and `Solution` are not required (see [PR_FORMAT.md](./PR_FORMAT.md)).
+- Match description weight to change weight. For mostly-mechanical PRs (dependency bumps, code-mod sweeps, lint auto-fix runs), name the bulk operation once and reserve detail for the sites that took judgment (manual cleanups, suppressions kept, places the auto-fix wasn't safe). A "ran the auto-fixes plus three follow-ups" PR should read like that. For purely mechanical PRs with no such judgment calls, the `tl;dr` alone may be the whole description (see [PR_FORMAT.md](./PR_FORMAT.md)).
 
 ## Language tricks
 
-- **Mental model before mechanics**
-  - Avoid: "Issues N per-file pre-signed PUT URLs in parallel via a bounded errgroup."
-  - Prefer: "The API hands out short-lived upload permissions, and the client uploads files directly to object storage."
 - **Before / now / why**
   - Prefer: "Before, file bytes were POSTed through the API, which forwarded them to object storage. Now, the client uploads directly using a pre-signed URL. This avoids paying for bandwidth twice and frees the API worker for the duration of the transfer."
 - **Impact before mechanism**
   - Avoid: "This PR introduces enhanced token handling."
   - Prefer: "Invalid tokens now stop the sync retry loop and send the account through re-auth."
-- **Concrete nouns over vague abstractions**
-  - Avoid: "Improves reliability."
-  - Prefer: "Prevents the account from staying stuck in pending sync."
 - **Concrete example for abstract problems**
   - Prefer: "The old request looked like `POST /uploads  Content-Type: multipart/form-data  [file bytes]`, so even small uploads pinned an API worker for the full transfer duration."
 - **Cause/effect sentences**
   - Prefer: "When the server rejects the token, sync treats it as an auth failure instead of a retryable network failure."
 - **No sales pitch words**
   - Avoid: "seamless," "robust," "comprehensive," "leverages," and "streamlined" unless they are technically precise.
-- **Assume reviewer competence**
-  - Avoid explaining basic concepts; explain why this change took this shape.
 
 ## Checks
 
