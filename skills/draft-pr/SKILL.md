@@ -39,6 +39,7 @@ It is not a changelog.
 - Within a section, use prose for one point and bullets for multiple distinct points. `Resolves` is always a bullet list.
 - Do not hard-wrap paragraphs; rely on the PR UI's soft wrapping. Keep bullets on one line unless they become unreadable.
 - Avoid detailed inventories, commit summaries, and file-by-file lists such as "this changed X, Y, and Z."
+- Match description weight to change weight. For PRs that are mostly mechanical -- dependency bumps, code-mod sweeps, lint auto-fixes, generated-file regeneration -- name the bulk operation in one sentence and reserve narrative density for the small set of sites that required judgment (manual cleanups, suppressions kept, places the auto-fix wasn't safe). A "ran the new auto-fixes plus three manual follow-ups" PR should read like that, not like an architectural change. For purely mechanical PRs with no judgment calls worth narrating, the `tl;dr` alone may be the whole description -- `Abstract` and `Solution` are not required (see [PR_FORMAT.md](./PR_FORMAT.md)).
 
 ## Language tricks
 

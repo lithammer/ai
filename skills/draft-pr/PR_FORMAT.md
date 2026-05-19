@@ -1,6 +1,6 @@
 # PR Format
 
-Start with a one-sentence `**tl;dr:**` line, then use this heading order for the PR body. `tl;dr`, `Abstract`, and `Solution` are required. The other sections are optional; omit empty sections. Do not hard-wrap paragraphs; rely on the PR UI's soft wrapping.
+Start with a one-sentence `**tl;dr:**` line, then use this heading order for the PR body. `tl;dr` is required. `Abstract` and `Solution` are required for any change with shape worth explaining beyond the one-liner; mechanical PRs (dependency bumps, code-mod sweeps, lint auto-fix runs) can ship with just `tl;dr`, plus `Caveats` if there are any. The other sections are optional; omit empty sections. Do not hard-wrap paragraphs; rely on the PR UI's soft wrapping.
 
 ## Template
 
