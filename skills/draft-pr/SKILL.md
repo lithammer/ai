@@ -31,7 +31,7 @@ It is not a changelog.
 - `Follow-up`: include planned or expected next PRs only. Omit speculative wishlist or rainy-day ideas.
 - `Resolves`: include only issue tracker IDs or links that reviewers can access. Omit local-only references such as Beads tasks or private tracker IDs. Do not invent references.
 - For PRs in a series, make `tl;dr` self-locating by naming the role this PR plays in the chain ("the publisher side of ...", "the infra prerequisite for ..."). Avoid timing claims about siblings ("now that X is provisioned") -- siblings often sit open in parallel.
-- Lead `Abstract` with the user-visible problem or change, not a ticket or peer-PR reference. Cross-references belong in `Abstract` only when they carry load-bearing context (e.g. "SS-XXX added the flag we're now removing"). Pure positioning ("part of epic Y") goes in `Resolves` or `Follow-up`.
+- Lead `Abstract` with the user-visible problem or change, not a ticket or peer-PR reference. Cross-references belong in `Abstract` only when they carry load-bearing context (e.g. "#NNN added the flag we're now removing"). Link the PR rather than the tracking ticket when the claim is about merge state -- tickets can't be merged. Pure positioning ("part of epic Y") goes in `Resolves` or `Follow-up`.
 - Omit optional sections when there is nothing meaningful to say.
 - Within a section, use prose for one point and bullets for multiple distinct points. `Resolves` is always a bullet list.
 - Do not hard-wrap paragraphs; rely on the PR UI's soft wrapping. Keep bullets on one line unless they become unreadable.
