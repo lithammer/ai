@@ -59,5 +59,5 @@ Before creating the PR, verify:
 - The current branch is not the base branch.
 - The base branch is correct.
 - The PR body follows [PR_FORMAT.md](./PR_FORMAT.md), including the required `**tl;dr:**` line.
-- **Reader test:** reread `tl;dr` plus the first paragraph of `Solution`. A senior engineer who doesn't work on this system should be able to explain the change back in one sentence after reading just those two. If not, rewrite before adding mechanics. Dense bullets, internal names, and acronyms before the mental model are the failure mode this catches.
+- **Reader test:** at every paragraph, a senior engineer who doesn't work on this system should be able to follow what's being said. Internal function names, jargon for code paths, and implementation details (goroutines, timeouts, locking primitives) are red flags -- describe the contract that's now exposed, not the mechanism behind it. The opening (`tl;dr` plus the first paragraph of `Solution`) is the strictest case: the outsider should be able to explain the whole change back in one sentence after reading just those.
 - The PR is created with `--draft`.

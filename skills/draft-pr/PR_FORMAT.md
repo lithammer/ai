@@ -71,6 +71,43 @@ Because uploads go client -> object storage, the API no longer sees per-file upl
 Keeping a multipart upload route on the API would preserve upload telemetry, but it would add bandwidth cost, worker occupancy, and another data path to operate.
 ```
 
+### Series PR (part of an epic)
+
+```md
+**tl;dr:** Publisher side of the new delivery-receipts pipeline -- the mail-sender now emits a `receipt.delivered` event whenever an upstream provider acknowledges a send.
+
+### Abstract
+
+Today the only delivery signal callers get is the synchronous response from the send-mail RPC, which only confirms the request was accepted. Customers need to know when the provider acknowledged delivery to drive their own retry and reporting. This PR is the publisher side of that pipeline; the subscription/router side ships separately.
+
+### Solution
+
+The mail-sender now emits a delivery event whenever we hear back from the provider -- three cases: an immediate ack on the original send, a later webhook from the provider, or the response timer expiring without a reply.
+
+### Resolves
+
+- [DELIV-1234](https://jira.example.com/browse/DELIV-1234) -- delivery receipts (epic)
+```
+
+### Mechanical PR (`tl;dr` only)
+
+When the whole story fits in one line, no other sections are needed:
+
+```md
+**tl;dr:** Bump `eslint-plugin-react` from 7.34 to 7.36 and accept the auto-fix output.
+```
+
+When a few load-bearing notes aren't visible in the diff (what didn't get auto-fixed, what got skipped on purpose), add `Caveats`:
+
+```md
+**tl;dr:** Run `gofmt -s` across the tree to apply the new Go 1.24 simplifications, with two manual follow-ups where the rewrite would have changed behaviour.
+
+### Caveats
+
+- One `//nolint` retained where the rewrite would lose runtime type information.
+- The simplifier is intentionally not run on generated files.
+```
+
 ## Anti-pattern: mechanics ahead of mental model
 
 Opening `Solution` with a one-line summary followed by a bulleted enumeration of mechanics:
