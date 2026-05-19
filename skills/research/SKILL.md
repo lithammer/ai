@@ -1,6 +1,6 @@
 ---
 name: research
-description: Research technical, academic, or open-source topics by grounding claims in primary evidence: docs, papers, standards, code, issues, releases.
+description: "Research technical, academic, or open-source topics by grounding claims in primary evidence: docs, papers, standards, code, issues, releases."
 disable-model-invocation: true
 ---
 
