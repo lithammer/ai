@@ -25,7 +25,7 @@ It is not a changelog.
 - Start with a bold `**tl;dr:**` line: one sentence summarizing the outcome for skim readers.
 - `Abstract`: describe the bug, failure mode, feature, capability, or user outcome. Include only the smallest useful log output or traceback.
 - `Solution`: explain why and how the implementation solves the problem or enables the feature. Prefer design-level explanation over file-by-file detail.
-- The first paragraph of `Solution` is plain-language mental model only -- no bullets, unexplained internal API names, library function names, or dense infra mechanics. Use only the system names needed to explain the shape of the change. Bullets and specifics come after the reader has that shape.
+- First paragraph of `Solution` is plain-language mental model. Bullets and specifics come after.
 - `Caveats`: include meaningful limitations, risks, constraints, or trade-offs.
 - `Alternatives`: include discarded approaches only when they help reviewers understand the chosen solution.
 - `Follow-up`: include planned or expected next PRs only. Omit speculative wishlist or rainy-day ideas.
@@ -47,8 +47,6 @@ It is not a changelog.
   - Prefer: "Invalid tokens now stop the sync retry loop and send the account through re-auth."
 - **Concrete example for abstract problems**
   - Prefer: "The old request looked like `POST /uploads  Content-Type: multipart/form-data  [file bytes]`, so even small uploads pinned an API worker for the full transfer duration."
-- **Cause/effect sentences**
-  - Prefer: "When the server rejects the token, sync treats it as an auth failure instead of a retryable network failure."
 - **No sales pitch words**
   - Avoid: "seamless," "robust," "comprehensive," "leverages," and "streamlined" unless they are technically precise.
 
