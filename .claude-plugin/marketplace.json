@@ -18,16 +18,34 @@
       ]
     },
     {
-      "name": "lithammer-skills",
-      "description": "General-purpose engineering and research skills.",
-      "skills": [
-        "./skills/draft-pr",
-        "./skills/librarian",
-        "./skills/nemesis",
-        "./skills/research",
-        "./skills/simplify",
-        "./skills/zero-tech-debt"
-      ]
+      "name": "draft-pr",
+      "description": "Create a draft PR for the current branch.",
+      "skills": ["./skills/draft-pr"]
+    },
+    {
+      "name": "librarian",
+      "description": "Cache and refresh remote git repositories under ~/.cache/checkouts so future references reuse a local copy.",
+      "skills": ["./skills/librarian"]
+    },
+    {
+      "name": "nemesis",
+      "description": "Conversational adversarial reviewer for plans, designs, or half-formed ideas.",
+      "skills": ["./skills/nemesis"]
+    },
+    {
+      "name": "research",
+      "description": "Research technical, academic, or open-source topics by grounding claims in primary evidence.",
+      "skills": ["./skills/research"]
+    },
+    {
+      "name": "simplify",
+      "description": "Review changed code for reuse, quality, and efficiency, then fix any issues found.",
+      "skills": ["./skills/simplify"]
+    },
+    {
+      "name": "zero-tech-debt",
+      "description": "Rework a change as if the intended UX and architecture existed from day one, deleting compatibility cruft.",
+      "skills": ["./skills/zero-tech-debt"]
     },
     {
       "name": "zls-lsp",
