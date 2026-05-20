@@ -1,6 +1,6 @@
 ---
 name: draft-pr
-description: Create a draft PR for the current branch.
+description: Create a draft PR for the current branch. Use when asked to draft, create, open, or prepare a PR, or to write a PR description.
 ---
 
 # Draft PR
