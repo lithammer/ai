@@ -1,28 +1,8 @@
-# PR Format
+# Examples
 
-Start with a one-sentence `**tl;dr:**` line. The `tl;dr` is the description; every other section is optional, added only when it carries information the `tl;dr` can't. Add `Abstract` when the reviewer needs problem context that doesn't fit in the one-liner (a non-obvious bug, the chain of events that produced the failure). Add `Solution` when the *how* is genuinely load-bearing for review -- a data-flow shift, an architectural pivot, a surprising design choice. If you'd be restating the `tl;dr` in different words, drop the section. Heading order when sections are present: `tl;dr`, `Abstract`, `Solution`, `Caveats`, `Alternatives`, `Follow-up`, `Resolves`. Don't hard-wrap paragraphs; the PR UI handles wrapping.
+Heading order when sections are present: `tl;dr`, `Abstract`, `Solution`, `Caveats`, `Alternatives`, `Follow-up`, `Resolves`. See [SKILL.md](./SKILL.md) for the rules that decide which sections to include.
 
-## Template
-
-```md
-**tl;dr:**
-
-### Abstract
-
-### Solution
-
-### Caveats
-
-### Alternatives
-
-### Follow-up
-
-### Resolves
-```
-
-## Examples
-
-### Bug fix
+## Bug fix
 
 ```md
 **tl;dr:** Invalid tokens now stop the sync retry loop and send the account through re-auth.
@@ -49,7 +29,7 @@ A follow-up PR will add a richer account-health message once the settings page h
 - [AB-1337](https://jira.example.com/browse/AB-1337)
 ```
 
-### Data-flow change
+## Data-flow change
 
 ```md
 **tl;dr:** Large file uploads no longer pass through the API; clients upload directly to object storage using short-lived pre-signed URLs.
@@ -71,7 +51,7 @@ Because uploads go client -> object storage, the API no longer sees per-file upl
 Keeping a multipart upload route on the API would preserve upload telemetry, but it would add bandwidth cost, worker occupancy, and another data path to operate.
 ```
 
-### Series PR (part of an epic)
+## Series PR (part of an epic)
 
 ```md
 **tl;dr:** Publisher side of the new delivery-receipts pipeline -- the mail-sender now emits a `receipt.delivered` event whenever an upstream provider acknowledges a send.
@@ -89,7 +69,7 @@ The mail-sender now emits a delivery event whenever we hear back from the provid
 - [DELIV-1234](https://jira.example.com/browse/DELIV-1234) -- delivery receipts (epic)
 ```
 
-### Mechanical PR (`tl;dr` only)
+## Mechanical PR (`tl;dr` only)
 
 When the whole story fits in one line, no other sections are needed:
 
