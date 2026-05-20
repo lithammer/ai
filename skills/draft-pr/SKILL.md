@@ -1,7 +1,6 @@
 ---
 name: draft-pr
 description: Create a draft PR for the current branch.
-disable-model-invocation: true
 ---
 
 # Draft PR
