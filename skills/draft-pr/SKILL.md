@@ -36,7 +36,7 @@ It is not a changelog.
 - Within a section, use prose for one point and bullets for multiple distinct points. `Resolves` is always a bullet list.
 - Do not hard-wrap paragraphs; rely on the PR UI's soft wrapping. Keep bullets on one line unless they become unreadable.
 - Avoid detailed inventories, commit summaries, and file-by-file lists such as "this changed X, Y, and Z."
-- Match description weight to change weight. For mostly-mechanical PRs (dependency bumps, code-mod sweeps, lint auto-fix runs), name the bulk operation once and reserve detail for the sites that took judgment (manual cleanups, suppressions kept, places the auto-fix wasn't safe). A "ran the auto-fixes plus three follow-ups" PR should read like that. For purely mechanical PRs with no such judgment calls, the `tl;dr` alone may be the whole description (see [PR_FORMAT.md](./PR_FORMAT.md)).
+- Match description weight to change weight. The `tl;dr` is the description by default; `Abstract` and `Solution` are added only when they carry information the `tl;dr` can't (see [PR_FORMAT.md](./PR_FORMAT.md)). For mostly-mechanical PRs (dependency bumps, code-mod sweeps, lint auto-fix runs), name the bulk operation in the `tl;dr` and reserve any body for the sites that took judgment (manual cleanups, suppressions kept, places the auto-fix wasn't safe). If `Solution` starts naming SDK functions, library quirks, or concurrency primitives, you've drifted from contract into mechanism -- stop and cut.
 
 ## Language tricks
 

@@ -1,6 +1,6 @@
 # PR Format
 
-Start with a one-sentence `**tl;dr:**` line, then use this heading order for the PR body. `tl;dr` is required. `Abstract` and `Solution` are required for any change with shape worth explaining beyond the one-liner; mechanical PRs (dependency bumps, code-mod sweeps, lint auto-fix runs) can ship with just `tl;dr`, plus `Caveats` if there are any. The other sections are optional; omit empty sections. Do not hard-wrap paragraphs; rely on the PR UI's soft wrapping.
+Start with a one-sentence `**tl;dr:**` line. The `tl;dr` is the description; every other section is optional, added only when it carries information the `tl;dr` can't. Add `Abstract` when the reviewer needs problem context that doesn't fit in the one-liner (a non-obvious bug, the chain of events that produced the failure). Add `Solution` when the *how* is genuinely load-bearing for review -- a data-flow shift, an architectural pivot, a surprising design choice. If you'd be restating the `tl;dr` in different words, drop the section. Heading order when sections are present: `tl;dr`, `Abstract`, `Solution`, `Caveats`, `Alternatives`, `Follow-up`, `Resolves`. Don't hard-wrap paragraphs; the PR UI handles wrapping.
 
 ## Template
 
