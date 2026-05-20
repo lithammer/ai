@@ -1,7 +1,5 @@
 # Examples
 
-Heading order when sections are present: `tl;dr`, `Abstract`, `Solution`, `Caveats`, `Alternatives`, `Follow-up`, `Resolves`. See [SKILL.md](./SKILL.md) for the rules that decide which sections to include.
-
 ## Bug fix
 
 ```md
@@ -17,7 +15,7 @@ Now, token rejection is treated as an auth failure. Sync stops retrying that acc
 
 ### Caveats
 
-This makes invalid-token failures visible sooner instead of hiding them behind background retries.
+A spurious 401 (server bug, transient mis-auth) now bounces the account through re-auth instead of being absorbed by the retry loop.
 
 ### Follow-up
 
@@ -101,6 +99,6 @@ Move the cache layer out of the request hot path.
 - evicts entries that fail the `staleness_window` check before returning.
 ```
 
-Even a reader on the same service has to chase four internal names and a library function before they know what kind of change this is. The plain-language paragraph that should have come first -- something like "Cache lookups now run in parallel with a tight deadline, and the request handler no longer waits on misses to refresh" -- has been replaced by a bullet list.
+Even a reader on the same service has to chase four internal names and a library function before they know what kind of change this is. The plain-language paragraph that should have come first -- something like "Cache lookups now run in parallel, and the request handler no longer waits on misses to refresh" -- has been replaced by a bullet list.
 
 Rule: complete the plain-language `Solution` paragraph first. Bullets and internal names only after a reader could already summarize the change without them.
