@@ -56,12 +56,13 @@ acceptable. It is not a changelog.
   this PR plays in the chain ("the publisher side of ...", "the infra
   prerequisite for ..."). Avoid timing claims about siblings ("now that
   X is provisioned") -- siblings often sit open in parallel.
-- Lead `Abstract` with the user-visible problem or change, not a ticket
-  or peer-PR reference. Cross-references belong in `Abstract` only when
-  they carry load-bearing context (e.g. "#NNN added the flag we're now
-  removing"). Link the PR rather than the tracking ticket when the
-  claim is about merge state -- tickets can't be merged. Pure
-  positioning ("part of epic Y") goes in `Resolves` or `Follow-up`.
+- Lead `Abstract` with the user-visible problem or change, not a
+  ticket or peer-PR reference. Cross-references must carry
+  load-bearing context (e.g. "#NNN added the flag we're now
+  removing"); link the PR rather than the tracking ticket when the
+  claim is about merge state -- tickets can't be merged.
+- Pure positioning ("part of epic Y") goes in `Resolves` or
+  `Follow-up`, not `Abstract`.
 - Skip process narrative ("X asked us to split this up", "discussed in
   Slack on Tuesday") -- who requested the PR or why work was split goes
   in PR comments or chat, not the description.
