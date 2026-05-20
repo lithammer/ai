@@ -1,54 +1,5 @@
 # Examples
 
-## Bug fix
-
-```md
-**tl;dr:** Invalid tokens now stop the sync retry loop and send the account through re-auth.
-
-### Abstract
-
-Before, sync treated an invalid token like a retryable network failure. A 401 could leave the account stuck in pending sync, because the UI kept showing progress while background retries kept failing.
-
-### Solution
-
-Now, token rejection is treated as an auth failure. Sync stops retrying that account and routes it through the existing re-auth path, while transient transport failures still use the normal retry path.
-
-### Caveats
-
-A spurious 401 (server bug, transient mis-auth) now bounces the account through re-auth instead of being absorbed by the retry loop.
-
-### Follow-up
-
-A follow-up PR will add a richer account-health message once the settings page has a shared error-state component.
-
-### Resolves
-
-- GH-123
-- [AB-1337](https://jira.example.com/browse/AB-1337)
-```
-
-## Data-flow change
-
-```md
-**tl;dr:** Large file uploads no longer pass through the API; clients upload directly to object storage using short-lived pre-signed URLs.
-
-### Abstract
-
-Before, uploading a file meant POSTing it to the API, which then forwarded the bytes to object storage. A typical request looked like `POST /uploads  Content-Type: multipart/form-data  [file bytes]`. The API worker stayed pinned for the full upload duration, and the service paid bandwidth twice -- once on ingress from the client, once on egress to storage.
-
-### Solution
-
-Now, the API hands out short-lived pre-signed PUT URLs and the client uploads each file directly to object storage. File bytes no longer pass through the API. The API still authorizes the request, allocates the object keys, and records the upload in the database once the client confirms completion.
-
-### Caveats
-
-Because uploads go client -> object storage, the API no longer sees per-file upload latency or content length in real time. Pre-sign metrics and storage access logs remain available.
-
-### Alternatives
-
-Keeping a multipart upload route on the API would preserve upload telemetry, but it would add bandwidth cost, worker occupancy, and another data path to operate.
-```
-
 ## Series PR (part of an epic)
 
 ```md
