@@ -32,7 +32,11 @@ state, link the PR -- tickets can't be merged.
 
 1. Identify the current branch and an appropriate base branch.
 2. Read enough context to understand intent and implementation.
-3. Draft an outcome-oriented title and body.
+3. Draft an outcome-oriented title. Draft the body in two passes:
+   write whatever it takes to cover the goal of the change, then
+   compress -- cutting what doesn't pass the reader test and
+   simplifying language -- until further compression would lose
+   load-bearing information.
 4. Create the PR as a draft. If creation fails, leave the user with
    the title, body, and command to run.
 
