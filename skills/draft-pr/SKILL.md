@@ -6,9 +6,10 @@ description: Create a draft PR for the current branch. Use when asked to draft, 
 # Draft PR
 
 A PR description helps reviewers understand why the change exists and
-why the solution is acceptable. The `tl;dr` line carries the
-description; other sections are added only when they carry information
-the `tl;dr` can't, never to restate it.
+why the solution is acceptable. Start with a bold `**tl;dr:**` line:
+one sentence summarizing the outcome. Other sections are opt-in,
+added only when they carry information the `tl;dr` can't, never to
+restate it.
 
 Optional sections, in heading order: `Abstract`, `Solution`, `Caveats`,
 `Alternatives`, `Follow-up`, `Resolves`. See
@@ -17,9 +18,11 @@ Optional sections, in heading order: `Abstract`, `Solution`, `Caveats`,
 Reader test: a senior engineer who doesn't work on this system should
 be able to follow every paragraph and explain the change back in one
 sentence after reading the `tl;dr` plus the first paragraph. Describe
-the contract, not the mechanism -- internal function names, SDK
-quirks, concurrency primitives, and process narrative ("X asked us to
-split this up") belong in code or PR threads, not the description.
+what shipped, at the level of the contract -- not the mechanism behind
+it. Internal function names, SDK quirks, concurrency primitives,
+process narrative ("X asked us to split this up"), and things you
+considered but didn't do (deferred refactors, dropped scope) belong in
+code, PR threads, or follow-up issues, not the description.
 
 For PRs in a series, make the `tl;dr` self-locating ("publisher side
 of ...", "infra prerequisite for ..."). When citing a sibling's merge
