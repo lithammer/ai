@@ -19,10 +19,12 @@ Reader test: a senior engineer who doesn't work on this system should
 be able to follow every paragraph and explain the change back in one
 sentence after reading the `tl;dr` plus the first paragraph. Describe
 what shipped, at the level of the contract -- not the mechanism behind
-it. Internal function names, SDK quirks, concurrency primitives,
-process narrative ("X asked us to split this up"), and things you
-considered but didn't do (deferred refactors, dropped scope) belong in
-code, PR threads, or follow-up issues, not the description.
+it. Reviewers see the diff; explain *why* and *consequences*, not
+*what changed*. Internal function names, SDK quirks, concurrency
+primitives, process narrative ("X asked us to split this up"), and
+things you considered but didn't do (deferred refactors, dropped
+scope) belong in code, PR threads, or follow-up issues, not the
+description.
 
 For PRs in a series, make the `tl;dr` self-locating ("publisher side
 of ...", "infra prerequisite for ..."). When citing a sibling's merge
@@ -33,10 +35,10 @@ state, link the PR -- tickets can't be merged.
 1. Identify the current branch and an appropriate base branch.
 2. Read enough context to understand intent and implementation.
 3. Draft an outcome-oriented title. Draft the body in two passes:
-   write whatever it takes to cover the goal of the change, then
-   compress -- cutting what doesn't pass the reader test and
-   simplifying language -- until further compression would lose
-   load-bearing information.
+   first cover the goal, then compress. For each paragraph in pass
+   two, ask: does this tell the reviewer anything beyond the diff
+   and `tl;dr`? If not, cut. Simplify language as you go. Stop when
+   further compression would lose load-bearing information.
 4. Create the PR as a draft. If creation fails, leave the user with
    the title, body, and command to run.
 
