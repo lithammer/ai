@@ -15,9 +15,11 @@ salesy, padded, or unlike the surrounding project voice.
    vs default-branch merge-base, otherwise staged/unstaged/untracked docs.
 2. Review changed docs prose plus docstrings/API comments; ignore generated
    files and incidental inline comments unless explicitly included.
-3. Read nearby unchanged text to learn the local voice, then review for human
-   readability rather than forbidden words.
-4. Report findings first, ordered by how much they hurt reader trust or clarity.
+3. Follow prose references to files, symbols, constants, prompts, fixtures, or
+   source-of-truth docs before judging terminology or cross-file claims.
+4. Read nearby unchanged text and referenced artifacts to learn the local voice,
+   then review for human readability rather than forbidden words.
+5. Report findings first, ordered by how much they hurt reader trust or clarity.
 
 ## What To Flag
 
@@ -25,8 +27,7 @@ Flag wording when it is both present in changed documentation and makes the text
 feel less human or less useful:
 
 - Generic AI filler: "seamless", "robust", "comprehensive", "streamlined",
-  "leverages", "utilizes", "empowers", "enhances", "ensures", "delve",
-  "foster", "cutting-edge", "game-changing".
+  "leverages", "utilizes", "empowers", "enhances", "ensures".
 - Throat-clearing: "It is important to note", "In today's landscape",
   "This document aims to", "Let's explore", "By following these steps".
 - Inflated claims without evidence: "significantly improves", "best-in-class",
@@ -38,6 +39,11 @@ feel less human or less useful:
 - Summary paragraphs that restate the heading instead of adding information.
 - Tone mismatch with nearby docs: marketing voice in engineering docs,
   tutorial voice in a terse runbook, or corporate polish in personal notes.
+- Cross-reference drift: a comment coins a term for something the referenced
+  artifact already names differently, or asserts a sync rule the other side does
+  not document.
+- Test or guard comments that explain the mechanism but not what a maintainer
+  should do when the test or guard fails.
 - Docstrings that only echo the symbol name: `NewThing creates a new Thing`,
   `Thing represents a thing`, `processThing processes a thing`.
 - Generic verb wrappers in comments: "handles", "manages", "orchestrates",
@@ -58,8 +64,11 @@ Prefer prose that sounds like a competent human wrote it for a real reader:
 - Specific trade-offs, constraints, and examples.
 - Shorter sentences when the current sentence sounds padded.
 - Reader-useful caveats instead of confident filler.
-- Project terminology over generic product language.
-- Plain English contractions only when they fit the surrounding tone.
+- Project terminology, especially vocabulary from referenced artifacts, over
+  generic language, test jargon, or local synonyms.
+- For test, guard, and assertion comments, explain the failure meaning or fix.
+- When suggesting reciprocal notes, check host syntax so comments do not become
+  prompt text, string content, or data.
 - For docstrings, a first sentence that adds behavior beyond the function,
   type, or method name.
 - Keep comments that explain constraints, invariants, failure modes, external
@@ -80,6 +89,9 @@ Use a review format, not an essay:
 
 Keep rewrites close to the author's likely intent. Do not introduce new facts,
 new promises, or a more casual voice than the surrounding docs support.
+Before returning "no findings", re-check any comment that looked accurate but
+wordy: if a shorter, more actionable, or more on-vocabulary version is clearly
+better, report it as a finding or nit.
 
 ## Editing Rule
 
