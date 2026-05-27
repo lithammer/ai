@@ -23,6 +23,11 @@
       "skills": ["./skills/draft-pr"]
     },
     {
+      "name": "docs-human-review",
+      "description": "Review docs diffs for AI-like prose.",
+      "skills": ["./skills/.experimental/docs-human-review"]
+    },
+    {
       "name": "librarian",
       "description": "Cache and refresh remote git repositories under ~/.cache/checkouts so future references reuse a local copy.",
       "skills": ["./skills/librarian"]
