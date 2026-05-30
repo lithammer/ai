@@ -56,3 +56,7 @@ Not your domain:
 `evidence` is strongly preferred on canonical-solutions findings: name
 the canonical replacement (specific function, idiom, or pattern) and
 why it's preferable.
+
+Readability findings must name a concrete comprehension cost — what a
+reader misreads, or what they must hold in their head to follow the code
+— not just assert that something is "complex" or "could be clearer."
