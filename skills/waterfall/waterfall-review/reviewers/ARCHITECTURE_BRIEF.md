@@ -30,6 +30,6 @@ cross-module duplication, responsibility assignment.
 
 Not your domain:
 
-- Within-module simplifications and readability (readability reviewer).
-- Style, naming, formatting (style-and-hygiene reviewer).
-- Bugs (correctness reviewer).
+- Within-module simplifications, readability, style, naming, formatting
+  (code-quality reviewer).
+- Bugs (runtime-bugs reviewer).

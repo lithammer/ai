@@ -31,5 +31,5 @@ errors, generic wrapping.
 Not your domain:
 
 - Errors that are silently ignored and let execution continue on a broken
-  assumption (correctness reviewer).
-- Style issues (style-and-hygiene reviewer).
+  assumption (runtime-bugs reviewer).
+- Style issues (code-quality reviewer).

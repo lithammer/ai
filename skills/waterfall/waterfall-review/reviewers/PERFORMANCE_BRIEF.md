@@ -28,6 +28,5 @@ Your domain: obvious performance issues with clear fixes.
 
 Not your domain:
 
-- Correctness bugs (correctness reviewer).
-- Concurrency issues (concurrency reviewer).
+- Correctness bugs and concurrency issues (runtime-bugs reviewer).
 - Speculative micro-optimizations without evidence of a hot path.

@@ -30,8 +30,8 @@ refactor.
 
 Not your domain:
 
-- Bugs in production code (correctness reviewer).
-- Style issues in test code (style-and-hygiene reviewer).
+- Bugs in production code (runtime-bugs reviewer).
+- Style issues in test code (code-quality reviewer).
 
 Set `category` on every finding: either `missing-coverage` or
 `test-quality`. Use `suggestion` to name a specific test case to add or to
