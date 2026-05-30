@@ -23,6 +23,7 @@ If there are no findings, return an empty `<findings></findings>`.
       if err != nil { return fmt.Errorf("failed: %w", err) }
       ```
     </suggestion>
+    <!-- plus axis | category | rule where the reviewer's persona calls for it -->
   </finding>
 </findings>
 ```
@@ -70,17 +71,10 @@ concurrent access patterns in the changed code), say so on the same
 line. The orchestrator uses this summary to confirm every axis got
 attention.
 
-## Calibration
+## Severity
 
 Severity is per-dimension, not cross-dimension. A `high` correctness
 finding and a `high` style finding both mean "the most serious thing my
 dimension produces on this change" — they are not directly comparable. Use
 the full range within your own scope; do not cap a dimension at `low`
 because it can never produce a runtime crash.
-
-Calibrate against the operating context the orchestrator supplied. Drop
-findings whose preconditions do not hold in practice. A SQL injection in
-an internal CLI tool that never runs against a database is not a finding.
-
-Do not pad with low-confidence findings. A short list of solid findings
-beats a long list padded with maybes.
