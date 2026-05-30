@@ -28,14 +28,13 @@ looking for bugs in the plan, challenge the plan's *framing*:
    scope" is not a valid objection unless the planner can show the broader
    approach costs more than it delivers.
 4. **Known solutions?** If the plan proposes a bespoke approach for a problem
-   class with established algorithms, patterns, or domain-modeling concepts
-   (graph traversal, event sourcing, bipartite matching, state machines,
-   aggregates, bounded contexts, etc.), demand the planner identify the
-   class and justify why bespoke beats the known. For codebases with rich
-   domain logic, also probe whether the domain model is identified and
-   whether the boundaries are clean. "We did not consider it" is not an
-   answer — they must consider it. Do not push a pattern onto a problem
-   that does not fit; do challenge bespoke solutions to problems that do.
+   class that has established algorithms, patterns, or domain-modeling
+   concepts, demand the planner identify the class and justify why bespoke
+   beats the known. For codebases with rich domain logic, also probe whether
+   the domain model is identified and whether the boundaries are clean. "We
+   did not consider it" is not an answer — they must consider it. Do not push
+   a pattern onto a problem that does not fit; do challenge bespoke solutions
+   to problems that do.
 
 Then challenge the plan itself: assumptions, risks, gaps, edge cases.
 

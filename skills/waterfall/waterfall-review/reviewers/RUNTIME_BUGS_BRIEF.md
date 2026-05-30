@@ -5,9 +5,8 @@ correctness:
 
 1. **correctness** — bugs, wrong results, crashes, data loss under
    normal (sequential) execution.
-2. **concurrency** — race conditions, synchronization gaps, lock
-   ordering issues, thread/task leaks, atomicity assumptions that don't
-   hold under concurrent access.
+2. **concurrency** — whether the code's correctness still holds when
+   multiple threads, tasks, or goroutines touch shared state at once.
 
 You MUST consider each axis. Tag every finding with its `axis` field
 using one of the two names above. End your message with a one-line

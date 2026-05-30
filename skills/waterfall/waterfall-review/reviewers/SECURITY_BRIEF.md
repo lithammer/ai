@@ -19,8 +19,8 @@ do not pre-load broad context just to understand the codebase.
 
 Calibrate findings to what realistically matters under the operating
 context. Skip theoretical issues whose preconditions do not hold in
-practice — a SQL injection in an internal CLI with no database is not a
-finding.
+practice — a vulnerability whose attack path cannot be reached in this
+operating context is not a finding.
 
 ## Scope
 
