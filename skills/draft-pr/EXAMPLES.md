@@ -1,6 +1,27 @@
 # Examples
 
-## Series PR (part of an epic)
+Most PRs are just the `tl;dr`. Sections are the exception, added one at a time only when they carry something the line can't.
+
+## Most PRs (`tl;dr` only)
+
+When the whole story fits in one line, no other sections are needed:
+
+```md
+**tl;dr:** Bump `eslint-plugin-react` from 7.34 to 7.36 and accept the auto-fix output.
+```
+
+When a few load-bearing notes aren't visible in the diff (what didn't get auto-fixed, what got skipped on purpose), add `Caveats` -- and nothing else:
+
+```md
+**tl;dr:** Run `gofmt -s` across the tree to apply the new Go 1.24 simplifications, with two manual follow-ups where the rewrite would have changed behaviour.
+
+### Caveats
+
+- One `//nolint` retained where the rewrite would lose runtime type information.
+- The simplifier is intentionally not run on generated files.
+```
+
+## Series PR (the rare case that earns several sections)
 
 ```md
 **tl;dr:** Publisher side of the new delivery-receipts pipeline -- the mail-sender now emits a `receipt.delivered` event whenever an upstream provider acknowledges a send.
@@ -16,25 +37,6 @@ The mail-sender now emits a delivery event whenever we hear back from the provid
 ### Resolves
 
 - [DELIV-1234](https://jira.example.com/browse/DELIV-1234) -- delivery receipts (epic)
-```
-
-## Mechanical PR (`tl;dr` only)
-
-When the whole story fits in one line, no other sections are needed:
-
-```md
-**tl;dr:** Bump `eslint-plugin-react` from 7.34 to 7.36 and accept the auto-fix output.
-```
-
-When a few load-bearing notes aren't visible in the diff (what didn't get auto-fixed, what got skipped on purpose), add `Caveats`:
-
-```md
-**tl;dr:** Run `gofmt -s` across the tree to apply the new Go 1.24 simplifications, with two manual follow-ups where the rewrite would have changed behaviour.
-
-### Caveats
-
-- One `//nolint` retained where the rewrite would lose runtime type information.
-- The simplifier is intentionally not run on generated files.
 ```
 
 ## Anti-pattern: mechanics ahead of mental model
