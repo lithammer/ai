@@ -21,24 +21,6 @@ When a few load-bearing notes aren't visible in the diff (what didn't get auto-f
 - The simplifier is intentionally not run on generated files.
 ```
 
-## Series PR (the rare case that earns several sections)
-
-```md
-**tl;dr:** Publisher side of the new delivery-receipts pipeline -- the mail-sender now emits a `receipt.delivered` event whenever an upstream provider acknowledges a send.
-
-### Abstract
-
-Today the only delivery signal callers get is the synchronous response from the send-mail RPC, which only confirms the request was accepted. Customers need to know when the provider acknowledged delivery to drive their own retry and reporting. This PR is the publisher side of that pipeline; the subscription/router side ships separately.
-
-### Solution
-
-The mail-sender now emits a delivery event whenever we hear back from the provider -- three cases: an immediate ack on the original send, a later webhook from the provider, or the response timer expiring without a reply.
-
-### Resolves
-
-- [DELIV-1234](https://jira.example.com/browse/DELIV-1234) -- delivery receipts (epic)
-```
-
 ## Anti-pattern: mechanics ahead of mental model
 
 Opening `Solution` with a one-line summary followed by a bulleted enumeration of mechanics:
