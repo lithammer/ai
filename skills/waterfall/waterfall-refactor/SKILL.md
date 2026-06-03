@@ -62,8 +62,21 @@ For each opportunity:
     changes.
   - **Skip**: Not relevant to the planned changes. Do not include.
 
+At the **tactical** level, also assess two signals the implementation gate
+keys on, for each included opportunity:
+
+- **Magnitude**: *bounded* — localized to a small area — or *large* —
+  spread across many files, or structural.
+- **Shape**: *self-contained*, or *risky* — it changes a contract other
+  code depends on, regardless of diff size.
+
+Report these as factual assessments; do not decide whether to proceed —
+the orchestrator (`waterfall-implement` Step 2) owns the gate.
+
 ## Step 4: Present
 
 Return the opportunities with file paths, descriptions, and why each
 matters for the feature. At the strategic level, explicitly note how
-opportunities connect to potential approaches.
+opportunities connect to potential approaches. At the tactical level,
+include each opportunity's magnitude and shape so the implementation gate
+can act on them.

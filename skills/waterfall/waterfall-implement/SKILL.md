@@ -40,11 +40,33 @@ revisions made during the challenge phase. Identify:
 
 Run the `waterfall-refactor` skill at the **tactical** level. This
 identifies code that should be cleaned up before or during implementation
-to give the feature a better foundation.
+to give the feature a better foundation, and assesses each opportunity's
+**magnitude** and **shape**.
 
-Pass any **pre-work** refactors to the subagent as a first step before the
-planned changes. Pass **incorporated** refactors alongside the relevant
-plan steps.
+Most refactoring flows straight into implementation — keep the bar for
+stopping high. Pass **pre-work** refactors to the subagent as a first step
+before the planned changes; pass **incorporated** refactors alongside the
+relevant plan steps. A refactor large enough to deserve its own commit is
+not a reason to stop — that is just how it gets sequenced.
+
+### Refactoring gate
+
+Halt only for a refactor that is **large in magnitude** (spread across
+many files, or structural) or **risky in shape** (it changes a contract
+other code depends on, however small the diff). Do not fold it in or
+pre-work it silently. Stop and present it to the user, per refactor:
+
+- **Defer**: build the feature on the current foundation. Record the
+  refactor as a backlog item and surface it in Step 7.
+- **Refactor now**: promote it to its own increment ahead of the feature —
+  its own commit and its own review pass. Steps 3-6 run on the refactor
+  first, then the feature increments.
+- **Escalate to design**: if the refactor implies the approved approach
+  itself is wrong, stop and return to `waterfall-design` / `waterfall-plan`
+  rather than deciding here. A tactical refactor this big is a sign the
+  strategic refactor pass missed something.
+
+Do not arbitrate these yourself; the user decides per refactor.
 
 ## Step 3: Delegate implementation
 
@@ -156,6 +178,8 @@ Summarize for the user:
 5. **Implementor findings**: adjacent-code observations the implementor
    surfaced while writing, outside this increment's scope. Present as
    backlog items, not fixes.
+6. **Deferred refactors**: any refactors gated in Step 2 that the user
+   chose to defer, as backlog items.
 
 End with a one-line count: "N findings across M files (K auto-fixed, J
 dismissed, L for user review)."
