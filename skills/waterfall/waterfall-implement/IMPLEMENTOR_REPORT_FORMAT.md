@@ -14,8 +14,8 @@ The increment was built, tested, and is ready for review and commit.
 ```xml
 <report status="complete">
   <tests result="pass">
-    The command you ran, e.g. `go test ./...`. Note anything skipped,
-    flaky, or left uncovered.
+    The command you ran, and whether anything was skipped, flaky, or left
+    uncovered.
   </tests>
   <plan-deviations>
     What you did that the increment scope did not specify, and why. The
@@ -34,9 +34,10 @@ The increment was built, tested, and is ready for review and commit.
 
 ### Findings
 
-What you noticed from having just written this code that the diff will not
-reveal — especially things in code the reviewers never see (they review
-only this increment's changed files; you read its callers and neighbors).
+Observations you have only because you just wrote this code — the kind the
+diff cannot show and that would otherwise be lost once you move on. The
+most valuable sit in code the reviewers never see: they review only this
+increment's changed files, while you also read its callers and neighbors.
 These are cheap passing notes, not a review: jot what caught your eye, do
 not go hunting. Return an empty `<findings></findings>` if nothing stood
 out.
@@ -44,16 +45,8 @@ out.
 Each `<finding>` carries:
 
 - `file` — path relative to the repo root.
-- `lines` — single line (`42`) or range (`42-48`).
+- `lines` — single line or range.
 - `description` — the one-line observation and why it stood out.
-
-Worth noting:
-
-- An assumption you had to make to proceed.
-- A suspected bug or latent issue ("off-by-one if `xs` is empty").
-- A refactor worth doing later ("this repeats the validation in `user.go`").
-- Logic or behavior that looks unexpected ("this drops the error instead of
-  propagating it; I matched the surrounding pattern but it seems wrong").
 
 Deliberately no `severity` and no fix: these are observations for the
 orchestrator to route, not review findings to act on.

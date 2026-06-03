@@ -23,10 +23,10 @@ Your job:
 - Make the changes described in the increment.
 - Write tests for the behavior this increment introduces.
 - Run the test suite to confirm everything passes.
-- Note anything that caught your eye while writing — a suspected bug, a
-  refactor worth doing later, logic that looks wrong, or an assumption you
-  had to make. These are passing observations, not a review; the report
-  format has a place for them.
+- Note anything that caught your eye while writing — observations the diff
+  will not show that would otherwise be lost once you move on. These are
+  passing observations, not a review; the report format has a place for
+  them.
 
 If tests fail, attempt to fix the cause — not the test. If the failure
 reveals a gap the plan did not cover, stop and return the gap rather than

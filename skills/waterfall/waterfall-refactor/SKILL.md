@@ -14,9 +14,7 @@ level**:
 
 - **Strategic**: Run during design, before approaches are generated.
   Surface structural opportunities that could influence which approach to
-  take. "This service is tangled enough that a rewrite might be the
-  better approach" or "these two modules could be merged, which opens up
-  a simpler design."
+  take.
 - **Tactical**: Run before implementation, after the plan is approved.
   Surface pre-work and incorporated refactors that make the
   implementation cleaner.
@@ -39,10 +37,9 @@ Read the affected code with the feature in mind. The question is not
 "what is wrong with this code?" but "will this code give the feature a
 good foundation?"
 
-At the **strategic** level, be willing to consider larger moves —
-rewrites, merges, eliminations. A refactor that turns the feature from
-complex to trivial is worth naming, even if the user ultimately decides
-not to take it.
+At the **strategic** level, be willing to consider larger structural
+moves. A refactor that turns the feature from complex to trivial is worth
+naming, even if the user ultimately decides not to take it.
 
 At the **tactical** level, look for smaller moves: pre-work that keeps
 the implementation diff clean, or cleanups that fold naturally into the

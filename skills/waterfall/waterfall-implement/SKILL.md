@@ -84,10 +84,10 @@ If the plan is a single increment, treat it as one commit.
 ### Implementor findings
 
 The report's **Findings** are the implementor's passing observations —
-suspected bugs, refactors worth doing later, logic that looked wrong,
-assumptions it had to make. Do not act on them directly, and never feed
-them into the auto-fix path (Step 5) — that reintroduces the scope creep
-increments exist to prevent. Route by where the finding sits:
+things it noticed while writing that the diff will not show. Do not act on
+them directly, and never feed them into the auto-fix path (Step 5) — that
+reintroduces the scope creep increments exist to prevent. Route by where
+the finding sits:
 
 - **In this increment's changed code**: leave it for the Step 4 review.
   The reviewers read these same files and surface the issue independently
@@ -123,7 +123,7 @@ Do NOT present findings to the user yet. First, handle fixes.
 For findings classified as **Fix** (verified, clearly correct):
 
 - Apply the fix yourself. These are issues the reviewers confirmed with
-  evidence — bugs, leaked secrets, dead code, wrong boundary checks.
+  evidence.
 - After applying all fixes, run the test suite again to confirm nothing
   broke.
 
@@ -154,8 +154,8 @@ Summarize for the user:
    time).
 4. **Remaining issues**: Anything that persisted after 3 review rounds.
 5. **Implementor findings**: adjacent-code observations the implementor
-   surfaced while writing — refactors, suspected bugs, or unexpected logic
-   outside this increment's scope. Present as backlog items, not fixes.
+   surfaced while writing, outside this increment's scope. Present as
+   backlog items, not fixes.
 
 End with a one-line count: "N findings across M files (K auto-fixed, J
 dismissed, L for user review)."
