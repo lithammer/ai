@@ -81,6 +81,22 @@ increment.
 
 If the plan is a single increment, treat it as one commit.
 
+### Implementor findings
+
+The report's **Findings** are the implementor's passing observations —
+suspected bugs, refactors worth doing later, logic that looked wrong,
+assumptions it had to make. Do not act on them directly, and never feed
+them into the auto-fix path (Step 5) — that reintroduces the scope creep
+increments exist to prevent. Route by where the finding sits:
+
+- **In this increment's changed code**: leave it for the Step 4 review.
+  The reviewers read these same files and surface the issue independently
+  if it is real; only a reviewer's own finding enters triage and the fix
+  path, so the implementor's note is never triaged or fixed on its own.
+- **In adjacent code the implementor only passed through**: carry it to
+  Step 7 for the user as a backlog item. Fixing it is not this increment's
+  job.
+
 ### Iteration cap
 
 The implementor may return a plan gap (status `plan-gap`) instead of a
@@ -127,8 +143,9 @@ remaining findings in the report for the user.
 
 Summarize for the user:
 
-1. **What was built**: Files created/modified, tests written, plan
-   deviations.
+1. **What was built**: a short summary of the change. Read the file list
+   from `git diff --stat` rather than the report; add any plan deviations
+   the implementor reported.
 2. **Review findings**: What was found, what was auto-fixed, what was
    dismissed.
 3. **Judgement calls**: Present each one with the reviewer's reasoning,
@@ -136,6 +153,9 @@ Summarize for the user:
    "Ignore", or let them provide direction. Batch related calls (2-4 at a
    time).
 4. **Remaining issues**: Anything that persisted after 3 review rounds.
+5. **Implementor findings**: adjacent-code observations the implementor
+   surfaced while writing — refactors, suspected bugs, or unexpected logic
+   outside this increment's scope. Present as backlog items, not fixes.
 
 End with a one-line count: "N findings across M files (K auto-fixed, J
 dismissed, L for user review)."
