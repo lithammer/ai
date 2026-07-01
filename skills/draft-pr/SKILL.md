@@ -17,9 +17,9 @@ Bump `eslint-plugin-react` from 7.34 to 7.36 and accept the auto-fix output.
 Sections are the exception, added one at a time only when they carry
 something the diff doesn't already show -- never to restate it. When
 sections do follow, bold-prefix the opening sentence with
-`**tl;dr:**` so a skimmer knows they can stop there. Optional
-sections, in heading order: `Abstract`, `Solution`, `Caveats`,
-`Alternatives`, `Follow-up`, `Resolves`.
+`**tl;dr:**` so a skimmer knows they can stop there, and name each
+section for what the reader gains from it, not for a slot in a
+template.
 
 Reviewers see the diff: explain *why* and *consequences*, not *what
 changed*, and complete the plain-language paragraph before any
