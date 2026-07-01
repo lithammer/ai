@@ -27,10 +27,16 @@ bullets or internal names appear. Internal function names, SDK
 quirks, concurrency primitives, process narrative, and things you
 considered but didn't do belong in code, PR threads, or follow-up
 issues, not the description. Write for a skimmer -- no paragraph
-over three sentences, and a body creeping past a dozen lines is a
-signal to cut. Reader test: a senior engineer who doesn't work on
-this system can explain the change back in one sentence after the
-opening line and first paragraph.
+over three sentences, and a body creeping past a dozen lines of
+prose is a signal to cut. Reader test: a senior engineer who doesn't
+work on this system can explain the change back in one sentence
+after the opening line and first paragraph.
+
+Prefer showing over telling when an artifact reads faster than the
+prose describing it: a before/after of output, a sample payload, a
+screenshot for UI changes, a small table. The artifact replaces the
+paragraph -- it never sits alongside one saying the same thing --
+and observable behaviour is exactly what the diff can't show.
 
 For PRs in a series, make the opening line self-locating ("publisher
 side of ...", "infra prerequisite for ..."). When citing a sibling's
