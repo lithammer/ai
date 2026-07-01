@@ -19,7 +19,8 @@ something the diff doesn't already show -- never to restate it. When
 sections do follow, bold-prefix the opening sentence with
 `**tl;dr:**` so a skimmer knows they can stop there, and name each
 section for what the reader gains from it, not for a slot in a
-template.
+template. Headings are `###`: a section label should not outshout
+the body it introduces.
 
 Reviewers see the diff: explain *why* and *consequences*, not *what
 changed*, and complete the plain-language paragraph before any
