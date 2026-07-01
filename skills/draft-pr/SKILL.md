@@ -10,6 +10,9 @@ why the solution is acceptable. Start with a bold `**tl;dr:**` line:
 one sentence summarizing the outcome. Most PRs need nothing more.
 Other sections are the exception, added one at a time only when they
 carry something the diff doesn't already show -- never to restate it.
+Write for a skimmer: a body that reads like an essay gets skipped,
+not read. Keep every paragraph to three sentences or fewer, and
+treat a body creeping past a dozen lines as a signal to cut.
 
 Optional sections, in heading order: `Abstract`, `Solution`,
 `Caveats`, `Alternatives`, `Follow-up`, `Resolves`.
@@ -80,13 +83,15 @@ without them.
 3. Draft an outcome-oriented title. Draft the body in two passes:
    first cover the goal, then compress. For each paragraph in pass
    two, ask: does this tell the reviewer anything beyond the diff
-   and `tl;dr`? If not, cut. Simplify language as you go. Stop when
-   further compression would lose load-bearing information.
+   and `tl;dr`? If not, cut. Shorten any paragraph past three
+   sentences. Simplify language as you go. Stop when further
+   compression would lose load-bearing information.
 4. Create the PR as a draft. If creation fails, leave the user with
    the title, body, and command to run.
 
 ## Checks
 
 - Body starts with `**tl;dr:**`.
+- No paragraph over three sentences.
 - Reader test passes.
 - PR is created with `--draft`.
