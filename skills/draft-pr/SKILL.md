@@ -27,13 +27,13 @@ changed*, and complete the plain-language paragraph before any
 bullets or internal names appear. Internal function names, SDK
 quirks, concurrency primitives, process narrative, and things you
 considered but didn't do belong in code, PR threads, or follow-up
-issues, not the description. Write for a skimmer -- no paragraph
-over three sentences, and a body creeping past a dozen lines of
-prose is a signal to cut. Meet those bounds by dropping content,
-not by splicing clauses into longer sentences. Reader test: a
-senior engineer who doesn't work on this system can explain the
-change back in one sentence after the opening line and first
-paragraph.
+issues, not the description. Use the repository's normal technical
+vocabulary with ASD-STE100 sentence discipline: short, single-topic
+sentences. Write for a skimmer -- no paragraph over three sentences,
+and a body creeping past a dozen lines of prose is a signal to cut.
+Meet those bounds by dropping content. Reader test: a senior engineer
+who doesn't work on this system can explain the change back in one
+sentence after the opening line and first paragraph.
 
 Prefer showing over telling when an artifact reads faster than the
 prose describing it: a before/after of output, a sample payload, a
