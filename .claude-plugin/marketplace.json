@@ -26,9 +26,9 @@
         "./skills/nemesis",
         "./skills/ready-pr",
         "./skills/research",
+        "./skills/review-docs",
         "./skills/simplify",
-        "./skills/zero-tech-debt",
-        "./skills/.experimental/review-docs"
+        "./skills/zero-tech-debt"
       ]
     },
     {
