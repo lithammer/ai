@@ -28,7 +28,7 @@
         "./skills/research",
         "./skills/simplify",
         "./skills/zero-tech-debt",
-        "./skills/.experimental/docs-human-review"
+        "./skills/.experimental/review-docs"
       ]
     },
     {
