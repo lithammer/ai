@@ -27,6 +27,7 @@
         "./skills/ready-pr",
         "./skills/research",
         "./skills/review-docs",
+        "./skills/self-review",
         "./skills/simplify",
         "./skills/zero-tech-debt",
         "./skills/.experimental/self-review-docs"
