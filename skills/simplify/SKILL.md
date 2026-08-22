@@ -1,62 +1,70 @@
 ---
 name: simplify
-description: Review changed code for reuse, quality, and efficiency, then fix any issues found.
-argument-hint: "[additional focus]"
+description: Clean up changed code without changing behavior — review it for reuse, simplification, efficiency, and altitude, then apply the fixes. Quality only; it does not hunt for correctness bugs.
+argument-hint: "[target]"
 ---
 
-# Simplify: Code Review and Cleanup
+# Simplify
 
-Review all changed files for reuse, quality, and efficiency. Fix any issues found.
+Improve the quality of the changed code. Review it for reuse, simplification,
+efficiency, and altitude issues, then fix what you find. Do not look for
+correctness bugs — that is a dedicated review pass, not this one.
 
-## Phase 1: Identify Changes
+## Phase 0 — Gather the diff
 
-Run `git diff` (or `git diff HEAD` if there are staged changes) to see what changed. If there are no git changes, review the most recently modified files that the user mentioned or that you edited earlier in this conversation.
+Run `git diff @{upstream}...HEAD` to get the diff under review. Without an
+upstream, diff against the merge-base with the default branch, detected
+dynamically (e.g. `git symbolic-ref refs/remotes/origin/HEAD`), and fall back
+to `git diff HEAD~1`. If that range is empty or there are uncommitted changes,
+also run `git diff HEAD` and include the working tree — this often runs before
+the commit. If the invocation names a target — a PR, a branch, a path — review
+that instead. Treat this diff as the review scope.
 
-## Phase 2: Launch Three Review Agents in Parallel
+## Phase 1 — Review (four cleanup angles)
 
-Use the Task tool to launch all three agents concurrently in a single message. Pass each agent the full diff so it has the complete context.
+Spawn one subagent per angle below, each given the diff and its own angle.
+Run them in parallel if the harness supports it; otherwise serialize. If the
+harness has no subagents, work through all four angles yourself in one pass —
+do not drop an angle for lack of fan-out — and say so in the summary, so the
+reader isn't misled about what ran.
 
-### Agent 1: Code Reuse Review
+Each angle returns its findings with `file`, `line`, a one-line `summary`, and
+the concrete cost: what is duplicated, wasted, or made harder to maintain.
 
-For each change:
+### Reuse
 
-1. **Search for existing utilities and helpers** that could replace newly written code. Look for similar patterns elsewhere in the codebase — common locations are utility directories, shared modules, and files adjacent to the changed ones.
-2. **Flag any new function that duplicates existing functionality.** Suggest the existing function to use instead.
-3. **Flag any inline logic that could use an existing utility** — hand-rolled string manipulation, manual path handling, custom environment checks, ad-hoc type guards, and similar patterns are common candidates.
+Flag new code that re-implements something the codebase already has — search
+shared and utility modules and the files adjacent to the change, and name the
+existing helper to call instead.
 
-### Agent 2: Code Quality Review
+### Simplification
 
-Review the same changes for hacky patterns:
+Flag unnecessary complexity the diff adds: redundant or derivable state,
+copy-paste with slight variation, deep nesting, dead code left behind. Name
+the simpler form that does the same job.
 
-1. **Redundant state**: state that duplicates existing state, cached values that could be derived, observers/effects that could be direct calls
-2. **Parameter sprawl**: adding new parameters to a function instead of generalizing or restructuring existing ones
-3. **Copy-paste with slight variation**: near-duplicate code blocks that should be unified with a shared abstraction
-4. **Leaky abstractions**: exposing internal details that should be encapsulated, or breaking existing abstraction boundaries
-5. **Stringly-typed code**: using raw strings where constants, enums (string unions), or branded types already exist in the codebase
-6. **Unnecessary JSX nesting**: wrapper Boxes/elements that add no layout value — check if inner component props (flexShrink, alignItems, etc.) already provide the needed behavior
-7. **Nested conditionals**: ternary chains (`a ? x : b ? y : ...`), nested if/else, or nested switch 3+ levels deep — flatten with early returns, guard clauses, a lookup table, or an if/else-if cascade
-8. **Unnecessary comments**: comments explaining WHAT the code does (well-named identifiers already do that), narrating the change, or referencing the task/caller — delete; keep only non-obvious WHY (hidden constraints, subtle invariants, workarounds)
+### Efficiency
 
-### Agent 3: Efficiency Review
+Flag wasted work the diff introduces: redundant computation or repeated I/O,
+independent operations run sequentially, blocking work added to startup or hot
+paths. Also flag long-lived objects built from closures or captured
+environments — they keep the entire enclosing scope alive for the object's
+lifetime (a memory leak when that scope holds large values); prefer a class or
+struct that copies only the fields it needs. Name the cheaper alternative.
 
-Review the same changes for efficiency:
+### Altitude
 
-1. **Unnecessary work**: redundant computations, repeated file reads, duplicate network/API calls, N+1 patterns
-2. **Missed concurrency**: independent operations run sequentially when they could run in parallel
-3. **Hot-path bloat**: new blocking work added to startup or per-request/per-render hot paths
-4. **Recurring no-op updates**: state/store updates inside polling loops, intervals, or event handlers that fire unconditionally — add a change-detection guard so downstream consumers aren't notified when nothing changed. Also: if a wrapper function takes an updater/reducer callback, verify it honors same-reference returns (or whatever the "no change" signal is) — otherwise callers' early-return no-ops are silently defeated
-5. **Unnecessary existence checks**: pre-checking file/resource existence before operating (TOCTOU anti-pattern) — operate directly and handle the error
-6. **Memory**: unbounded data structures, missing cleanup, event listener leaks
-7. **Overly broad operations**: reading entire files when only a portion is needed, loading all items when filtering for one
+Check that each change is implemented at the right depth, not as a fragile
+bandaid. Special cases layered on shared infrastructure are a sign the fix
+isn't deep enough — prefer generalizing the underlying mechanism over adding
+special cases.
 
-## Phase 3: Fix Issues
+## Phase 2 — Apply the fixes
 
-Wait for all three agents to complete. Aggregate their findings and fix each issue directly. If a finding is a false positive or not worth addressing, note it and move on — do not argue with the finding, just skip it.
-
-When done, briefly summarize what was fixed (or confirm the code was already clean).
-
-## Additional Focus
-
-If the invocation included extra focus areas or constraints (anything the user
-typed after the command name), prioritize those on top of the three standard
-reviews above.
+Wait for all four angles to report, dedup findings that point at the same line
+or mechanism, and fix each remaining one directly. Skip any finding whose fix
+would change intended behavior, require changes well outside the reviewed
+diff, or that you judge to be a false positive — note the skip rather than
+arguing with it. Run the relevant existing checks once the fixes are in.
+Finish with a brief summary of what was fixed and what was skipped (or confirm
+the code was already clean).
