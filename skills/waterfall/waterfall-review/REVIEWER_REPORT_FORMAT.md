@@ -9,7 +9,6 @@ If there are no findings, return an empty `<findings></findings>`.
   <finding>
     <file>path/to/file</file>
     <lines>42-48</lines>
-    <severity>high</severity>
     <description>Short description of the issue.</description>
     <evidence>
       Why this is a real problem: triggering conditions, observed
@@ -32,7 +31,6 @@ If there are no findings, return an empty `<findings></findings>`.
 
 - `file` — path relative to the repo root.
 - `lines` — single line (`42`) or range (`42-48`).
-- `severity` — one of `critical`, `high`, `medium`, `low`.
 - `description` — short, plain-language summary of the issue.
 - `suggestion` — concrete fix the orchestrator can apply or quote to the
   user.
@@ -70,11 +68,3 @@ If an axis was skipped because its preconditions don't hold (e.g., no
 concurrent access patterns in the changed code), say so on the same
 line. The orchestrator uses this summary to confirm every axis got
 attention.
-
-## Severity
-
-Severity is per-dimension, not cross-dimension. A `high` correctness
-finding and a `high` style finding both mean "the most serious thing my
-dimension produces on this change" — they are not directly comparable. Use
-the full range within your own scope; do not cap a dimension at `low`
-because it can never produce a runtime crash.
