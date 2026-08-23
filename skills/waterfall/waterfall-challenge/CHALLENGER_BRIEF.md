@@ -38,6 +38,18 @@ looking for bugs in the plan, challenge the plan's *framing*:
 
 Then challenge the plan itself: assumptions, risks, gaps, edge cases.
 
+**At the retrospective level** the code exists, and the same four framing
+challenges apply to what was built rather than to what was proposed. Read the
+diff and the code around it; the plan describes what was intended, not what
+shipped. Two things change:
+
+- Decisions the earlier challenge resolved, and items the user dispositioned
+  in a previous retrospective, are settled. Re-open one only when the code
+  itself is the evidence that the earlier answer does not hold.
+- Add the question a plan cannot answer: is the change made at the depth the
+  problem lives at? Code that works is not thereby justified — demand the case
+  that this is the level the fix belongs at.
+
 **Subsequent rounds**: Read the main agent's responses to your challenges.
 For each:
 
@@ -82,7 +94,8 @@ Stop when:
 1. All identified design-level branches are resolved or explicitly accepted
    as risks.
 2. The remaining objections are implementation-level or too minor to change
-   the design choice.
+   the design choice — at the retrospective level, too minor to change the
+   code that shipped.
 3. The main agent or user asks you to stop.
 
 When you stop, summarize the surviving open risks instead of inventing new

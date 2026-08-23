@@ -29,7 +29,8 @@ Every round of the challenge produces one report following this structure.
 - The numbered list of challenges is ordered by importance, most critical
   first.
 - Aim for 3-7 challenges per round. Group related concerns together rather
-  than padding the list.
+  than padding the list. A round with nothing left to raise returns
+  `[RESOLVED]` with no challenges; never invent one to reach the range.
 - On subsequent rounds, repeat any still-open challenges with a follow-up,
   not just the original challenge. The main agent needs to know what its
   prior response failed to resolve.

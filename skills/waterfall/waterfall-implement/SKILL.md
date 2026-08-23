@@ -57,7 +57,7 @@ other code depends on, however small the diff). Do not fold it in or
 pre-work it silently. Stop and present it to the user, per refactor:
 
 - **Defer**: build the feature on the current foundation. Record the
-  refactor as a backlog item and surface it in Step 7.
+  refactor as a backlog item and surface it in Step 8.
 - **Refactor now**: promote it to its own increment ahead of the feature —
   its own commit and its own review pass. Steps 3-6 run on the refactor
   first, then the feature increments.
@@ -116,7 +116,7 @@ the finding sits:
   if it is real; only a reviewer's own finding enters triage and the fix
   path, so the implementor's note is never triaged or fixed on its own.
 - **In adjacent code the implementor only passed through**: carry it to
-  Step 7 for the user as a backlog item. Fixing it is not this increment's
+  Step 8 for the user as a backlog item. Fixing it is not this increment's
   job.
 
 ### Iteration cap
@@ -161,7 +161,22 @@ only. Repeat Steps 4-6 until a review round produces no new Fix findings.
 Cap at 3 review rounds. If issues persist after 3 rounds, include the
 remaining findings in the report for the user.
 
-## Step 7: Present results
+## Step 7: Retrospective challenge
+
+Once every increment is committed, run the `waterfall-challenge` skill at the
+**retrospective** level over the whole change. Step 4 asked whether the code
+is correct; this asks whether it is the change that should have been made —
+whether it still matches what survived the earlier challenge, and whether it
+sits at the depth the problem lives at.
+
+Run it once over the accumulated change, not per increment. An increment is a
+slice of the plan, and judging a slice for fit reports gaps that a later
+increment fills.
+
+This step reports; it does not rework. Carry its open items into Step 8 with
+their dispositions and let the user choose per item.
+
+## Step 8: Present results
 
 Summarize for the user:
 
@@ -174,11 +189,14 @@ Summarize for the user:
    the relevant code, and why you are unsure. Ask the user "Fix it",
    "Ignore", or let them provide direction. Batch related calls (2-4 at a
    time).
-4. **Remaining issues**: Anything that persisted after 3 review rounds.
-5. **Implementor findings**: adjacent-code observations the implementor
+4. **Retrospective findings**: open items from Step 7 — drift from what
+   survived challenge, and fixes that sit at the wrong depth. Each carries
+   accept as built, fix now, or backlog. The user picks.
+5. **Remaining issues**: Anything that persisted after 3 review rounds.
+6. **Implementor findings**: adjacent-code observations the implementor
    surfaced while writing, outside this increment's scope. Present as
    backlog items, not fixes.
-6. **Deferred refactors**: any refactors gated in Step 2 that the user
+7. **Deferred refactors**: any refactors gated in Step 2 that the user
    chose to defer, as backlog items.
 
 End with a one-line count: "N findings across M files (K auto-fixed, J
