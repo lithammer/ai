@@ -12,7 +12,7 @@ disable-model-invocation: true
 2. Write a brief plan using [PLAN_FORMAT.md](./PLAN_FORMAT.md) before deep search.
 3. Gather primary evidence first; use secondary sources as leads, not proof.
 4. Inspect papers, standards, repos, code, issues, releases, and benchmarks deeply enough to support claims.
-5. Use sub-agents for independent research branches when available; require concise reports.
+5. Delegate independent research branches to sub-agents; require concise reports.
 6. Synthesize into a Markdown file in the repository: evidence ledger, negative pass, recommendation, and open questions.
 
 ## Workflow
@@ -30,9 +30,9 @@ disable-model-invocation: true
 - Use blog posts, package registries, forums, citations, backlinks, and comparison pages for discovery; corroborate before relying on them.
 - Treat stars, citation counts, old posts, opaque benchmarks, and unsourced claims as weak evidence unless supported by stronger sources.
 
-### 3. Delegate when useful
+### 3. Delegate research branches
 
-If sub-agent/delegation support is available, split independent branches to keep the main context small. Good branches include literature, repositories, ecosystem/adoption, and risks.
+Split independent branches across sub-agents by default; the main context holds the plan and the synthesis, not the browsing. Good branches include literature, repositories, ecosystem/adoption, and risks. Research a branch inline only when the question is narrow enough that fanning out buys nothing.
 
 Tell each sub-agent to return a concise report, not raw browsing logs. Use [SUBAGENT_REPORT_FORMAT.md](./SUBAGENT_REPORT_FORMAT.md) for the report format.
 
