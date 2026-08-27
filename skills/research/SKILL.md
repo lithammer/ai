@@ -1,7 +1,6 @@
 ---
 name: research
-description: "Research technical, academic, or open-source topics by grounding claims in primary evidence: docs, papers, standards, code, issues, releases."
-disable-model-invocation: true
+description: Investigate a technical, academic, or open-source question against primary evidence — docs, papers, standards, source code, issues, releases — and write the findings to a Markdown file in the repository. Use when a choice between tools, libraries, or approaches needs grounding, when a claim must be verified against the source that owns it, or when the user asks for research, a comparison, or a recommendation. Not for quick factual lookups answerable from a single doc page or a file already in the repo.
 ---
 
 # Research
