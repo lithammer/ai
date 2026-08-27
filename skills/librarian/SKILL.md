@@ -1,65 +1,30 @@
 ---
 name: librarian
-description: "Cache and refresh remote git repositories under ~/.cache/checkouts/<host>/<org>/<repo> so future references can reuse a local copy. Use this skill when the user points you to a remote git repository as reference or you encountered a remote git repo through other means."
+description: Clone or refresh a remote git repository into a shared local cache and return its path, so the source can be read with ordinary file tools instead of over the web. Use before cloning a repository yourself, before fetching repository files over the web, when a dependency's or upstream project's implementation needs reading, or when a repository URL or `owner/repo` reference names code the task must look at. Not for the repository already checked out as the working directory, nor for pull request or issue metadata that `gh` answers without a checkout.
 ---
 
-Use this skill when the user points you to a remote git repository (GitHub/GitLab/Bitbucket URLs, `git@...`, or `owner/repo` shorthand).
+# Librarian
 
-The goal is to keep a reusable local checkout that is:
-- **stable** (predictable path)
-- **up to date** (periodic fetch + fast-forward when safe)
-- **efficient** (partial clone with `--filter=blob:none`, no repeated full clones)
-
-## Cache location
-
-Repositories are stored at:
-
-`~/.cache/checkouts/<host>/<org>/<repo>`
-
-Example:
-
-`github.com/mitsuhiko/minijinja` → `~/.cache/checkouts/github.com/mitsuhiko/minijinja`
-
-## Command
+Resolve the repository to a cached checkout, then search and read it with
+ordinary file tools. `checkout.sh` sits in this skill's directory; run it from
+there:
 
 ```bash
-bash checkout.sh <repo> --path-only
+bash <skill-dir>/checkout.sh <repo> --path-only
 ```
 
-Examples:
+`<repo>` is any reference to the repository: `owner/repo`, `host/org/repo`, an
+HTTPS or SSH URL, or a deep link to a file, tree, or pull request. The command
+prints the checkout path, cloning on first use and fast-forwarding a stale
+checkout, so re-running it for a repository already resolved is cheap — call it
+again rather than holding on to a path from earlier in the session.
 
-```bash
-bash checkout.sh mitsuhiko/minijinja --path-only
-bash checkout.sh github.com/mitsuhiko/minijinja --path-only
-bash checkout.sh https://github.com/mitsuhiko/minijinja --path-only
-```
+Add `--force-update` when the checkout must reflect commits pushed minutes ago;
+refreshes are throttled to five minutes otherwise.
 
-The script will:
-1. Parse the repo reference into host/org/repo.
-2. Clone if missing.
-3. Reuse existing checkout if present.
-4. Fetch from `origin` when stale (default interval: 300s).
-5. Attempt a fast-forward merge if the checkout is clean and has an upstream.
+## Working in a checkout
 
-## Update strategy
-
-- Default behavior is **throttled refresh** (every 5 minutes) to avoid unnecessary network calls.
-- Force immediate refresh with:
-
-```bash
-bash checkout.sh <repo> --force-update --path-only
-```
-
-## Recommended workflow
-
-1. Resolve repository path via `checkout.sh --path-only`.
-2. Use that path for searching, reading, and analysis.
-3. On later references to the same repo, call `checkout.sh` again; it will find and update the cached checkout.
-
-## If edits are needed
-
-Prefer not to edit directly in the shared cache. Create a separate worktree or copy from the cached checkout for task-specific modifications.
-
-## Notes
-
-- `owner/repo` defaults to `github.com`.
+Checkouts live under `~/.cache/checkouts/<host>/<org>/<repo>` and are shared
+across every session and task, so treat one as read-only. When a task needs to
+modify the source, copy the checkout or add a worktree elsewhere and work there,
+leaving a clean tree that the next fetch can fast-forward.
