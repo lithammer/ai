@@ -13,7 +13,7 @@ disable-model-invocation: true
 3. Gather primary evidence first; use secondary sources as leads, not proof.
 4. Inspect papers, standards, repos, code, issues, releases, and benchmarks deeply enough to support claims.
 5. Use sub-agents for independent research branches when available; require concise reports.
-6. Synthesize with an evidence ledger, negative pass, recommendation, and open questions.
+6. Synthesize into a Markdown file in the repository: evidence ledger, negative pass, recommendation, and open questions.
 
 ## Workflow
 
@@ -61,7 +61,9 @@ For repositories, verify:
 
 ## Deliverable
 
-Use [DELIVERABLE_FORMAT.md](./DELIVERABLE_FORMAT.md) unless the user asks otherwise. Always include a summary, evidence ledger, negative evidence, recommendation, and open questions.
+Write the findings to a single Markdown file, following [DELIVERABLE_FORMAT.md](./DELIVERABLE_FORMAT.md) unless the user asks otherwise. Always include a summary, evidence ledger, negative evidence, recommendation, and open questions.
+
+Save it where the repository already keeps research notes and match that convention; when there is none, choose a sensible location and say where. Reply with the summary and a link to the file: the file is the deliverable, the reply is the pointer.
 
 ## Guardrails
 

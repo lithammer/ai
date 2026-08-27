@@ -3,6 +3,10 @@
 ## Structure
 
 ```md
+# [Research question]
+
+_Researched [YYYY-MM-DD]. [The decision this supports.]_
+
 ## Summary
 [Direct answer in 3-6 bullets]
 
