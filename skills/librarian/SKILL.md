@@ -10,7 +10,7 @@ ordinary file tools. `checkout.sh` sits in this skill's directory; run it from
 there:
 
 ```bash
-bash <skill-dir>/checkout.sh <repo> --path-only
+bash <skill-dir>/checkout.sh <repo>
 ```
 
 `<repo>` is any reference to the repository: `owner/repo`, `host/org/repo`, an
@@ -21,6 +21,9 @@ again rather than holding on to a path from earlier in the session.
 
 Add `--force-update` when the checkout must reflect commits pushed minutes ago;
 refreshes are throttled to five minutes otherwise.
+
+A warning on stderr means the checkout could not be fast-forwarded and may be
+behind origin. The path it prints is still the one to read.
 
 ## Working in a checkout
 

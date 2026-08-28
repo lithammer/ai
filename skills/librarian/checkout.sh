@@ -1,82 +1,34 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-usage() {
-	cat <<'EOF'
-Usage: checkout.sh <repo> [options]
-
-Ensure a cached checkout exists at:
-  ~/.cache/checkouts/<host>/<org>/<repo>
-
-Examples:
-  checkout.sh mitsuhiko/minijinja
-  checkout.sh github.com/mitsuhiko/minijinja
-  checkout.sh https://github.com/mitsuhiko/minijinja
-  checkout.sh git@github.com:mitsuhiko/minijinja.git
-
-Options:
-  --path-only                 Print only the checkout path.
-  --force-update              Always fetch from origin and attempt fast-forward.
-  --update-interval <secs>    Minimum seconds between updates (default: 300).
-
-Environment:
-  LIBRARIAN_CACHE_ROOT        Override cache root (default: ~/.cache/checkouts)
-  LIBRARIAN_DEFAULT_HOST      Host for owner/repo shorthand (default: github.com)
-  LIBRARIAN_UPDATE_INTERVAL   Default update interval in seconds
-EOF
-}
-
-if [[ $# -lt 1 ]]; then
-	usage
-	exit 1
-fi
+# Minimum seconds between fetches of the same checkout.
+update_interval=300
 
 repo_input=""
-path_only=0
 force_update=0
-update_interval="${LIBRARIAN_UPDATE_INTERVAL:-300}"
 
 while [[ $# -gt 0 ]]; do
 	case "$1" in
-	--path-only)
-		path_only=1
-		shift
-		;;
 	--force-update)
 		force_update=1
-		shift
 		;;
-	--update-interval)
-		if [[ $# -lt 2 ]]; then
-			echo "error: --update-interval expects a value" >&2
-			exit 2
-		fi
-		update_interval="$2"
-		shift 2
-		;;
-	-h | --help)
-		usage
-		exit 0
+	-*)
+		echo "error: unknown option: $1" >&2
+		exit 2
 		;;
 	*)
-		if [[ -z "$repo_input" ]]; then
-			repo_input="$1"
-		else
+		if [[ -n "$repo_input" ]]; then
 			echo "error: unexpected argument: $1" >&2
 			exit 2
 		fi
-		shift
+		repo_input="$1"
 		;;
 	esac
+	shift
 done
 
 if [[ -z "$repo_input" ]]; then
-	echo "error: repository is required" >&2
-	exit 2
-fi
-
-if ! [[ "$update_interval" =~ ^[0-9]+$ ]]; then
-	echo "error: update interval must be a non-negative integer" >&2
+	echo "usage: checkout.sh <repo> [--force-update]" >&2
 	exit 2
 fi
 
@@ -114,7 +66,7 @@ parse_repo() {
 			host="$first"
 			path="${input#*/}"
 		else
-			host="${LIBRARIAN_DEFAULT_HOST:-github.com}"
+			host="github.com"
 			path="$input"
 		fi
 		;;
@@ -157,15 +109,11 @@ parse_repo() {
 
 parse_repo "$repo_input" || exit 1
 
-cache_root="${LIBRARIAN_CACHE_ROOT:-$HOME/.cache/checkouts}"
-checkout_path="$cache_root/$host/$org/$repo"
+checkout_path="$HOME/.cache/checkouts/$host/$org/$repo"
 origin_url="https://$host/$org/$repo.git"
 
 if [[ ! -d "$checkout_path/.git" ]]; then
 	git clone --filter=blob:none "$origin_url" "$checkout_path" >/dev/null
-	clone_state="cloned"
-else
-	clone_state="existing"
 fi
 
 last_fetch_file="$checkout_path/.git/librarian-last-fetch"
@@ -181,9 +129,6 @@ if ((force_update == 0)); then
 	fi
 fi
 
-update_state="skipped"
-ff_state="not-attempted"
-
 if ((needs_update == 1)); then
 	# Normalize the remote to the canonical HTTPS URL. set-url fails when there
 	# is no origin, which happens for a checkout this script did not create.
@@ -193,34 +138,16 @@ if ((needs_update == 1)); then
 
 	git -C "$checkout_path" fetch --prune --tags origin >/dev/null
 	echo "$now_epoch" >"$last_fetch_file"
-	update_state="fetched"
 
-	# An upstream exists only for a checked-out branch that tracks one.
+	# Only ever fast-forward: the cache is shared, so local state is never
+	# discarded. Warn instead, since the caller is about to read stale source.
 	upstream="$(git -C "$checkout_path" rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null || true)"
-	dirty="$(git -C "$checkout_path" status --porcelain --untracked-files=no)"
-
-	if [[ -n "$upstream" && -z "$dirty" ]]; then
-		if git -C "$checkout_path" merge --ff-only "$upstream" >/dev/null 2>&1; then
-			ff_state="fast-forwarded"
-		else
-			ff_state="skipped-non-ff"
-		fi
-	elif [[ -n "$dirty" ]]; then
-		ff_state="skipped-dirty"
+	if [[ -n "$upstream" && -z "$(git -C "$checkout_path" status --porcelain --untracked-files=no)" ]]; then
+		git -C "$checkout_path" merge --ff-only "$upstream" >/dev/null 2>&1 ||
+			echo "warning: origin diverged, left at the current commit: $checkout_path" >&2
 	else
-		ff_state="skipped-no-upstream"
+		echo "warning: modified or has no upstream, not updated: $checkout_path" >&2
 	fi
 fi
 
-if ((path_only == 1)); then
-	printf '%s\n' "$checkout_path"
-	exit 0
-fi
-
-cat <<EOF
-repo: $host/$org/$repo
-path: $checkout_path
-state: $clone_state
-update: $update_state
-fast_forward: $ff_state
-EOF
+printf '%s\n' "$checkout_path"
