@@ -83,35 +83,30 @@ fi
 trim_repo_input() {
 	local s="$1"
 	# Trim leading/trailing whitespace.
-	s="${s#${s%%[![:space:]]*}}"
-	s="${s%${s##*[![:space:]]}}"
+	s="${s#"${s%%[![:space:]]*}"}"
+	s="${s%"${s##*[![:space:]]}"}"
 	printf '%s' "$s"
 }
 
+# Sets host, org and repo from a repository reference.
 parse_repo() {
-	local input host path first rest
+	local input rest first path parts
 	input="$(trim_repo_input "$1")"
 
 	# Strip query/fragment for URL-like inputs.
 	input="${input%%\?*}"
 	input="${input%%#*}"
 
+	# Scheme-ful forms first: a port in an ssh URL also looks scp-like.
 	case "$input" in
-	git@*:*)
-		host="${input#git@}"
-		host="${host%%:*}"
-		path="${input#*:}"
-		;;
-	ssh://*)
-		rest="${input#ssh://}"
-		host="${rest%%/*}"
-		host="${host#*@}"
-		path="${rest#*/}"
-		;;
-	http://* | https://*)
+	ssh://* | http://* | https://*)
 		rest="${input#*://}"
 		host="${rest%%/*}"
 		path="${rest#*/}"
+		;;
+	*@*:*)
+		host="${input%%:*}"
+		path="${input#*:}"
 		;;
 	*/*)
 		first="${input%%/*}"
@@ -146,51 +141,25 @@ parse_repo() {
 	# Strip optional .git suffix.
 	path="${path%.git}"
 
-	IFS='/' read -r -a parts <<<"$path"
-	if [[ ${#parts[@]} -lt 2 ]]; then
+	if [[ "$path" != */* ]]; then
 		echo "error: repository path must contain at least org/repo: $path" >&2
 		return 1
 	fi
 
-	local last_index=$((${#parts[@]} - 1))
-	local repo="${parts[$last_index]}"
-	local org_parts=("${parts[@]:0:$last_index}")
-	local org
-	org="$(
-		IFS='/'
-		echo "${org_parts[*]}"
-	)"
+	repo="${path##*/}"
+	org="${path%/*}"
 
 	if [[ -z "$host" || -z "$org" || -z "$repo" ]]; then
 		echo "error: failed to parse repository: $input" >&2
 		return 1
 	fi
-
-	printf '%s\n%s\n%s\n' "$host" "$org" "$repo"
 }
 
-parsed_host=""
-parsed_org=""
-parsed_repo=""
-parsed_index=0
-while IFS= read -r line; do
-	case "$parsed_index" in
-	0) parsed_host="$line" ;;
-	1) parsed_org="$line" ;;
-	2) parsed_repo="$line" ;;
-	esac
-	parsed_index=$((parsed_index + 1))
-done < <(parse_repo "$repo_input")
-
-host="$parsed_host"
-org="$parsed_org"
-repo="$parsed_repo"
+parse_repo "$repo_input" || exit 1
 
 cache_root="${LIBRARIAN_CACHE_ROOT:-$HOME/.cache/checkouts}"
 checkout_path="$cache_root/$host/$org/$repo"
 origin_url="https://$host/$org/$repo.git"
-
-mkdir -p "$(dirname "$checkout_path")"
 
 if [[ ! -d "$checkout_path/.git" ]]; then
 	git clone --filter=blob:none "$origin_url" "$checkout_path" >/dev/null
@@ -199,32 +168,16 @@ else
 	clone_state="existing"
 fi
 
-if [[ ! -d "$checkout_path/.git" ]]; then
-	echo "error: checkout path is not a git repository: $checkout_path" >&2
-	exit 3
-fi
-
-if ! git -C "$checkout_path" remote get-url origin >/dev/null 2>&1; then
-	git -C "$checkout_path" remote add origin "$origin_url"
-fi
-
-# If remote URL changed (e.g. host shorthand), normalize to canonical HTTPS URL.
-current_origin="$(git -C "$checkout_path" remote get-url origin 2>/dev/null || true)"
-if [[ "$current_origin" != "$origin_url" ]]; then
-	git -C "$checkout_path" remote set-url origin "$origin_url"
-fi
-
 last_fetch_file="$checkout_path/.git/librarian-last-fetch"
-now_epoch="$(date +%s)"
+now_epoch="${EPOCHSECONDS:-$(date +%s)}"
 needs_update=1
 
-if [[ -f "$last_fetch_file" && "$force_update" -eq 0 ]]; then
-	last_epoch="$(cat "$last_fetch_file" 2>/dev/null || echo 0)"
-	if [[ "$last_epoch" =~ ^[0-9]+$ ]]; then
-		age=$((now_epoch - last_epoch))
-		if ((age < update_interval)); then
-			needs_update=0
-		fi
+if ((force_update == 0)); then
+	last_epoch=0
+	# stderr is redirected first: a missing ledger must not report the failed read.
+	read -r last_epoch 2>/dev/null <"$last_fetch_file" || last_epoch=0
+	if [[ "$last_epoch" =~ ^[0-9]+$ ]] && ((now_epoch - last_epoch < update_interval)); then
+		needs_update=0
 	fi
 fi
 
@@ -232,15 +185,21 @@ update_state="skipped"
 ff_state="not-attempted"
 
 if ((needs_update == 1)); then
+	# Normalize the remote to the canonical HTTPS URL. set-url fails when there
+	# is no origin, which happens for a checkout this script did not create.
+	if ! git -C "$checkout_path" remote set-url origin "$origin_url" 2>/dev/null; then
+		git -C "$checkout_path" remote add origin "$origin_url"
+	fi
+
 	git -C "$checkout_path" fetch --prune --tags origin >/dev/null
 	echo "$now_epoch" >"$last_fetch_file"
 	update_state="fetched"
 
-	branch="$(git -C "$checkout_path" symbolic-ref --short -q HEAD 2>/dev/null || true)"
+	# An upstream exists only for a checked-out branch that tracks one.
 	upstream="$(git -C "$checkout_path" rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null || true)"
 	dirty="$(git -C "$checkout_path" status --porcelain --untracked-files=no)"
 
-	if [[ -n "$branch" && -n "$upstream" && -z "$dirty" ]]; then
+	if [[ -n "$upstream" && -z "$dirty" ]]; then
 		if git -C "$checkout_path" merge --ff-only "$upstream" >/dev/null 2>&1; then
 			ff_state="fast-forwarded"
 		else
