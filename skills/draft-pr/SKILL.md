@@ -7,18 +7,16 @@ description: Create a draft PR for the current branch. Use when asked to draft, 
 
 A PR description helps reviewers understand why the change exists and
 why the solution is acceptable. Start with one sentence summarizing
-the outcome. Most PRs need nothing more, and a one-sentence body
-stands alone -- no heading, no prefix:
+the outcome. Most PRs need nothing more, and the sentence is the
+whole body:
 
 ```md
 Bump `eslint-plugin-react` from 7.34 to 7.36 and accept the auto-fix output.
 ```
 
 Sections are the exception, added one at a time only when they carry
-something the diff doesn't already show -- never to restate it. When
-sections do follow, bold-prefix the opening sentence with
-`**tl;dr:**` so a skimmer knows they can stop there, and name each
-section for what the reader gains from it, not for a slot in a
+something the diff doesn't already show -- never to restate it. Name
+each section for what the reader gains from it, not for a slot in a
 template. Headings are `###`: a section label should not outshout
 the body it introduces.
 
