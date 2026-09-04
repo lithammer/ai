@@ -29,9 +29,12 @@ issues, not the description. Use the repository's normal technical
 vocabulary with ASD-STE100 sentence discipline: short, single-topic
 sentences. Write for a skimmer -- no paragraph over three sentences,
 and a body creeping past a dozen lines of prose is a signal to cut.
-Meet those bounds by dropping content. Reader test: a senior engineer
-who doesn't work on this system can explain the change back in one
-sentence after the opening line and first paragraph.
+Meet those bounds by deleting whole sentences; what survives stays
+as written. The bounds are ceilings; the floor is the reader test: a
+senior engineer who doesn't work on this system can explain the
+change back in one sentence after the opening line and first
+paragraph. A line only an insider can parse is broken, and the
+repair is a plainer sentence.
 
 Prefer showing over telling when an artifact reads faster than the
 prose describing it: a before/after of output, a sample payload, a
@@ -48,9 +51,9 @@ Process:
 1. Identify the current branch and an appropriate base branch, and
    read enough context to understand intent and implementation.
 2. Draft an outcome-oriented title and the body in two passes: first
-   cover the goal, then compress -- cut every paragraph that tells
-   the reviewer nothing beyond the diff and the opening line, and
-   shorten any past three sentences. Stop when further compression
-   would lose load-bearing information.
+   write the why and the consequences, then compress -- cut every
+   paragraph that tells the reviewer nothing beyond the diff and the
+   opening line, and shorten any past three sentences. Stop before
+   the cut that would fail the reader test.
 3. Create the PR with `--draft`. If creation fails, leave the user
    the title, body, and command to run.
