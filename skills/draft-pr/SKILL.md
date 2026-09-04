@@ -27,14 +27,14 @@ quirks, concurrency primitives, process narrative, and things you
 considered but didn't do belong in code, PR threads, or follow-up
 issues, not the description. Use the repository's normal technical
 vocabulary with ASD-STE100 sentence discipline: short, single-topic
-sentences. Write for a skimmer -- no paragraph over three sentences,
-and a body creeping past a dozen lines of prose is a signal to cut.
-Meet those bounds by deleting whole sentences; what survives stays
-as written. The bounds are ceilings; the floor is the reader test: a
-senior engineer who doesn't work on this system can explain the
-change back in one sentence after the opening line and first
-paragraph. A line only an insider can parse is broken, and the
-repair is a plainer sentence.
+sentences in typewriter punctuation. Write for a skimmer -- no
+paragraph over three sentences, and a body creeping past a dozen
+lines of prose is a signal to cut. Meet those bounds by deleting
+whole sentences; what survives stays as written. The bounds are
+ceilings; the floor is the reader test: a senior engineer who
+doesn't work on this system can explain the change back in one
+sentence after the opening line and first paragraph. A line only an
+insider can parse is broken, and the repair is a plainer sentence.
 
 Observable behaviour is exactly what the diff can't show, so show
 it: a before/after of output, a sample payload, a screenshot for UI
