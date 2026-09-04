@@ -15,10 +15,10 @@ Bump `eslint-plugin-react` from 7.34 to 7.36 and accept the auto-fix output.
 ```
 
 Sections are the exception, added one at a time only when they carry
-something the diff doesn't already show -- never to restate it. Name
-each section for what the reader gains from it, not for a slot in a
-template. Headings are `###`: a section label should not outshout
-the body it introduces.
+something the diff and the CI checks don't already show -- never to
+restate either. Name each section for what the reader gains from it,
+not for a slot in a template. Headings are `###`: a section label
+should not outshout the body it introduces.
 
 Reviewers see the diff: explain *why* and *consequences*, not *what
 changed*, and complete the plain-language paragraph before any
@@ -36,11 +36,12 @@ change back in one sentence after the opening line and first
 paragraph. A line only an insider can parse is broken, and the
 repair is a plainer sentence.
 
-Prefer showing over telling when an artifact reads faster than the
-prose describing it: a before/after of output, a sample payload, a
-screenshot for UI changes, a small table. The artifact replaces the
-paragraph -- it never sits alongside one saying the same thing --
-and observable behaviour is exactly what the diff can't show.
+Observable behaviour is exactly what the diff can't show, so show
+it: a before/after of output, a sample payload, a screenshot for UI
+changes, a small table. The artifact replaces the paragraph; a
+caption saying what to look at is all that accompanies it. A
+sentence claiming something was verified is telling; attach what was
+seen.
 
 For PRs in a series, make the opening line self-locating ("publisher
 side of ...", "infra prerequisite for ..."). When citing a sibling's
@@ -49,11 +50,17 @@ merge state, link the PR -- tickets can't be merged.
 Process:
 
 1. Identify the current branch and an appropriate base branch, and
-   read enough context to understand intent and implementation.
-2. Draft an outcome-oriented title and the body in two passes: first
-   write the why and the consequences, then compress -- cut every
-   paragraph that tells the reviewer nothing beyond the diff and the
-   opening line, and shorten any past three sentences. Stop before
-   the cut that would fail the reader test.
-3. Create the PR with `--draft`. If creation fails, leave the user
-   the title, body, and command to run.
+   read enough context to say why the change exists and what it
+   makes observable.
+2. Capture what the change makes observable before writing a word:
+   run the command, render the page, diff the output. Save the
+   result as a file to attach or a block to paste.
+3. Draft an outcome-oriented title and the body in two passes: first
+   write the why and the consequences around the artifact, then
+   compress -- cut every paragraph that tells the reviewer nothing
+   beyond the diff and the opening line, and shorten any past three
+   sentences. Stop before the cut that would fail the reader test.
+4. Create the PR with `--draft`, passing screenshots with `--attach`
+   (`gh pr create --help` shows how to place one inside the body).
+   If creation fails, leave the user the title, body, and command to
+   run.
