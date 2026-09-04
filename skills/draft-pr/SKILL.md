@@ -15,46 +15,39 @@ Bump `eslint-plugin-react` from 7.34 to 7.36 and accept the auto-fix output.
 ```
 
 Sections are the exception, added one at a time only when they carry
-something the diff and the CI checks don't already show -- never to
-restate either. Name each section for what the reader gains from it,
-not for a slot in a template. Headings are `###`: a section label
-should not outshout the body it introduces.
+something the diff and the CI checks don't already show. Name each
+section for what the reader gains from it. Headings are `###`: a
+section label should not outshout the body it introduces.
 
 Reviewers see the diff: explain *why* and *consequences*, not *what
 changed*, and complete the plain-language paragraph before any
-bullets or internal names appear. Internal function names, SDK
-quirks, concurrency primitives, process narrative, and things you
-considered but didn't do belong in code, PR threads, or follow-up
-issues, not the description. Use the repository's normal technical
-vocabulary with ASD-STE100 sentence discipline: short, single-topic
-sentences in typewriter punctuation. Write for a skimmer -- no
-paragraph over three sentences, and a body creeping past a dozen
-lines of prose is a signal to cut. Meet those bounds by deleting
-whole sentences; what survives stays as written. The bounds are
-ceilings; the floor is the reader test: a senior engineer who
+bullets or internal names appear. Describe what shipped, at the level
+of the contract; the rest belongs in code, PR threads, or follow-up
+issues. Use the repository's normal technical vocabulary with
+ASD-STE100 sentence discipline and typewriter punctuation. Write for
+a skimmer -- no paragraph over three sentences, and a body creeping
+past a dozen lines of prose is a signal to cut. Meet those bounds by
+deleting whole sentences; what survives stays as written. The bounds
+are ceilings; the floor is the reader test: a senior engineer who
 doesn't work on this system can explain the change back in one
 sentence after the opening line and first paragraph. A line only an
 insider can parse is broken, and the repair is a plainer sentence.
 
-Observable behaviour is exactly what the diff can't show, so show
-it: a before/after of output, a sample payload, a screenshot for UI
-changes, a small table. The artifact replaces the paragraph; a
-caption saying what to look at is all that accompanies it. A
-sentence claiming something was verified is telling; attach what was
-seen.
+Observable behaviour is exactly what the diff can't show, so show it,
+before and after. The artifact replaces the paragraph; a caption
+saying what to look at is all that accompanies it. A sentence
+claiming something was verified is telling; attach what was seen.
 
-For PRs in a series, make the opening line self-locating ("publisher
-side of ...", "infra prerequisite for ..."). When citing a sibling's
-merge state, link the PR -- tickets can't be merged.
+For a PR in a stack, the opening line says where it sits. When citing
+a sibling's merge state, link the PR -- tickets can't be merged.
 
 Process:
 
 1. Identify the current branch and an appropriate base branch, and
    read enough context to say why the change exists and what it
    makes observable.
-2. Capture what the change makes observable before writing a word:
-   run the command, render the page, diff the output. Save the
-   result as a file to attach or a block to paste.
+2. Before writing a word, capture the before and after of what the
+   change makes observable, as a file to attach or a block to paste.
 3. Draft an outcome-oriented title and the body in two passes: first
    write the why and the consequences around the artifact, then
    compress -- cut every paragraph that tells the reviewer nothing
