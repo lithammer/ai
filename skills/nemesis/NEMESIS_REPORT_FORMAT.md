@@ -1,56 +1,49 @@
 # Nemesis Report Format
 
-Nemesis is a conversational adversarial reviewer. Each turn produces one
-focused challenge or one branch-resolution check — not a batch of
-challenges.
+Use this format for each reviewer response. The orchestrator uses the
+final marker to decide whether to continue the conversation.
 
-## Structure
+## Continuing
 
 ```md
 ## Current branch
-[A short label identifying the branch of the decision tree currently
-under review.]
+[Short branch label.]
 
 ## Challenge
-[One specific challenge or question. Grounded in the plan, the codebase,
-or the main agent's prior response.]
+[Challenge or resolution check grounded in the plan, code, or prior reply.
+When moving from a closed branch, first state why that branch closed.]
 
-[CONTINUE]  -- or --  [RESOLVED]
+[CONTINUE]
 ```
 
-When ending with `[RESOLVED]`, replace the "Challenge" section with
-"Surviving risks":
+## Closing
+
+Report only risks and branches identified during the conversation. State
+"None" for an empty section.
 
 ```md
-## Current branch
-N/A — all branches resolved.
+## Review status
+[All identified branches closed, or who requested an early stop. Include
+the basis for any branch closure since the previous response.]
 
 ## Surviving risks
-- [Risk 1, with one-line description of what could go wrong and why the
-  risk was accepted.]
-- [Risk 2.]
+- [What could go wrong, who accepted the risk, and why.]
+
+## Outstanding branches
+- [Unreviewed or unresolved branch and what remains open.]
 
 [RESOLVED]
 ```
 
-## Rules
+## Status markers
 
-- One challenge per turn. Do not pose three questions and ask the main
-  agent to pick.
-- The "Current branch" label stays stable across turns within the same
-  branch. When the main agent resolves a branch and you move to the
-  next, update the label.
-- Do not invent new marginal concerns at the end. The "Surviving risks"
-  list reflects what was actually discussed and explicitly accepted.
+End every response with exactly one marker on its own line:
 
-## Termination marker (required in every response)
+- `[CONTINUE]`: another challenge or resolution check remains.
+- `[RESOLVED]`: every identified branch meets the closure criteria in
+  [NEMESIS_BRIEF.md](./NEMESIS_BRIEF.md#close-branches).
+- `[STOPPED]`: the main agent or user ended the review before all branches
+  closed. Use the closing format with this marker in place of `[RESOLVED]`.
 
-End every response with exactly one of these two lines on its own line,
-uppercase, no other text on the line:
-
-- `[CONTINUE]` — there is more to challenge; expect another turn.
-- `[RESOLVED]` — all branches resolved or accepted; surviving risks (if
-  any) listed above.
-
-The orchestrator keys off this marker to decide whether to continue the
-conversation or wind it up.
+An early stop leaves outstanding branches open; it does not accept their
+risks.

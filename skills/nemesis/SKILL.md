@@ -1,51 +1,37 @@
 ---
 name: nemesis
-description: Conversational adversarial reviewer for plans, designs, or half-formed ideas. Walks the decision tree one branch at a time.
+description: Challenge a plan, design, or idea one decision branch at a time.
 disable-model-invocation: true
 ---
 
 # Nemesis
 
-Use this skill as a conversational adversarial reviewer for plans,
-designs, or half-formed ideas.
+Drive a conversation with a persistent adversarial reviewer.
 
-## Agent Mode
+## Start or resume
 
-When this skill is invoked, prefer a persistent reviewer agent over a
-one-off response.
+Reuse the current thread's reviewer, sending only changes and new evidence.
+Start a fresh reviewer when none exists, the prior agent is closed, the
+user asks for a reset, or the topic changes enough that prior critique
+would bias the review. Give a fresh reviewer the conversation context and
+these instructions:
 
-1. If no active reviewer agent exists for the current thread, start one
-   with the current conversation context. Pass it
-   [NEMESIS_BRIEF.md](./NEMESIS_BRIEF.md) as its persona and
-   [NEMESIS_REPORT_FORMAT.md](./NEMESIS_REPORT_FORMAT.md) as its output
-   specification.
-2. If an active reviewer agent already exists, reuse it so it keeps
-   context about the plan, rejected branches, accepted risks, and
-   earlier objections.
-3. Start a fresh reviewer agent only when the user asks for a reset,
-   the topic changes enough that old critique would bias the new
-   problem, or the prior agent is closed.
-4. When reusing the reviewer agent, send only the delta plus any newly
-   discovered code or constraints.
-5. If the next local step depends on the critique, wait for the
-   reviewer result. Otherwise let it work in parallel while you gather
-   context.
+- [NEMESIS_BRIEF.md](./NEMESIS_BRIEF.md): how to challenge and close branches.
+- [NEMESIS_REPORT_FORMAT.md](./NEMESIS_REPORT_FORMAT.md): response format and
+  status markers. Read this before driving the loop below.
 
-## The conversation loop
+If the harness supports only one-shot subagents, carry the prior transcript
+into each new dispatch. Wait for critique before taking a step that depends
+on it; gather independent context while the reviewer works.
 
-Each turn, the reviewer returns one challenge followed by a `[CONTINUE]`
-or `[RESOLVED]` marker on its own line. Drive the loop:
+## Drive the loop
 
-1. Read the challenge. Check the marker.
-2. If `[RESOLVED]`, stop the loop and present the surviving-risks summary
-   (from the same turn) to the user.
-3. Otherwise, address the challenge. Read code if it can be answered
-   from the codebase. Respond with evidence; do not hand-wave.
-4. Send your response back to the same reviewer agent. If the harness
-   only supports one-shot subagents, re-spawn with the prior transcript
-   appended as additional context.
-5. Read the next challenge. Go back to step 1.
+1. Check the reviewer's status marker. If it is missing or invalid, ask the
+   reviewer to restate the response with a valid marker before proceeding.
+2. On `[CONTINUE]`, answer the challenge with evidence. Read the code when
+   it can settle the point. Send the answer to the same reviewer and repeat.
+3. On `[RESOLVED]` or `[STOPPED]`, end the loop and present the reviewer's
+   closing summary, preserving the distinction between accepted risks and
+   unreviewed or unresolved branches.
 
-If a response is missing the marker, treat it as `[CONTINUE]` and keep
-the conversation going — a missing marker shouldn't prematurely end the
-loop.
+If the user asks to stop, end the loop and summarize the current state.
