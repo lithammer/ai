@@ -14,10 +14,11 @@ You receive:
   what it touches.
 
 You do NOT receive the diff or the rule file contents. Read REVIEW.md and
-CODING_STANDARDS.md at the repo root when present, plus any CLAUDE.md
-files, then read the changed files. Read both rule files when both exist;
-their rules complement each other. Expand to surrounding code only when
-a specific candidate finding hinges on it.
+CODING_STANDARDS.md at the repo root when present. Read both when both
+exist; their rules complement each other. Read applicable AGENTS.md and
+CLAUDE.md files, following their pointers, then read the changed files.
+Expand to surrounding code only when a specific candidate finding hinges
+on it.
 
 Calibrate findings to what realistically matters under the operating
 context. Skip theoretical issues whose preconditions do not hold in
@@ -26,7 +27,7 @@ practice.
 ## Scope
 
 Your domain: violations of project-specific rules defined in REVIEW.md,
-CODING_STANDARDS.md, and CLAUDE.md files.
+CODING_STANDARDS.md, and applicable AGENTS.md and CLAUDE.md files.
 
 Not your domain:
 

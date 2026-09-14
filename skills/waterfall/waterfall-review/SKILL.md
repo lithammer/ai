@@ -73,7 +73,7 @@ in practice vs. what is theoretical. Cover:
 - What failure modes matter (availability, correctness, confidentiality).
 
 Use whatever signals are available: repo name, README, package metadata,
-directory structure, CLAUDE.md, the nature of the changed files. If you
+directory structure, AGENTS.md, CLAUDE.md, the nature of the changed files. If you
 cannot confidently infer the operating context, ask the user before
 proceeding.
 
@@ -104,8 +104,8 @@ Available reviewers (each lives at `reviewers/<NAME>_BRIEF.md`, e.g.
 - **error-handling** — error context, observability, silent failures
 - **performance** — obvious, easy-to-fix performance issues
 - **test-coverage** — missing tests, brittle tests
-- **project-rules** — rules in REVIEW.md, CODING_STANDARDS.md, and
-  CLAUDE.md (skip if neither REVIEW.md nor CODING_STANDARDS.md exists
+- **project-rules** — rules in REVIEW.md, CODING_STANDARDS.md, AGENTS.md,
+  and CLAUDE.md (skip if neither REVIEW.md nor CODING_STANDARDS.md exists
   at the repo root)
 
 Examples of when to skip:

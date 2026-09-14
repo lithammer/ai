@@ -48,8 +48,8 @@ Not your domain:
   reviewer).
 - Errors that are handled but with insufficient context (error-handling
   reviewer).
-- Project-specific rules from REVIEW.md / CODING_STANDARDS.md / CLAUDE.md
-  (project-rules reviewer).
+- Project-specific rules from REVIEW.md / CODING_STANDARDS.md / AGENTS.md /
+  CLAUDE.md (project-rules reviewer).
 - Missing tests or brittle tests (test-coverage reviewer).
 - Security vulnerabilities (security reviewer).
 
