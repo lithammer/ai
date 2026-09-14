@@ -1,0 +1,3 @@
+interface:
+  display_name: "Waterfall Review"
+  short_description: "Review code across correctness, security, and design"

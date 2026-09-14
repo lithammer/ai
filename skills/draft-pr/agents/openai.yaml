@@ -1,0 +1,3 @@
+interface:
+  display_name: "Draft PR"
+  short_description: "Write a concise draft PR from branch context"

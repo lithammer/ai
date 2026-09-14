@@ -1,0 +1,3 @@
+interface:
+  display_name: "Review Docs"
+  short_description: "Review docs and comments for human, useful prose"

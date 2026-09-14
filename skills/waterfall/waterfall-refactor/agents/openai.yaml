@@ -1,0 +1,3 @@
+interface:
+  display_name: "Waterfall Refactor"
+  short_description: "Find refactors that improve a feature's foundation"

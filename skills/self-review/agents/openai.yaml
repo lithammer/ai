@@ -1,0 +1,3 @@
+interface:
+  display_name: "Self Review"
+  short_description: "Clean up changed code before human review"

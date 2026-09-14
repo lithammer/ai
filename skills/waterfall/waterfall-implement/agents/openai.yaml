@@ -1,0 +1,3 @@
+interface:
+  display_name: "Waterfall Implement"
+  short_description: "Implement an approved plan in reviewable increments"

@@ -1,0 +1,3 @@
+interface:
+  display_name: "Ready PR"
+  short_description: "Open a ready-for-review PR from the branch"
