@@ -47,7 +47,7 @@ If there are no findings, return an empty `<findings></findings>`.
 - `category` — `test-coverage` reviewer only: `missing-coverage` or
   `test-quality`.
 - `rule` — `project-rules` reviewer only: the project rule being violated
-  (quote or paraphrase from REVIEW.md / CLAUDE.md).
+  (quote or paraphrase from REVIEW.md / CODING_STANDARDS.md / CLAUDE.md).
 
 Omit an optional element entirely when it does not apply — do not emit an
 empty tag.

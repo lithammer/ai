@@ -104,8 +104,9 @@ Available reviewers (each lives at `reviewers/<NAME>_BRIEF.md`, e.g.
 - **error-handling** — error context, observability, silent failures
 - **performance** — obvious, easy-to-fix performance issues
 - **test-coverage** — missing tests, brittle tests
-- **project-rules** — rules in REVIEW.md and CLAUDE.md (skip if no
-  REVIEW.md)
+- **project-rules** — rules in REVIEW.md, CODING_STANDARDS.md, and
+  CLAUDE.md (skip if neither REVIEW.md nor CODING_STANDARDS.md exists
+  at the repo root)
 
 Examples of when to skip:
 
