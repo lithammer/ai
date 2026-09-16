@@ -39,8 +39,9 @@ Promote probes that protect a distinct contract or reproduce a defect into
 regression tests; remove temporary scaffolding. Fix defects the tests expose
 before refactoring.
 
-Proceed when the contract tests pass. Identify pre-existing failures
-separately from failures introduced by this change.
+Run the relevant existing and new tests after correctness fixes. Resolve
+failures introduced by this change before refactoring; record pre-existing
+failures separately.
 
 ## 4. Refactor
 

@@ -35,6 +35,9 @@ Request a test only when it protects meaningful behavior or catches a
 specific defect. Give a concrete case and explain what the current tests
 miss; test counts and coverage percentages alone do not establish adequacy.
 
+Flag redundant retained cases that add no distinct contract or defect
+protection. Identify which remaining test preserves that protection.
+
 ## Documented standards
 
 Check applicable `AGENTS.md` instructions and the repository's documented
