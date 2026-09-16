@@ -38,9 +38,9 @@ miss; test counts and coverage percentages alone do not establish adequacy.
 ## Documented standards
 
 Check applicable `AGENTS.md` instructions and the repository's documented
-coding standards. Cite the source and rule for each violation. Leave checks
-enforced by tools to those tools; personal style preferences and generic
-code-smell lists are outside this axis.
+coding standards, including `CODING_STANDARDS.md` when present. Cite the source
+and rule for each violation. Leave checks enforced by tools to those tools;
+personal style preferences and generic code-smell lists are outside this axis.
 
 ## Findings
 
