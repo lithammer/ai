@@ -1,6 +1,6 @@
 ---
 name: develop
-description: "Implement a feature or fix from agreed requirements, then test its contracts, refactor, and resolve independent reviews before committing. Use when carrying a defined change through implementation."
+description: "Implement a feature or fix from agreed requirements, then test its contracts, refactor, and resolve independent reviews. Use when carrying a defined change through implementation."
 ---
 
 # Develop
@@ -11,8 +11,9 @@ and review. Use `simplify` and `self-review` from this collection for cleanup.
 ## 1. Establish the scope
 
 Read the request, its spec or tickets, and the repository's instructions.
-Resolve ambiguities that would change observable behavior. Work on a feature
-branch; preserve unrelated changes.
+Resolve ambiguities that would change observable behavior. Stay on the current
+branch unless the user asks otherwise; preserve unrelated changes and existing
+staging.
 
 Pin the review base before editing and record pre-existing changes. Carry the
 same scope through cleanup and review: the task's branch changes, staged and
@@ -66,7 +67,7 @@ others do not apply. Send fixes back to the affected reviewers, including any
 other axis whose assumptions the fix changes. Close findings on the final
 state; a report about an earlier version is not final verification.
 
-Run the repository's required checks on the final state. Commit only the
-task's changes unless the user requested otherwise. Report the commit, checks
-run, review outcomes, and any remaining limits. If a required check or review
-cannot complete, report that gap and leave the task open.
+Run the repository's required checks on the final state. Leave the task's edits
+uncommitted and unstaged unless the user asks otherwise. Report the changes,
+checks run, review outcomes, and any remaining limits. If a required check or
+review cannot complete, report that gap and leave the task open.
