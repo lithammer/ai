@@ -6,15 +6,22 @@ patches that include staged, unstaged, and new files. Reviewers may read the
 surrounding code and run checks; they return findings without editing files.
 
 Provide the original requirements and applicable repository rules, including
-accepted clarifications. Start reviewers without the implementation
-conversation, the implementer's rationale, or the other reviewers' findings.
+accepted clarifications. When present, read `CONTEXT-MAP.md` to locate affected
+contexts and their relationships. Include relevant `CONTEXT.md` glossaries
+and ADRs, both system-wide and context-specific. Use the glossaries for domain
+terms and current ADRs for design constraints, following status and
+supersession. Missing documents alone are not findings.
+
+Start reviewers without the implementation conversation, the implementer's
+rationale, or the other reviewers' findings.
 
 ## Spec and correctness
 
-Trace the requested behavior through the implementation. Find missing or
-partial requirements, incorrect execution paths, and behavior added outside
-the agreed scope. For each finding, cite the contract and a concrete input or
-execution path that exposes the mismatch.
+Trace the requested behavior through the implementation and check it against
+applicable design decisions. Find missing or partial requirements, incorrect
+execution paths, and behavior added outside the agreed scope. Cite the
+contract or decision and the code that contradicts it. For behavior findings,
+give a concrete input or execution path that exposes the mismatch.
 
 ## Test adequacy
 
