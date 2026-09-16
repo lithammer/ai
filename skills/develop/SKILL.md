@@ -20,22 +20,24 @@ unstaged edits, and new files. A committed diff alone may omit the work.
 
 ## 2. Implement
 
-Build a coherent implementation. Run existing checks and use temporary probes
-when they answer an uncertainty. Let the task determine the order of edits
-and checks; a bug reproducer may be useful before its fix.
+Build a coherent implementation. Run existing tests and checks, and use
+throwaway probes to resolve uncertainty. Leave new regression and contract
+tests for step 3. A bug reproducer may start as a probe before its fix.
 
 Continue until the requested behavior is implemented through the agreed
 interfaces and ready to test against its contracts.
 
 ## 3. Establish correctness
 
-Write durable tests at the agreed seams. Derive expected results from the
-requirements, reviewed examples, or a trusted reference. The implementation's
-current output alone is not evidence of the right answer.
+Write or update the retained regression and contract tests at the agreed
+seams. Derive expected results from the requirements, reviewed examples, or a
+trusted reference. The implementation's current output alone is not evidence
+of the right answer.
 
 Exercise real behavior and choose cases that distinguish plausible mistakes.
-Keep probes that protect a distinct contract or reproduce a defect; remove
-temporary scaffolding. Fix defects the tests expose before refactoring.
+Promote probes that protect a distinct contract or reproduce a defect into
+regression tests; remove temporary scaffolding. Fix defects the tests expose
+before refactoring.
 
 Proceed when the contract tests pass. Identify pre-existing failures
 separately from failures introduced by this change.
