@@ -1,0 +1,3 @@
+interface:
+  display_name: "Create PR"
+  short_description: "Open a draft/ready-for-review PR from the branch"

@@ -21,10 +21,9 @@
       "name": "lithammer-skills",
       "description": "General-purpose engineering and research skills.",
       "skills": [
-        "./skills/draft-pr",
+        "./skills/create-pr",
         "./skills/librarian",
         "./skills/nemesis",
-        "./skills/ready-pr",
         "./skills/research",
         "./skills/review-docs",
         "./skills/self-review",
