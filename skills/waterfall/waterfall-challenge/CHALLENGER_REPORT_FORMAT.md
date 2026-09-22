@@ -2,6 +2,8 @@
 
 Every round of the challenge produces one report following this structure.
 
+Write the full report to a unique file in shared temporary storage; return only its absolute path and the one-line verdict `[CONTINUE]` or `[RESOLVED]`. The orchestrator reads the file with Read before responding or moving on.
+
 ## Structure
 
 ```md
@@ -37,9 +39,9 @@ Every round of the challenge produces one report following this structure.
 - On the final round, replace the "Challenges" section with "Surviving open
   risks" — these are the concerns being accepted rather than addressed.
 
-## Termination marker (required in every response)
+## Termination marker (required in every report)
 
-End every response with exactly one of these two lines on its own line,
+End every report with exactly one of these two lines on its own line,
 uppercase, no other text on the line:
 
 - `[CONTINUE]` — open concerns remain; expect another round.

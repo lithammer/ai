@@ -1,6 +1,8 @@
 # Implementor Report Format
 
-Return one report per increment as a single `<report>` element. The
+Write the full report to a unique file in shared temporary storage; return only its absolute path and a one-line verdict (`complete` or `plan-gap`). The orchestrator reads the file with Read before acting on it.
+
+Write one report per increment as a single `<report>` element. The
 orchestrator reads it to decide what to commit and what to flag — so report
 only what `git` cannot show. Do not list created/modified/deleted files or
 describe the tests you added; the diff already does that.

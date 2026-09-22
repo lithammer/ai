@@ -1,6 +1,8 @@
 # Reviewer Report Format
 
-If there are no findings, return an empty `<findings></findings>`.
+Write the full report to a unique file in shared temporary storage; return only its absolute path and a one-line verdict. The orchestrator reads the file with Read before triage.
+
+If there are no findings, write an empty `<findings></findings>` in the report.
 
 ## Schema
 
@@ -56,7 +58,7 @@ empty tag.
 ## Merged reviewers: axis accountability
 
 Merged reviewers (`code-quality`, `runtime-bugs`) review multiple
-sub-axes in one pass. They must end every response, after the
+sub-axes in one pass. They must end every report, after the
 `</findings>` block, with a one-line summary of what they considered on
 each axis, even when no findings were produced. Example:
 
