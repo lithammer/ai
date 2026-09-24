@@ -26,6 +26,9 @@ Report only risks and branches identified during the conversation. State
 [All identified branches closed, or who requested an early stop. Include
 the basis for any branch closure since the previous response.]
 
+## Changes made
+- [What the review changed, and the evidence that made it safe.]
+
 ## Surviving risks
 - [What could go wrong, who accepted the risk, and why.]
 
@@ -41,7 +44,7 @@ End every response with exactly one marker on its own line:
 
 - `[CONTINUE]`: another challenge or resolution check remains.
 - `[RESOLVED]`: every identified branch meets the closure criteria in
-  [NEMESIS_BRIEF.md](./NEMESIS_BRIEF.md#close-branches).
+  your brief's "Close branches" section.
 - `[STOPPED]`: the main agent or user ended the review before all branches
   closed. Use the closing format with this marker in place of `[RESOLVED]`.
 
