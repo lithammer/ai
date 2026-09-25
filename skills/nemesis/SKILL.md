@@ -13,13 +13,16 @@ Drive a conversation with a persistent adversarial reviewer.
 The target picks the brief:
 
 - A plan, design, or idea: [NEMESIS_BRIEF.md](./NEMESIS_BRIEF.md).
-- An implementation, such as a diff, branch, or PR:
-  [ECONOMY_BRIEF.md](./ECONOMY_BRIEF.md).
+- An implementation, such as a diff, branch, or PR: two passes,
+  [FIT_BRIEF.md](./FIT_BRIEF.md) then
+  [ECONOMY_BRIEF.md](./ECONOMY_BRIEF.md). Fit goes first: trimming a change that turns out to be the wrong one
+  wastes the pass.
 
 Read the target from the request and the conversation; a working-tree
 diff only supports that reading. An argument of `design` or
-`implementation` decides it outright. When the target spans both, ask the
-user which. Name the brief to the user before the first challenge.
+`implementation` decides it outright, and `fit` or `economy` runs that
+one pass alone. When the target spans both, ask the user which. Name the
+brief to the user before the first challenge.
 
 ## Start or resume
 
@@ -47,5 +50,7 @@ on it; gather independent context while the reviewer works.
 3. On `[RESOLVED]` or `[STOPPED]`, end the loop and present the reviewer's
    closing summary, preserving the distinction between accepted risks and
    unreviewed or unresolved branches.
+4. In a two-pass run, a `[RESOLVED]` fit pass starts the economy pass on
+   the code as it now stands. A `[STOPPED]` fit pass ends the run.
 
 If the user asks to stop, end the loop and summarize the current state.
