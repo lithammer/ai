@@ -19,7 +19,9 @@ session supplies only what the repository cannot say.
 3. Spawn a subagent. Pass it [DRAFTER_BRIEF.md](./DRAFTER_BRIEF.md) as its
    persona, along with the branch, base, and context.
 4. If creation succeeded, read the published body directly from GitHub and
-   check it against the drafter brief. Cut implementation narration and context
-   the reviewer does not need to understand the outcome. Apply any corrections
-   to the PR and confirm the published body matches the intended text.
+   check it against the drafter brief. The body introduces the diff; cut
+   explanations already present in changed code or documents, implementation
+   narration, and context the reviewer does not need to understand the outcome.
+   Apply any corrections to the PR and confirm the published body matches the
+   intended text.
 5. Relay the URL, or the title, body, and blocker if creation failed.
