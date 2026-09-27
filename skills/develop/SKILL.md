@@ -5,7 +5,7 @@ description: "Implement a feature or fix from agreed requirements, then test its
 
 # Develop
 
-Carry one agreed change through implementation, contract tests, refactoring,
+Carry one agreed change through implementation, verification, refactoring,
 and review. Use `simplify` and `self-review` from this collection for cleanup.
 
 ## 1. Establish the scope
@@ -30,15 +30,18 @@ interfaces and ready to test against its contracts.
 
 ## 3. Establish correctness
 
-Write or update the retained regression and contract tests at the agreed
-seams. Derive expected results from the requirements, reviewed examples, or a
-trusted reference. The implementation's current output alone is not evidence
-of the right answer.
+Choose existing coverage, one-off verification, or a retained test before
+designing fixtures. For integration setup, prefer one real run and coverage
+through the workflows that use it. A retained setup test needs a project-owned
+failure worth its fixtures and upkeep; a conceivable failure alone is not enough.
+
+Derive expected results from the requirements, reviewed examples, or a trusted
+reference, rather than the implementation's current output.
 
 Exercise real behavior and choose cases that distinguish plausible mistakes.
-Promote probes that protect a distinct contract or reproduce a defect into
-regression tests; remove temporary scaffolding. Fix defects the tests expose
-before refactoring.
+Keep probes as regression tests only when they pass the retention decision;
+otherwise record the verification result and remove temporary scaffolding.
+Fix defects the checks expose before refactoring.
 
 Run the relevant existing and new tests after correctness fixes. Resolve
 failures introduced by this change before refactoring; record pre-existing

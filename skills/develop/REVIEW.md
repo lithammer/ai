@@ -31,12 +31,13 @@ would escape. Look for shared logic between implementation and expected
 results, cases that cannot distinguish the suspected error, and assertions
 that bind tests to internal structure.
 
-Request a test only when it protects meaningful behavior or catches a
-specific defect. Give a concrete case and explain what the current tests
-miss; test counts and coverage percentages alone do not establish adequacy.
+Before requesting a test, weigh retained coverage against existing checks
+or one-off verification. Explain why it is worth its fixtures and upkeep,
+then give a concrete case the current checks miss. An untested path alone
+is not a finding.
 
 Flag redundant retained cases that add no distinct contract or defect
-protection. Identify which remaining test preserves that protection.
+protection. Identify the remaining proof or why one-off verification suffices.
 
 ## Documented standards
 

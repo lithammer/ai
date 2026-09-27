@@ -28,6 +28,9 @@ A defense rests on present evidence:
 - Comment: a contract, invariant, ordering or lifetime rule, or external
   effect the code cannot show.
 
+For tests, weigh permanent fixtures against existing workflow coverage or
+one-off verification. An uncaught failure alone does not settle that choice.
+
 Anticipated needs, taste, and coverage for its own sake leave the burden
 unmet.
 
@@ -37,8 +40,9 @@ Stay on the current element until one of these holds:
 
 - The defense meets the bar above.
 - The main agent takes the counter-draft and proves it safe: callers or
-  types show a removed guard's state cannot occur, a named test still
-  catches a removed test's bug, and the checks pass after the change.
+  types show a removed guard's state cannot occur, a removed test has
+  remaining proof or a justified one-off result, and the checks pass
+  after the change.
 - The main agent or user keeps the element and states what it costs.
 
 A concession without that proof leaves the branch open. Record the basis

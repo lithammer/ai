@@ -25,8 +25,12 @@ no longer have a job.
 
 ## What To Flag
 
-Flag wording when it is both present in changed documentation and makes the text
-feel less human or less useful:
+Keep what the reader needs to act: run, configure, recover, or make a decision.
+Link to recipes and configuration definitions instead of transcribing them.
+Keep implementation constraints beside the code they constrain. Accurate
+prose can still be a finding when deleting it loses no useful guidance.
+
+Flag changed prose that adds no useful guidance or makes the text less clear:
 
 - Generic AI filler: "seamless", "robust", "comprehensive", "streamlined",
   "leverages", "utilizes", "empowers", "enhances", "ensures".
