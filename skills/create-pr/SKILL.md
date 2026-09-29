@@ -1,7 +1,6 @@
 ---
 name: create-pr
 description: Create a draft or ready-for-review PR for the current branch. Use when asked to draft, create, open, or prepare a PR, or to write a PR description.
-disable-model-invocation: true
 ---
 
 # Create PR
