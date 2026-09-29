@@ -6,8 +6,8 @@ patches that include staged, unstaged, and new files. Reviewers may read the
 surrounding code and run checks; they return findings without editing files.
 
 Provide the original requirements and applicable repository rules, including
-accepted clarifications. When present, read `CONTEXT-MAP.md` to locate affected
-contexts and their relationships. Include relevant `CONTEXT.md` glossaries
+accepted clarifications. When present, read `GLOSSARY-MAP.md` to locate affected
+contexts and their relationships. Include relevant `GLOSSARY.md` glossaries
 and ADRs, both system-wide and context-specific. Use the glossaries for domain
 terms and current ADRs for design constraints, following status and
 supersession. Missing documents alone are not findings.
