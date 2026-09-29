@@ -24,6 +24,9 @@ description: Create a draft or ready-for-review PR for the current branch. Use w
 
 ## Description
 
+Write from the PR author's perspective, not as an assistant reporting on their
+work.
+
 Tell a teammate what this makes possible, then mention anything they'd otherwise
 be surprised by or need to decide. Assume they'll read the diff. Most PRs need
 only a short sentence describing the outcome.
