@@ -1,7 +1,6 @@
 ---
 name: test-audit
 description: "Audit tests for redundant or implementation-coupled coverage, and check the value of new or changed tests. Use for test reviews, test-pruning sweeps, and subsystem-wide test audits."
-disable-model-invocation: true
 ---
 
 # Test Audit
