@@ -6,7 +6,8 @@ disable-model-invocation: true
 
 # Nemesis
 
-Drive a conversation with a persistent adversarial reviewer.
+Keep the same adversarial reviewer throughout the review loop, across all
+challenge-and-response turns. Release it when the review ends.
 
 ## Pick the brief
 
@@ -26,11 +27,12 @@ brief to the user before the first challenge.
 
 ## Start or resume
 
-Reuse the current thread's reviewer, sending only changes and new evidence.
-Start a fresh reviewer when none exists, the prior agent is closed, the
-user asks for a reset, the brief changes, or the topic changes enough that
-prior critique would bias the review. Give a fresh reviewer the
-conversation context and these instructions:
+Start a fresh reviewer each time this skill is invoked. Within that run,
+reuse it, sending only changes and new evidence. Start a replacement if it has
+already closed. Otherwise, release it before starting a replacement when
+the user asks for a reset, the brief changes, or the topic changes enough
+that prior critique would bias the review. Give a fresh
+reviewer the conversation context and these instructions:
 
 - The picked brief: how to challenge and close branches.
 - [NEMESIS_REPORT_FORMAT.md](./NEMESIS_REPORT_FORMAT.md): response format and
@@ -54,3 +56,10 @@ on it; gather independent context while the reviewer works.
    the code as it now stands. A `[STOPPED]` fit pass ends the run.
 
 If the user asks to stop, end the loop and summarize the current state.
+
+## Release reviewers
+
+When the review completes, the user stops it, or an error ends the run,
+preserve the available findings and release every reviewer started by this
+run before presenting the final summary. Leave unrelated agents alone.
+Report cleanup failures in the summary.

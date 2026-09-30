@@ -31,6 +31,11 @@ reader isn't misled about what ran.
 Each angle returns its findings with `file`, `line`, a one-line `summary`, and
 the concrete cost: what is duplicated, wasted, or made harder to maintain.
 
+Once all reports are collected, release the reviewers before applying fixes.
+Also release them if the user stops the run or an error ends it. Release only
+reviewers started by this run; leave unrelated agents alone. Report cleanup
+failures in the summary.
+
 ### Reuse
 
 Flag new code that re-implements something the codebase already has — search
