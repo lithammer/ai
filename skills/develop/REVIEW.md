@@ -36,8 +36,17 @@ or one-off verification. Explain why it is worth its fixtures and upkeep,
 then give a concrete case the current checks miss. An untested path alone
 is not a finding.
 
-Flag redundant retained cases that add no distinct contract or defect
-protection. Identify the remaining proof or why one-off verification suffices.
+## Test value
+
+Read the added and changed tests beside the existing suite. For each, name
+the contract it protects and the credible regression that turns it red.
+Flag a test whose failure existing coverage already catches: each contract
+has one owner at the strongest boundary, and another layer needs a risk
+that owner cannot reach. Flag a near-duplicate that fits as a case in an
+existing test, a test that needs a production seam no production caller
+uses, and a bug regression never shown red on the pre-fix code. For each
+test you would remove, name the proof that remains or why one-off
+verification suffices.
 
 ## Documented standards
 
@@ -51,4 +60,4 @@ personal style preferences and generic code-smell lists are outside this axis.
 Return each finding with its file and line, consequence, and supporting
 evidence. Distinguish confirmed findings from questions that need an answer.
 Report no findings when none are supported, and state any review limits.
-The implementer owns edits and keeps the three axes visible in the outcome.
+The implementer owns edits and keeps each axis visible in the outcome.

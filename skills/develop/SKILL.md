@@ -62,13 +62,15 @@ outcome when no useful simplification remains.
 ## 5. Review and finish
 
 Once cleanup is complete and its checks pass, follow [REVIEW.md](REVIEW.md)
-for fresh reviews of spec and correctness, test adequacy, and documented
-standards. Keep the reviewed files unchanged while reviewers work.
+for fresh reviews of spec and correctness, test adequacy, test value, and
+documented standards. Keep the reviewed files unchanged while reviewers work.
 
 Assess each finding against its evidence. Fix confirmed issues and record why
-others do not apply. Send fixes back to the affected reviewers, including any
-other axis whose assumptions the fix changes. Close findings on the final
-state; a report about an earlier version is not final verification.
+others do not apply. When test findings conflict, remove the test unless its
+regression is credible, worth the test's upkeep, and missed by the existing
+suite. Send fixes back to the affected reviewers, including any other axis
+whose assumptions the fix changes. Close findings on the final state; a report
+about an earlier version is not final verification.
 
 Run the repository's required checks on the final state. Leave the task's edits
 uncommitted and unstaged unless the user asks otherwise. Report the changes,
