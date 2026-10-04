@@ -25,6 +25,9 @@ label stable until it closes.
   why bespoke wins.
 - Depth: is the change made at the depth the problem lives at? Demand the
   case that this is the level the fix belongs at.
+- Representation: which domain distinctions or invariants rely on callers
+  remembering conventions or on repeated checks? Could the model or API
+  enforce them, and what would that cost?
 
 A defense that the change is simpler, smaller, or faster must say what it
 gives up and why that trade is acceptable.
