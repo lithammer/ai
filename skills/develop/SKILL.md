@@ -21,6 +21,13 @@ unstaged edits, and new files. A committed diff alone may omit the work.
 
 ## 2. Implement
 
+**Encode meaning and invariants in the model.** Use types, APIs, and enforced
+constraints to express distinctions callers would otherwise need to remember:
+units, identities, valid states, and permitted operations. Prefer representations
+that prevent misuse over conventions, repeated checks, or tests that merely
+detect it. Validate external inputs at the boundary and test that validation
+and behavior those guarantees do not establish.
+
 Build a coherent implementation. Run existing tests and checks, and use
 throwaway probes to resolve uncertainty. Leave new regression and contract
 tests for step 3. A bug reproducer may start as a probe before its fix.

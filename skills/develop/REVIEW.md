@@ -31,10 +31,11 @@ would escape. Look for shared logic between implementation and expected
 results, cases that cannot distinguish the suspected error, and assertions
 that bind tests to internal structure.
 
-Before requesting a test, weigh retained coverage against existing checks
-or one-off verification. Explain why it is worth its fixtures and upkeep,
-then give a concrete case the current checks miss. An untested path alone
-is not a finding.
+Before requesting a test, check whether the model already rules out the
+failure, and cite the mechanism that enforces it. Weigh retained coverage
+against existing checks or one-off verification. Explain why it is worth
+its fixtures and upkeep, then give a concrete case the current checks miss.
+An untested path alone is not a finding.
 
 ## Test value
 
