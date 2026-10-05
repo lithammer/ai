@@ -22,8 +22,10 @@
       "description": "General-purpose engineering and research skills.",
       "skills": [
         "./skills/create-pr",
+        "./skills/develop",
         "./skills/librarian",
         "./skills/nemesis",
+        "./skills/refactor",
         "./skills/research",
         "./skills/review-docs",
         "./skills/self-review",
