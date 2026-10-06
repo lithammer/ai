@@ -1,0 +1,5 @@
+target-version = "py314"
+
+[lint]
+extend-select = ["E", "W", "B", "UP", "PL", "ANN"]
+extend-ignore = ["ANN201"]

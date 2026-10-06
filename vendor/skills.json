@@ -1,13 +1,26 @@
 {
-  "version": 1,
+  "version": 2,
+  "repositories": {
+    "bholmesdev-skills": {
+      "url": "https://github.com/bholmesdev/skills.git",
+      "branch": "main",
+      "revision": "44da67bd1896cdafced6f60573b62ae71d18ef2a"
+    },
+    "jnsahaj-skills": {
+      "url": "https://github.com/jnsahaj/skills.git",
+      "branch": "main",
+      "revision": "170b0b9192842559d1628c85e8bfe53c1bab61eb"
+    },
+    "mattpocock-skills": {
+      "url": "https://github.com/mattpocock/skills.git",
+      "branch": "main",
+      "revision": "2237a047bd95abfd1427df94f65165c39e24d3c1"
+    }
+  },
   "skills": {
     "ask-matt": {
-      "repository": "https://github.com/mattpocock/skills.git",
-      "branch": "main",
-      "revision": "2237a047bd95abfd1427df94f65165c39e24d3c1",
+      "repository": "mattpocock-skills",
       "source": "skills/engineering/ask-matt",
-      "destination": "skills/ask-matt",
-      "name": "ask-matt",
       "license": {
         "source": "LICENSE",
         "destination": "vendor/licenses/mattpocock-skills.txt"
@@ -15,52 +28,36 @@
       "patches": [
         "vendor/patches/ask-matt.patch"
       ],
-      "recipeSha256": "ef1439c1ca065b905bd8e5e02b8c4e3a84f180fee1d84d419505244164dc7245",
+      "recipeSha256": "2dd01b82b1e0baf1ebd6f72c8fbf2518d183e6074755043c652cfda43440298d",
       "outputSha256": "4e441150d418490398c1354f4fef6e46bb7439e46a2d960aee80d7cdcb637613"
     },
     "implement": {
-      "repository": "https://github.com/mattpocock/skills.git",
-      "branch": "main",
-      "revision": "2237a047bd95abfd1427df94f65165c39e24d3c1",
+      "repository": "mattpocock-skills",
       "source": "skills/engineering/implement",
-      "destination": "skills/implement",
-      "name": "implement",
       "patches": [
         "vendor/patches/implement.patch"
       ],
-      "recipeSha256": "0ddd9c7c1e9d319627f678f5f10f7fe29a07cc01be0dd9da0719f6ae4979b49c",
+      "recipeSha256": "19f587169ff3a7f574ddbba0a7dd542f73a0d5166f3a39c86091ff88733469c5",
       "outputSha256": "9e914f96b287f985d0a47a1e2ea7888573263258ee9cbbf0ed2aaab1a736383b"
     },
     "implement-review": {
-      "repository": "https://github.com/mattpocock/skills.git",
-      "branch": "main",
-      "revision": "2237a047bd95abfd1427df94f65165c39e24d3c1",
+      "repository": "mattpocock-skills",
       "source": "skills/engineering/code-review",
-      "destination": "skills/implement-review",
-      "name": "implement-review",
-      "recipeSha256": "3d65c9194ac7432ed39f2537c53687d391b994b7bd6a1a477cc0917c3e6ebfd5",
+      "recipeSha256": "1c98874e6206826fe6aa7d33c6a9c1c536bc85fb12395558b46ab6be73e09910",
       "outputSha256": "aafbad5c77ace820c8e3526c558fcf0034c88d43d3d0b6fddce98e4a6692b3a6"
     },
     "implement-spec": {
-      "repository": "https://github.com/mattpocock/skills.git",
-      "branch": "main",
-      "revision": "2237a047bd95abfd1427df94f65165c39e24d3c1",
+      "repository": "mattpocock-skills",
       "source": "skills/engineering/implement-spec",
-      "destination": "skills/implement-spec",
-      "name": "implement-spec",
       "patches": [
         "vendor/patches/implement-spec.patch"
       ],
-      "recipeSha256": "f012cd9b2f1503fd8e366d83e8cc60afdce3e7cdebc69bee56949b3c88495778",
+      "recipeSha256": "1d9a6519134cdac6f13d5314155a7f0a9ea6185f883814b5086fd75e6fd411b3",
       "outputSha256": "34e59294a01209b743e3aba1316c6796e8e2dbb50b8cca83af08b46d0fc24527"
     },
     "self-review": {
-      "repository": "https://github.com/bholmesdev/skills.git",
-      "branch": "main",
-      "revision": "44da67bd1896cdafced6f60573b62ae71d18ef2a",
+      "repository": "bholmesdev-skills",
       "source": "skills/simplify",
-      "destination": "skills/self-review",
-      "name": "self-review",
       "license": {
         "source": "LICENSE",
         "destination": "vendor/licenses/bholmesdev-skills.txt"
@@ -68,33 +65,25 @@
       "patches": [
         "vendor/patches/self-review.patch"
       ],
-      "recipeSha256": "64b948d7c02fa1c08a4bd27e75340b2f6c55d3a25c9e4e2769f124c42e8e719d",
+      "recipeSha256": "339697dc14e9b663a2984c6f2d7e99733288d7f17a622547270f4fc1fe5b6d2a",
       "outputSha256": "d3050e52f531cfd5d67c9d6945ad42a9d1299f886def64f6ec74c804378f6cfe"
     },
     "tdd": {
-      "repository": "https://github.com/mattpocock/skills.git",
-      "branch": "main",
-      "revision": "2237a047bd95abfd1427df94f65165c39e24d3c1",
+      "repository": "mattpocock-skills",
       "source": "skills/engineering/tdd",
-      "destination": "skills/tdd",
-      "name": "tdd",
       "patches": [
         "vendor/patches/tdd.patch"
       ],
-      "recipeSha256": "1b1121142afa2c3f732611dcd4c4c56805b6f9680d8b324adada1cedb2ca3ed5",
+      "recipeSha256": "c613ee35d152e4600885136a5b54b23ccfafaf6a2faa23ee94b4b9647a3c16a4",
       "outputSha256": "02edf68993487b2e4d06f6e347538ba24d12a1d3fc22899125b65519ef5eb206"
     },
     "zero-tech-debt": {
-      "repository": "https://github.com/jnsahaj/skills.git",
-      "branch": "main",
-      "revision": "170b0b9192842559d1628c85e8bfe53c1bab61eb",
+      "repository": "jnsahaj-skills",
       "source": "skills/zero-tech-debt",
-      "destination": "skills/zero-tech-debt",
-      "name": "zero-tech-debt",
       "patches": [
         "vendor/patches/zero-tech-debt.patch"
       ],
-      "recipeSha256": "f26a0c4ab21e138b6529a5a0692e7ec3d822cc82b449b92a6670d97458548aa0",
+      "recipeSha256": "bb21a42372ccca23c7e738748a25086fb9f69a361610d60ac77a8bc5a9ef35f3",
       "outputSha256": "3393e6d1e97bbd82b4bd4e2be8350177c1766f70daccb6e74fdfb17f2fc4cfb5"
     }
   }

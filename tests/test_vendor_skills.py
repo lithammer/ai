@@ -1,11 +1,13 @@
 import copy
 import json
 import os
+import runpy
+import shutil
 import subprocess
 import tempfile
-import textwrap
 import unittest
 from pathlib import Path
+from unittest import mock
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 VENDOR_SKILLS = REPOSITORY_ROOT / "scripts" / "vendor-skills"
@@ -21,24 +23,26 @@ class VendorSkillsTests(unittest.TestCase):
         self.cache = temporary / "cache"
         self.root.mkdir()
         (self.root / "vendor").mkdir()
-        (self.upstream / "skills" / "upstream").mkdir(parents=True)
-        (self.upstream / "skills" / "upstream" / "SKILL.md").write_text(
-            "---\n"
-            "name: upstream\n"
-            "description: An upstream test skill.\n"
-            "---\n"
-            "Original body.\n"
-        )
+
+        self.write_upstream_skill("upstream", "Original body.\n")
+        self.write_upstream_skill("sibling", "Sibling body.\n")
         (self.upstream / "LICENSE").write_text("Test license.\n")
 
         self.git("init", "-b", "main")
         self.git("config", "user.name", "Vendor Test")
         self.git("config", "user.email", "vendor@example.com")
         self.git("add", ".")
-        self.git("commit", "-m", "Initial skill")
+        self.git("commit", "-m", "Initial skills")
         self.write_manifest(self.revision())
 
-    def git(self, *args):
+    def write_upstream_skill(self, name: str, body: str):
+        directory = self.upstream / "skills" / name
+        directory.mkdir(parents=True)
+        (directory / "SKILL.md").write_text(
+            f"---\nname: {name}\ndescription: An upstream test skill.\n---\n{body}"
+        )
+
+    def git(self, *args: str):
         return subprocess.run(
             ["git", *args],
             cwd=self.upstream,
@@ -50,25 +54,41 @@ class VendorSkillsTests(unittest.TestCase):
     def revision(self):
         return self.git("rev-parse", "HEAD")
 
-    def write_manifest(self, revision, **extra):
+    def write_manifest(self, revision: str, **extra: object):
         entry = {
-            "repository": str(self.upstream),
-            "branch": "main",
-            "revision": revision,
+            "repository": "upstream",
             "source": "skills/upstream",
-            "destination": "skills/local",
-            "name": "local",
             "license": {
                 "source": "LICENSE",
                 "destination": "vendor/licenses/upstream.txt",
             },
             **extra,
         }
+        manifest = {
+            "version": 2,
+            "repositories": {
+                "upstream": {
+                    "url": str(self.upstream),
+                    "branch": "main",
+                    "revision": revision,
+                }
+            },
+            "skills": {"local": entry},
+        }
         (self.root / "vendor" / "skills.json").write_text(
-            json.dumps({"version": 1, "skills": {"local": entry}}, indent=2) + "\n"
+            json.dumps(manifest, indent=2) + "\n"
         )
 
-    def vendor(self, *args, check=True):
+    def add_sibling(self, *, source: str = "skills/sibling"):
+        manifest_path = self.root / "vendor" / "skills.json"
+        manifest = json.loads(manifest_path.read_text())
+        manifest["skills"]["sibling"] = {
+            "repository": "upstream",
+            "source": source,
+        }
+        manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
+
+    def vendor(self, *args: str, check: bool = True):
         environment = os.environ.copy()
         environment["VENDOR_SKILLS_ROOT"] = str(self.root)
         environment["VENDOR_SKILLS_CACHE"] = str(self.cache)
@@ -80,11 +100,40 @@ class VendorSkillsTests(unittest.TestCase):
             check=check,
         )
 
-    def manifest_entry(self):
-        manifest = json.loads((self.root / "vendor" / "skills.json").read_text())
-        return manifest["skills"]["local"]
+    def load_vendor_module(self):
+        previous_root = os.environ.get("VENDOR_SKILLS_ROOT")
+        previous_cache = os.environ.get("VENDOR_SKILLS_CACHE")
+        os.environ["VENDOR_SKILLS_ROOT"] = str(self.root)
+        os.environ["VENDOR_SKILLS_CACHE"] = str(self.cache)
+        try:
+            return runpy.run_path(str(VENDOR_SKILLS))
+        finally:
+            if previous_root is None:
+                os.environ.pop("VENDOR_SKILLS_ROOT", None)
+            else:
+                os.environ["VENDOR_SKILLS_ROOT"] = previous_root
+            if previous_cache is None:
+                os.environ.pop("VENDOR_SKILLS_CACHE", None)
+            else:
+                os.environ["VENDOR_SKILLS_CACHE"] = previous_cache
 
-    def test_sync_renames_skill_copies_license_and_checks(self):
+    def manifest(self):
+        return json.loads((self.root / "vendor" / "skills.json").read_text())
+
+    def manifest_entry(self, name: str = "local"):
+        return self.manifest()["skills"][name]
+
+    def repository_entry(self):
+        return self.manifest()["repositories"]["upstream"]
+
+    def snapshot_tree(self, path: Path):
+        return {
+            child.relative_to(path): child.read_bytes()
+            for child in path.rglob("*")
+            if child.is_file()
+        }
+
+    def test_sync_derives_local_name_copies_license_and_checks(self):
         self.vendor("sync")
 
         skill = (self.root / "skills" / "local" / "SKILL.md").read_text()
@@ -103,35 +152,50 @@ class VendorSkillsTests(unittest.TestCase):
         cases = []
 
         manifest = copy.deepcopy(original)
-        del manifest["skills"]["local"]["name"]
-        cases.append(("manifest.skills.local is missing: name", manifest))
+        manifest["version"] = 1
+        cases.append(("manifest.version must be 2", manifest))
 
         manifest = copy.deepcopy(original)
         manifest["unexpected"] = True
         cases.append(("unknown fields", manifest))
 
         manifest = copy.deepcopy(original)
-        manifest["skills"]["local"]["revision"] = "short"
+        manifest["repositories"]["upstream"]["revision"] = "short"
         cases.append(("full Git object ID", manifest))
 
         manifest = copy.deepcopy(original)
-        manifest["skills"]["local"]["destination"] = "../escape"
+        manifest["skills"]["local"]["repository"] = "missing"
+        cases.append(("repository is unknown", manifest))
+
+        manifest = copy.deepcopy(original)
+        manifest["skills"]["local"]["source"] = "../escape"
         cases.append(("safe relative path", manifest))
 
         manifest = copy.deepcopy(original)
-        manifest["skills"]["local"]["name"] = "different"
-        cases.append(("must match its manifest key", manifest))
+        manifest["skills"]["local"]["destination"] = "skills/local"
+        cases.append(("unknown fields", manifest))
 
         manifest = copy.deepcopy(original)
         manifest["skills"]["local"]["outputSha256"] = "0" * 64
         cases.append(("both lock hashes or neither", manifest))
 
         manifest = copy.deepcopy(original)
-        duplicate = copy.deepcopy(manifest["skills"]["local"])
-        duplicate["name"] = "other"
-        duplicate["destination"] = "skills/other"
-        manifest["skills"]["other"] = duplicate
-        cases.append(("duplicates skill", manifest))
+        overlapping = {
+            "repository": "upstream",
+            "source": "skills/sibling",
+            "license": {
+                "source": "LICENSE",
+                "destination": "vendor/licenses/upstream.txt/NOTICE",
+            },
+        }
+        manifest["skills"]["sibling"] = overlapping
+        cases.append(("overlaps skill", manifest))
+
+        manifest = copy.deepcopy(original)
+        manifest["repositories"]["unused"] = copy.deepcopy(
+            manifest["repositories"]["upstream"]
+        )
+        cases.append(("repositories are unused", manifest))
 
         for expected, invalid in cases:
             with self.subTest(expected=expected):
@@ -140,39 +204,7 @@ class VendorSkillsTests(unittest.TestCase):
                 self.assertNotEqual(result.returncode, 0)
                 self.assertIn(expected, result.stderr)
 
-    def test_manifest_is_validated_before_write(self):
-        manifest_path = self.root / "vendor" / "skills.json"
-        original = manifest_path.read_text()
-        environment = os.environ.copy()
-        environment["VENDOR_SKILLS_ROOT"] = str(self.root)
-        environment["VENDOR_SKILLS_CACHE"] = str(self.cache)
-        environment["VENDOR_SKILLS_SCRIPT"] = str(VENDOR_SKILLS)
-        code = textwrap.dedent("""
-            import json
-            import os
-            import runpy
-            from pathlib import Path
-
-            module = runpy.run_path(os.environ["VENDOR_SKILLS_SCRIPT"])
-            path = Path(os.environ["VENDOR_SKILLS_ROOT"]) / "vendor" / "skills.json"
-            manifest = json.loads(path.read_text())
-            manifest["skills"]["local"]["destination"] = "../escape"
-            module["write_manifest"](manifest)
-            """)
-
-        result = subprocess.run(
-            ["python3", "-c", code],
-            text=True,
-            capture_output=True,
-            env=environment,
-            check=False,
-        )
-
-        self.assertNotEqual(result.returncode, 0)
-        self.assertIn("safe relative path", result.stderr)
-        self.assertEqual(manifest_path.read_text(), original)
-
-    def test_check_detects_output_and_recipe_drift(self):
+    def test_check_detects_output_and_repository_recipe_drift(self):
         self.vendor("sync")
         skill = self.root / "skills" / "local" / "SKILL.md"
         skill.write_text(skill.read_text() + "Local edit.\n")
@@ -189,7 +221,7 @@ class VendorSkillsTests(unittest.TestCase):
         self.vendor("sync", "--force")
         manifest_path = self.root / "vendor" / "skills.json"
         manifest = json.loads(manifest_path.read_text())
-        manifest["skills"]["local"]["branch"] = "next"
+        manifest["repositories"]["upstream"]["branch"] = "next"
         manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
 
         recipe_check = self.vendor("check", check=False)
@@ -217,7 +249,7 @@ class VendorSkillsTests(unittest.TestCase):
         self.assertIn("Patched body.", skill)
         self.vendor("check")
 
-    def test_patch_cannot_change_local_name(self):
+    def test_patch_cannot_change_derived_local_name(self):
         self.vendor("sync")
         skill = self.root / "skills" / "local" / "SKILL.md"
         original_skill = skill.read_text()
@@ -264,51 +296,131 @@ class VendorSkillsTests(unittest.TestCase):
         self.assertEqual(license_path.read_text(), original_license)
         self.vendor("sync")
 
-    def test_update_advances_revision_and_rebuilds(self):
+    def test_manifest_install_failure_restores_repository_outputs(self):
+        self.add_sibling()
         self.vendor("sync")
-        skill = self.upstream / "skills" / "upstream" / "SKILL.md"
-        updated = skill.read_text().replace("name: upstream", "name: renamed-upstream")
-        skill.write_text(updated + "Upstream update.\n")
+        manifest_path = self.root / "vendor" / "skills.json"
+        local_path = self.root / "skills" / "local"
+        sibling_path = self.root / "skills" / "sibling"
+        license_path = self.root / "vendor" / "licenses" / "upstream.txt"
+        original_manifest_bytes = manifest_path.read_bytes()
+        original_manifest = self.manifest()
+        original_local = self.snapshot_tree(local_path)
+        original_sibling = self.snapshot_tree(sibling_path)
+        original_license = license_path.read_bytes()
+
+        for name in ("upstream", "sibling"):
+            skill = self.upstream / "skills" / name / "SKILL.md"
+            skill.write_text(skill.read_text() + f"Updated {name}.\n")
+        (self.upstream / "LICENSE").write_text("Updated license.\n")
         self.git("add", ".")
-        self.git("commit", "-m", "Update skill")
+        self.git("commit", "-m", "Update repository outputs")
+        real_replace = Path.replace
+
+        for error_type in (OSError, KeyboardInterrupt):
+            with self.subTest(error_type=error_type.__name__):
+                module = self.load_vendor_module()
+                in_memory_manifest = module["load_manifest"]()
+                failed = False
+
+                def fail_manifest_install(
+                    path: Path,
+                    target: Path,
+                    error: type[OSError | KeyboardInterrupt] = error_type,
+                ) -> Path:
+                    nonlocal failed
+                    if (
+                        not failed
+                        and path.name == "skills.json"
+                        and Path(target) == manifest_path
+                    ):
+                        failed = True
+                        raise error("manifest install failed")
+                    return real_replace(path, target)
+
+                with (
+                    mock.patch.object(Path, "replace", new=fail_manifest_install),
+                    self.assertRaises(error_type),
+                ):
+                    module["command_update"](in_memory_manifest, force=False)
+
+                self.assertEqual(in_memory_manifest, original_manifest)
+                self.assertEqual(manifest_path.read_bytes(), original_manifest_bytes)
+                self.assertEqual(self.snapshot_tree(local_path), original_local)
+                self.assertEqual(self.snapshot_tree(sibling_path), original_sibling)
+                self.assertEqual(license_path.read_bytes(), original_license)
+                self.assertEqual(list(self.root.glob(".vendor-skills-recovery-*")), [])
+
+    def test_failed_restoration_keeps_recovery_files(self):
+        module = self.load_vendor_module()
+        managed = self.root / "managed"
+        staged = self.root / "staged"
+        managed.mkdir()
+        staged.mkdir()
+        first = managed / "first"
+        second = managed / "second"
+        first.write_text("old first\n")
+        second.write_text("old second\n")
+        staged_first = staged / "first"
+        staged_second = staged / "second"
+        staged_first.write_text("new first\n")
+        staged_second.write_text("new second\n")
+        real_replace = Path.replace
+
+        def fail_install_and_restore(path: Path, target: Path) -> Path:
+            if path == staged_second:
+                raise OSError("install failed")
+            if path.name == "1" and path.parent.name.startswith(
+                ".vendor-skills-recovery-"
+            ):
+                raise OSError("restore failed")
+            return real_replace(path, target)
+
+        with (
+            mock.patch.object(Path, "replace", new=fail_install_and_restore),
+            self.assertRaises(module["VendorError"]) as raised,
+        ):
+            module["replace_paths"]([(staged_first, first), (staged_second, second)])
+
+        self.assertIn("recovery files kept at", str(raised.exception))
+        recovery = list(self.root.glob(".vendor-skills-recovery-*"))
+        self.assertEqual(len(recovery), 1)
+        recovered = sorted(
+            path.read_text() for path in recovery[0].iterdir() if path.is_file()
+        )
+        self.assertEqual(recovered, ["old first\n", "old second\n"])
+        shutil.rmtree(recovery[0])
+
+    def test_update_advances_shared_revision_and_rebuilds_all_siblings(self):
+        self.add_sibling()
+        self.vendor("sync")
+        for name in ("upstream", "sibling"):
+            skill = self.upstream / "skills" / name / "SKILL.md"
+            skill.write_text(skill.read_text() + f"Updated {name}.\n")
+        self.git("add", ".")
+        self.git("commit", "-m", "Update skills")
         updated_revision = self.revision()
 
         result = self.vendor("update")
 
-        self.assertIn("updated local", result.stdout)
-        self.assertEqual(self.manifest_entry()["revision"], updated_revision)
-        vendored = (self.root / "skills" / "local" / "SKILL.md").read_text()
-        self.assertIn("Upstream update.", vendored)
-        self.assertIn("name: local", vendored)
-        self.assertNotIn("name: renamed-upstream", vendored)
+        self.assertIn("updated upstream", result.stdout)
+        self.assertEqual(self.repository_entry()["revision"], updated_revision)
+        local = (self.root / "skills" / "local" / "SKILL.md").read_text()
+        sibling = (self.root / "skills" / "sibling" / "SKILL.md").read_text()
+        self.assertIn("Updated upstream.", local)
+        self.assertIn("Updated sibling.", sibling)
+        self.assertIn("name: local", local)
+        self.assertIn("name: sibling", sibling)
         self.vendor("check")
 
-    def test_renamed_upstream_source_preserves_output_and_pin(self):
+    def test_missing_license_preserves_output_and_shared_pin(self):
         self.vendor("sync")
-        skill = self.root / "skills" / "local" / "SKILL.md"
-        original_skill = skill.read_text()
-        original_revision = self.manifest_entry()["revision"]
-        (self.upstream / "skills" / "upstream").rename(
-            self.upstream / "skills" / "renamed"
-        )
-        self.git("add", "-A")
-        self.git("commit", "-m", "Rename skill directory")
-
-        result = self.vendor("update", check=False)
-
-        self.assertNotEqual(result.returncode, 0)
-        self.assertIn("may have been renamed or removed", result.stderr)
-        self.assertEqual(skill.read_text(), original_skill)
-        self.assertEqual(self.manifest_entry()["revision"], original_revision)
-        self.vendor("check")
-
-    def test_failed_update_preserves_output_and_pinned_revision(self):
-        self.vendor("sync")
-        skill = self.root / "skills" / "local" / "SKILL.md"
-        license_file = self.root / "vendor" / "licenses" / "upstream.txt"
-        original_skill = skill.read_text()
-        original_license = license_file.read_text()
-        original_revision = self.manifest_entry()["revision"]
+        manifest_path = self.root / "vendor" / "skills.json"
+        skill_path = self.root / "skills" / "local" / "SKILL.md"
+        license_path = self.root / "vendor" / "licenses" / "upstream.txt"
+        original_manifest = manifest_path.read_text()
+        original_skill = skill_path.read_text()
+        original_license = license_path.read_text()
 
         upstream_skill = self.upstream / "skills" / "upstream" / "SKILL.md"
         upstream_skill.write_text(upstream_skill.read_text() + "Incomplete update.\n")
@@ -319,10 +431,103 @@ class VendorSkillsTests(unittest.TestCase):
         result = self.vendor("update", check=False)
 
         self.assertNotEqual(result.returncode, 0)
-        self.assertEqual(skill.read_text(), original_skill)
-        self.assertEqual(license_file.read_text(), original_license)
-        self.assertEqual(self.manifest_entry()["revision"], original_revision)
+        self.assertEqual(manifest_path.read_text(), original_manifest)
+        self.assertEqual(skill_path.read_text(), original_skill)
+        self.assertEqual(license_path.read_text(), original_license)
         self.vendor("check")
+
+    def test_failed_sibling_patch_preserves_group_outputs_and_pin(self):
+        patch = self.root / "vendor" / "patches" / "sibling.patch"
+        patch.parent.mkdir()
+        patch.write_text(
+            "--- a/SKILL.md\n"
+            "+++ b/SKILL.md\n"
+            "@@ -5 +5 @@\n"
+            "-Sibling body.\n"
+            "+Patched sibling.\n"
+        )
+        self.add_sibling()
+        manifest_path = self.root / "vendor" / "skills.json"
+        manifest = json.loads(manifest_path.read_text())
+        manifest["skills"]["sibling"]["patches"] = ["vendor/patches/sibling.patch"]
+        manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
+        self.vendor("sync")
+        local_path = self.root / "skills" / "local" / "SKILL.md"
+        sibling_path = self.root / "skills" / "sibling" / "SKILL.md"
+        license_path = self.root / "vendor" / "licenses" / "upstream.txt"
+        original_manifest = manifest_path.read_text()
+        original_local = local_path.read_text()
+        original_sibling = sibling_path.read_text()
+        original_license = license_path.read_text()
+
+        upstream_skill = self.upstream / "skills" / "upstream" / "SKILL.md"
+        upstream_skill.write_text(upstream_skill.read_text() + "Incomplete update.\n")
+        sibling_source = self.upstream / "skills" / "sibling" / "SKILL.md"
+        sibling_source.write_text(
+            sibling_source.read_text().replace("Sibling body.", "Changed sibling.")
+        )
+        self.git("add", ".")
+        self.git("commit", "-m", "Break sibling patch")
+
+        result = self.vendor("update", check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(manifest_path.read_text(), original_manifest)
+        self.assertEqual(local_path.read_text(), original_local)
+        self.assertEqual(sibling_path.read_text(), original_sibling)
+        self.assertEqual(license_path.read_text(), original_license)
+        self.vendor("check")
+
+    def test_failed_sibling_update_preserves_group_outputs_and_pin(self):
+        self.add_sibling()
+        self.vendor("sync")
+        manifest_path = self.root / "vendor" / "skills.json"
+        local_path = self.root / "skills" / "local" / "SKILL.md"
+        sibling_path = self.root / "skills" / "sibling" / "SKILL.md"
+        license_path = self.root / "vendor" / "licenses" / "upstream.txt"
+        original_manifest = manifest_path.read_text()
+        original_local = local_path.read_text()
+        original_sibling = sibling_path.read_text()
+        original_license = license_path.read_text()
+
+        upstream_skill = self.upstream / "skills" / "upstream" / "SKILL.md"
+        upstream_skill.write_text(upstream_skill.read_text() + "Incomplete update.\n")
+        sibling_source = self.upstream / "skills" / "sibling"
+        for child in sibling_source.iterdir():
+            child.unlink()
+        sibling_source.rmdir()
+        self.git("add", "-A")
+        self.git("commit", "-m", "Remove sibling")
+
+        result = self.vendor("update", check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("may have been renamed or removed", result.stderr)
+        self.assertEqual(manifest_path.read_text(), original_manifest)
+        self.assertEqual(local_path.read_text(), original_local)
+        self.assertEqual(sibling_path.read_text(), original_sibling)
+        self.assertEqual(license_path.read_text(), original_license)
+        self.vendor("check")
+
+    def test_selected_sync_and_check_ignore_unselected_drift(self):
+        self.add_sibling()
+        self.vendor("sync")
+        sibling = self.root / "skills" / "sibling" / "SKILL.md"
+        sibling.write_text(sibling.read_text() + "Sibling edit.\n")
+
+        self.vendor("check", "local")
+        self.vendor("sync", "local")
+
+        self.assertIn("Sibling edit.", sibling.read_text())
+        full_check = self.vendor("check", check=False)
+        self.assertNotEqual(full_check.returncode, 0)
+        self.assertIn("sibling: vendored output drifted", full_check.stderr)
+
+    def test_update_rejects_skill_names(self):
+        result = self.vendor("update", "local", check=False)
+
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("unrecognized arguments: local", result.stderr)
 
 
 if __name__ == "__main__":
