@@ -70,6 +70,5 @@ behavior before editing.
 
 ## 5. Implement
 
-Use [develop](../develop/SKILL.md) for the chosen change. Pass the selected
-candidate's evidence, scope, accepted contracts, and risks as its
-requirements.
+Use the `develop` skill for the chosen change. Pass the selected candidate's
+evidence, scope, accepted contracts, and risks as its requirements.
