@@ -12,8 +12,11 @@
         "source": "LICENSE",
         "destination": "vendor/licenses/bholmesdev-skills.txt"
       },
-      "recipeSha256": "9b1d825ad84ed32ed351c5513514b92f81b9b4a26387d2f580c29094f4b4cee5",
-      "outputSha256": "ea0ca9d9149d1f7cb78bec96643a594edc67005ceb3238eac6f80b60a676b942"
+      "patches": [
+        "vendor/patches/self-review.patch"
+      ],
+      "recipeSha256": "64b948d7c02fa1c08a4bd27e75340b2f6c55d3a25c9e4e2769f124c42e8e719d",
+      "outputSha256": "d3050e52f531cfd5d67c9d6945ad42a9d1299f886def64f6ec74c804378f6cfe"
     },
     "zero-tech-debt": {
       "repository": "https://github.com/jnsahaj/skills.git",
