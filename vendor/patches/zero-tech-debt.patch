@@ -1,0 +1,13 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -3,3 +3,3 @@
+ description: Rework a change as if the intended UX and architecture existed from day one, deleting compatibility cruft and accidental complexity.
+-user-invocable: true
++disable-model-invocation: true
+ ---
+--- /dev/null
++++ b/agents/openai.yaml
+@@ -0,0 +1,3 @@
++interface:
++  display_name: "Zero Tech Debt"
++  short_description: "Remove compatibility cruft and accidental complexity"

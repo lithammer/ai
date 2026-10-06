@@ -1,0 +1,737 @@
+#!/usr/bin/env python3
+"""Reproduce and update third-party skills checked into this repository."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import io
+import json
+import os
+import re
+import stat
+import subprocess
+import sys
+import tarfile
+import tempfile
+from collections.abc import Set as AbstractSet
+from pathlib import Path
+from typing import Literal, Protocol, TypedDict, cast
+
+ROOT = Path(os.environ.get("VENDOR_SKILLS_ROOT", Path(__file__).resolve().parents[1]))
+MANIFEST_PATH = ROOT / "vendor" / "skills.json"
+CACHE_ROOT = Path(
+    os.environ.get(
+        "VENDOR_SKILLS_CACHE",
+        Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache"))
+        / "lithammer-ai"
+        / "vendor-skills",
+    )
+)
+LOCK_FIELDS = ("outputSha256", "recipeSha256")
+MANIFEST_FIELDS = {"version", "skills"}
+REQUIRED_ENTRY_FIELDS = {
+    "repository",
+    "branch",
+    "revision",
+    "source",
+    "destination",
+    "name",
+}
+OPTIONAL_ENTRY_FIELDS = {"license", "patches", *LOCK_FIELDS}
+LICENSE_FIELDS = {"source", "destination"}
+NAME_PATTERN = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
+REVISION_PATTERN = re.compile(r"(?:[0-9a-f]{40}|[0-9a-f]{64})")
+HASH_PATTERN = re.compile(r"[0-9a-f]{64}")
+CLI_EPILOG = """\
+Vendored skill directories are generated from vendor/skills.json. Edit the
+manifest or patch files listed by its patches fields, then run sync; do not
+edit a generated copy directly. Local names remain stable when upstream names change.
+A missing upstream source fails before replacing the existing copy or pin.
+
+examples:
+  scripts/vendor-skills check
+  scripts/vendor-skills sync self-review
+  scripts/vendor-skills update zero-tech-debt
+"""
+
+
+class LicenseSpec(TypedDict):
+    source: str
+    destination: str
+
+
+class RequiredSkillEntry(TypedDict):
+    repository: str
+    branch: str
+    revision: str
+    source: str
+    destination: str
+    name: str
+
+
+class SkillEntry(RequiredSkillEntry, total=False):
+    license: LicenseSpec
+    patches: list[str]
+    recipeSha256: str
+    outputSha256: str
+
+
+class Manifest(TypedDict):
+    version: Literal[1]
+    skills: dict[str, SkillEntry]
+
+
+class Digest(Protocol):
+    def update(self, data: bytes, /) -> None: ...
+
+
+Command = Literal["sync", "update", "check"]
+
+
+class Arguments(argparse.Namespace):
+    command: Command
+    skills: list[str]
+    force: bool
+
+
+class VendorError(Exception):
+    """An expected failure that main reports without a traceback."""
+
+
+class CommandError(VendorError):
+    """Failure while invoking an external command."""
+
+
+class ManifestError(VendorError):
+    """Invalid or unusable vendoring manifest."""
+
+
+class SourceError(VendorError):
+    """Invalid or unavailable upstream source material."""
+
+
+class OutputError(VendorError):
+    """Missing, unsupported, or drifted managed output."""
+
+
+def require_mapping(value: object, context: str) -> dict[str, object]:
+    """Require a JSON object with string keys."""
+    if not isinstance(value, dict) or not all(
+        isinstance(key, str) for key in value
+    ):
+        raise ManifestError(f"{context} must be an object with string keys")
+    return cast(dict[str, object], value)
+
+
+def validate_fields(
+    value: dict[str, object],
+    *,
+    required: AbstractSet[str],
+    optional: AbstractSet[str] = frozenset(),
+    context: str,
+) -> None:
+    """Reject missing and unknown object fields."""
+    missing = required - value.keys()
+    if missing:
+        raise ManifestError(f"{context} is missing: {', '.join(sorted(missing))}")
+    unknown = value.keys() - required - optional
+    if unknown:
+        raise ManifestError(
+            f"{context} has unknown fields: {', '.join(sorted(unknown))}"
+        )
+
+
+def require_string(value: dict[str, object], field: str, context: str) -> str:
+    """Require a non-empty string field."""
+    item = value[field]
+    if not isinstance(item, str) or not item:
+        raise ManifestError(f"{context}.{field} must be a non-empty string")
+    return item
+
+
+def validate_relative_path(path: str, field: str, prefix: str | None = None) -> None:
+    """Require a portable relative repository path under an optional prefix."""
+    parts = path.split("/")
+    if path.startswith("/") or "\\" in path or any(
+        part in {"", ".", ".."} for part in parts
+    ):
+        raise ManifestError(f"{field} must be a safe relative path: {path!r}")
+    prefix_parts = prefix.split("/") if prefix else []
+    if prefix_parts and (
+        parts[: len(prefix_parts)] != prefix_parts
+        or len(parts) == len(prefix_parts)
+    ):
+        raise ManifestError(f"{field} must be under {prefix}/: {path!r}")
+
+
+def validate_manifest(value: object) -> Manifest:
+    """Validate and return the complete version 1 manifest schema."""
+    manifest = require_mapping(value, "manifest")
+    validate_fields(manifest, required=MANIFEST_FIELDS, context="manifest")
+    if manifest["version"] != 1:
+        raise ManifestError("manifest.version must be 1")
+
+    skills = require_mapping(manifest["skills"], "manifest.skills")
+    entries: dict[str, SkillEntry] = {}
+    license_destinations: dict[str, str] = {}
+    for skill, raw_entry in skills.items():
+        if not NAME_PATTERN.fullmatch(skill):
+            raise ManifestError(f"invalid manifest skill name: {skill!r}")
+        context = f"manifest.skills.{skill}"
+        entry = require_mapping(raw_entry, context)
+        validate_fields(
+            entry,
+            required=REQUIRED_ENTRY_FIELDS,
+            optional=OPTIONAL_ENTRY_FIELDS,
+            context=context,
+        )
+
+        name = require_string(entry, "name", context)
+        if name != skill:
+            raise ManifestError(f"{context}.name must match its manifest key")
+        require_string(entry, "repository", context)
+        require_string(entry, "branch", context)
+        revision = require_string(entry, "revision", context)
+        source = require_string(entry, "source", context)
+        destination = require_string(entry, "destination", context)
+        if not REVISION_PATTERN.fullmatch(revision):
+            raise ManifestError(f"{context}.revision must be a full Git object ID")
+        validate_relative_path(source, f"{context}.source")
+        validate_relative_path(destination, f"{context}.destination", "skills")
+        if Path(destination).name != name:
+            raise ManifestError(f"{context}.destination must end with {name!r}")
+        license_value = entry.get("license")
+        if license_value is not None:
+            license_context = f"{context}.license"
+            license_entry = require_mapping(license_value, license_context)
+            validate_fields(
+                license_entry, required=LICENSE_FIELDS, context=license_context
+            )
+            license_source = require_string(license_entry, "source", license_context)
+            license_destination = require_string(
+                license_entry, "destination", license_context
+            )
+            validate_relative_path(license_source, f"{license_context}.source")
+            validate_relative_path(
+                license_destination,
+                f"{license_context}.destination",
+                "vendor/licenses",
+            )
+            if license_destination in license_destinations:
+                raise ManifestError(
+                    f"{license_context}.destination duplicates skill "
+                    f"{license_destinations[license_destination]!r}"
+                )
+            license_destinations[license_destination] = skill
+
+        patches = entry.get("patches")
+        if patches is not None:
+            if not isinstance(patches, list) or not all(
+                isinstance(patch, str) for patch in patches
+            ):
+                raise ManifestError(f"{context}.patches must be a list of paths")
+            if len(patches) != len(set(patches)):
+                raise ManifestError(f"{context}.patches contains duplicates")
+            for patch in patches:
+                validate_relative_path(
+                    patch, f"{context}.patches", "vendor/patches"
+                )
+
+        lock_values = [entry.get(field) for field in LOCK_FIELDS]
+        if any(value is None for value in lock_values) != all(
+            value is None for value in lock_values
+        ):
+            raise ManifestError(f"{context} must declare both lock hashes or neither")
+        for field in LOCK_FIELDS:
+            lock_value = entry.get(field)
+            if lock_value is not None and (
+                not isinstance(lock_value, str)
+                or not HASH_PATTERN.fullmatch(lock_value)
+            ):
+                raise ManifestError(f"{context}.{field} must be a SHA-256 digest")
+
+        entries[skill] = cast(SkillEntry, dict(entry))
+
+    return Manifest(version=1, skills=entries)
+
+
+def run(*args: str, cwd: Path | None = None, input: bytes | None = None) -> bytes:
+    """Run a subprocess and return its standard output."""
+    try:
+        return subprocess.run(
+            args,
+            cwd=cwd,
+            input=input,
+            capture_output=True,
+            check=True,
+        ).stdout
+    except FileNotFoundError as error:
+        raise CommandError(f"required command not found: {args[0]}") from error
+    except subprocess.CalledProcessError as error:
+        detail = error.stderr.decode(errors="replace").strip()
+        raise CommandError(f"{' '.join(args)} failed: {detail}") from error
+
+
+def load_manifest() -> Manifest:
+    """Load and validate the vendoring manifest."""
+    try:
+        manifest: object = json.loads(MANIFEST_PATH.read_text())
+    except FileNotFoundError as error:
+        raise ManifestError(f"manifest not found: {MANIFEST_PATH}") from error
+    except json.JSONDecodeError as error:
+        raise ManifestError(f"invalid JSON in {MANIFEST_PATH}: {error}") from error
+    return validate_manifest(manifest)
+
+
+def write_manifest(manifest: Manifest) -> None:
+    """Validate and write the manifest in its canonical JSON format."""
+    validated = validate_manifest(manifest)
+    MANIFEST_PATH.write_text(json.dumps(validated, indent=2) + "\n")
+
+
+def selected_skills(
+    manifest: Manifest, names: list[str]
+) -> list[tuple[str, SkillEntry]]:
+    """Select named skills, or every skill when no names are given."""
+    skills = manifest["skills"]
+    if not names:
+        return list(skills.items())
+
+    missing = [name for name in names if name not in skills]
+    if missing:
+        raise ManifestError(f"unknown skill(s): {', '.join(missing)}")
+    return [(name, skills[name]) for name in names]
+
+
+def cache_path(repository: str) -> Path:
+    """Return the stable cache path for an upstream repository."""
+    key = hashlib.sha256(repository.encode()).hexdigest()[:16]
+    return CACHE_ROOT / key
+
+
+def ensure_checkout(entry: SkillEntry, *, fetch: bool) -> Path:
+    """Create the bare checkout and optionally fetch its tracking branch."""
+    repository = entry["repository"]
+    checkout = cache_path(repository)
+    CACHE_ROOT.mkdir(parents=True, exist_ok=True)
+
+    if not checkout.exists():
+        run("git", "clone", "--bare", repository, str(checkout))
+    if fetch:
+        branch = entry["branch"]
+        run(
+            "git",
+            "-C",
+            str(checkout),
+            "fetch",
+            "--force",
+            "--prune",
+            "origin",
+            f"+refs/heads/{branch}:refs/remotes/origin/{branch}",
+        )
+    return checkout
+
+
+def has_revision(checkout: Path, revision: str) -> bool:
+    """Return whether a checkout contains the requested commit."""
+    result = subprocess.run(
+        ["git", "-C", str(checkout), "cat-file", "-e", f"{revision}^{{commit}}"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    return result.returncode == 0
+
+
+def ensure_revision(entry: SkillEntry) -> Path:
+    """Return a checkout containing the pinned revision."""
+    checkout = ensure_checkout(entry, fetch=False)
+    if has_revision(checkout, entry["revision"]):
+        return checkout
+
+    checkout = ensure_checkout(entry, fetch=True)
+    if has_revision(checkout, entry["revision"]):
+        return checkout
+    raise SourceError(
+        f"revision not found for {entry['repository']}: {entry['revision']}"
+    )
+
+
+def resolve_revision(entry: SkillEntry) -> str:
+    """Resolve a skill's tracking branch to a commit."""
+    branch = entry["branch"]
+    checkout = ensure_checkout(entry, fetch=True)
+    remote_branch = f"refs/remotes/origin/{branch}"
+    resolved = run(
+        "git", "-C", str(checkout), "rev-parse", f"{remote_branch}^{{commit}}"
+    )
+    return resolved.decode().strip()
+
+
+def safe_extract(archive: bytes, destination: Path) -> None:
+    """Extract a tar archive after rejecting paths outside the destination."""
+    destination = destination.resolve()
+    with tarfile.open(fileobj=io.BytesIO(archive), mode="r:") as tar:
+        for member in tar.getmembers():
+            target = (destination / member.name).resolve()
+            if target != destination and destination not in target.parents:
+                raise SourceError(f"unsafe path in git archive: {member.name}")
+        tar.extractall(destination)
+
+
+def source_directory_exists(checkout: Path, revision: str, source: str) -> bool:
+    """Return whether an upstream revision contains a source directory."""
+    result = subprocess.run(
+        ["git", "-C", str(checkout), "cat-file", "-t", f"{revision}:{source}"],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    return result.returncode == 0 and result.stdout.strip() == "tree"
+
+
+def extract_directory(
+    checkout: Path, revision: str, source: str, destination: Path
+) -> None:
+    """Extract an upstream directory at a revision."""
+    if not source_directory_exists(checkout, revision, source):
+        raise SourceError(
+            f"upstream source {source!r} is missing at {revision}; "
+            "it may have been renamed or removed"
+        )
+    archive = run("git", "-C", str(checkout), "archive", f"{revision}:{source}")
+    destination.mkdir()
+    safe_extract(archive, destination)
+
+
+def read_git_file(checkout: Path, revision: str, source: str) -> bytes:
+    """Read one file from an upstream revision."""
+    return run("git", "-C", str(checkout), "show", f"{revision}:{source}")
+
+
+def read_skill_document(skill_directory: Path) -> tuple[Path, str, re.Match[str]]:
+    """Read a skill document and locate its YAML frontmatter."""
+    skill_file = skill_directory / "SKILL.md"
+    try:
+        text = skill_file.read_text()
+    except FileNotFoundError as error:
+        raise SourceError(
+            f"vendored directory has no SKILL.md: {skill_directory}"
+        ) from error
+
+    match = re.match(r"\A---\n(?P<frontmatter>.*?)\n---\n", text, flags=re.DOTALL)
+    if not match:
+        raise SourceError(f"SKILL.md has no YAML frontmatter: {skill_file}")
+    return skill_file, text, match
+
+
+def rename_skill(skill_directory: Path, name: str) -> None:
+    """Replace the skill's frontmatter name."""
+    skill_file, text, match = read_skill_document(skill_directory)
+    frontmatter, replacements = re.subn(
+        r"(?m)^name:\s*[^\n]+$", f"name: {name}", match.group("frontmatter")
+    )
+    if replacements != 1:
+        raise SourceError(
+            f"expected one name field in {skill_file}, found {replacements}"
+        )
+    skill_file.write_text(f"---\n{frontmatter}\n---\n{text[match.end():]}")
+
+
+def validate_skill_name(skill_directory: Path, expected: str) -> None:
+    """Require a staged skill to expose its declared local name."""
+    skill_file, _, match = read_skill_document(skill_directory)
+    names = re.findall(r"(?m)^name:\s*([^\n]+)$", match.group("frontmatter"))
+    if len(names) != 1 or names[0].strip() != expected:
+        actual = names[0].strip() if len(names) == 1 else f"{len(names)} name fields"
+        raise SourceError(
+            f"expected local name {expected!r} in {skill_file}, found {actual!r}"
+        )
+
+
+def apply_patches(skill_directory: Path, patches: list[str]) -> None:
+    """Apply declared patches to a staged skill."""
+    for patch_path in patches:
+        patch = ROOT / patch_path
+        if not patch.is_file():
+            raise SourceError(f"patch not found: {patch}")
+        run(
+            "patch",
+            "--batch",
+            "--forward",
+            "-p1",
+            "-d",
+            str(skill_directory),
+            input=patch.read_bytes(),
+        )
+
+
+def replace_directory(source: Path, destination: Path) -> None:
+    """Atomically replace a directory and restore it when replacement fails."""
+    with tempfile.TemporaryDirectory(dir=destination.parent) as temporary:
+        previous = Path(temporary) / "previous"
+        had_previous = destination.exists() or destination.is_symlink()
+        if had_previous:
+            destination.replace(previous)
+        try:
+            source.replace(destination)
+        except OSError:
+            if had_previous:
+                previous.replace(destination)
+            raise
+
+
+def stage_file(contents: bytes, destination: Path) -> Path:
+    """Write file contents beside their destination for atomic replacement."""
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(delete=False, dir=destination.parent) as staged:
+        os.fchmod(staged.fileno(), 0o644)
+        staged.write(contents)
+        return Path(staged.name)
+
+
+def sync_skill(name: str, entry: SkillEntry) -> None:
+    """Rebuild one vendored skill from its pinned revision."""
+    checkout = ensure_revision(entry)
+    revision = entry["revision"]
+    destination = ROOT / entry["destination"]
+    license_entry = entry.get("license")
+    license_destination = None
+    staged_license = None
+
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(dir=destination.parent) as temporary:
+        staged = Path(temporary) / name
+        extract_directory(checkout, revision, entry["source"], staged)
+        rename_skill(staged, entry["name"])
+        apply_patches(staged, entry.get("patches", []))
+        validate_skill_name(staged, entry["name"])
+
+        if license_entry:
+            license_destination = ROOT / license_entry["destination"]
+            license_contents = read_git_file(
+                checkout, revision, license_entry["source"]
+            )
+            staged_license = stage_file(license_contents, license_destination)
+
+        try:
+            replace_directory(staged, destination)
+            if staged_license and license_destination:
+                staged_license.replace(license_destination)
+        finally:
+            if staged_license and staged_license.exists():
+                staged_license.unlink()
+
+    entry["recipeSha256"] = recipe_hash(entry)
+    entry["outputSha256"] = output_hash(entry)
+
+
+def hash_path(hasher: Digest, path: Path, label: str) -> None:
+    """Add a managed path's structure and contents to a digest."""
+    try:
+        root_mode = path.lstat().st_mode
+    except FileNotFoundError as error:
+        raise OutputError(f"managed output is missing: {path}") from error
+
+    paths = [path]
+    if stat.S_ISDIR(root_mode):
+        paths.extend(sorted(path.rglob("*")))
+
+    for child in paths:
+        mode = child.lstat().st_mode
+        relative = child.relative_to(path) if child != path else Path()
+        hasher.update(label.encode() + b"\0" + relative.as_posix().encode() + b"\0")
+        if stat.S_ISLNK(mode):
+            hasher.update(b"link\0" + str(child.readlink()).encode() + b"\0")
+        elif stat.S_ISDIR(mode):
+            hasher.update(b"dir\0")
+        elif stat.S_ISREG(mode):
+            hasher.update(b"file+x\0" if mode & stat.S_IXUSR else b"file\0")
+            hasher.update(child.read_bytes())
+            hasher.update(b"\0")
+        else:
+            raise OutputError(f"unsupported managed output: {child}")
+
+
+def output_hash(entry: SkillEntry) -> str:
+    """Hash every output managed by a skill entry."""
+    hasher = hashlib.sha256()
+    destination = entry["destination"]
+    hash_path(hasher, ROOT / destination, destination)
+    license_entry = entry.get("license")
+    if license_entry:
+        license_destination = license_entry["destination"]
+        hash_path(hasher, ROOT / license_destination, license_destination)
+    return hasher.hexdigest()
+
+
+def recipe_hash(entry: SkillEntry) -> str:
+    """Hash a skill's source recipe and patch contents."""
+    recipe = {key: value for key, value in entry.items() if key not in LOCK_FIELDS}
+    serialized = json.dumps(recipe, sort_keys=True, separators=(",", ":"))
+    hasher = hashlib.sha256(serialized.encode())
+    for patch_path in entry.get("patches", []):
+        patch = ROOT / patch_path
+        if not patch.is_file():
+            raise SourceError(f"patch not found: {patch}")
+        hasher.update(b"\0" + patch_path.encode() + b"\0" + patch.read_bytes())
+    return hasher.hexdigest()
+
+
+def guard_output(name: str, entry: SkillEntry, *, force: bool) -> None:
+    """Refuse to overwrite vendored output that has drifted."""
+    expected = entry.get("outputSha256")
+    if force or not expected:
+        return
+    try:
+        actual = output_hash(entry)
+    except VendorError as error:
+        raise OutputError(
+            f"{name}: cannot verify vendored output; restore it or rerun "
+            f"with --force: {error}"
+        ) from error
+    if actual != expected:
+        raise OutputError(
+            f"{name}: vendored output drifted; preserve changes as a patch "
+            "or rerun with --force"
+        )
+
+
+def check_skill(name: str, entry: SkillEntry) -> list[str]:
+    """Return drift errors for one vendored skill."""
+    errors = []
+    try:
+        actual_recipe = recipe_hash(entry)
+        if entry.get("recipeSha256") != actual_recipe:
+            errors.append(f"{name}: manifest or patches changed; run sync")
+
+        actual_output = output_hash(entry)
+        if entry.get("outputSha256") != actual_output:
+            errors.append(
+                f"{name}: vendored output drifted; run sync or preserve "
+                "changes as a patch"
+            )
+    except VendorError as error:
+        errors.append(f"{name}: {error}")
+    return errors
+
+
+def sync_and_persist(manifest: Manifest, name: str, entry: SkillEntry) -> None:
+    """Sync one skill and persist its resulting lock state."""
+    sync_skill(name, entry)
+    write_manifest(manifest)
+
+
+def command_sync(manifest: Manifest, names: list[str], *, force: bool) -> None:
+    """Rebuild selected skills at their pinned revisions."""
+    for name, entry in selected_skills(manifest, names):
+        guard_output(name, entry, force=force)
+        sync_and_persist(manifest, name, entry)
+        print(f"synced {name} at {entry['revision'][:12]}")
+
+
+def command_update(manifest: Manifest, names: list[str], *, force: bool) -> None:
+    """Advance selected skills to their tracking branches and rebuild them."""
+    for name, entry in selected_skills(manifest, names):
+        guard_output(name, entry, force=force)
+        old_revision = entry["revision"]
+        entry["revision"] = resolve_revision(entry)
+        sync_and_persist(manifest, name, entry)
+        if entry["revision"] == old_revision:
+            print(f"up to date {name} at {entry['revision'][:12]}")
+        else:
+            print(f"updated {name} {old_revision[:12]} -> {entry['revision'][:12]}")
+
+
+def command_check(manifest: Manifest, names: list[str]) -> None:
+    """Verify selected vendored skills without using the network."""
+    errors = []
+    selected = selected_skills(manifest, names)
+    for name, entry in selected:
+        skill_errors = check_skill(name, entry)
+        errors.extend(skill_errors)
+        if not skill_errors:
+            print(f"ok {name}")
+    if errors:
+        raise OutputError("\n".join(errors))
+
+
+def parse_args() -> Arguments:
+    """Parse the vendoring command line."""
+    parser = argparse.ArgumentParser(
+        description="Vendor third-party skills declared in vendor/skills.json.",
+        epilog=CLI_EPILOG,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    sync_parser = subparsers.add_parser(
+        "sync",
+        help="rebuild skills from pinned revisions",
+        description=(
+            "Rebuild selected skills at their pinned revisions without advancing "
+            "pins. Fetch source data if it is missing from the local cache."
+        ),
+    )
+    sync_parser.add_argument(
+        "skills", nargs="*", help="skill names to process; defaults to all"
+    )
+    sync_parser.add_argument(
+        "--force",
+        action="store_true",
+        help="allow overwriting local changes in managed output",
+    )
+
+    update_parser = subparsers.add_parser(
+        "update",
+        help="update skills from their tracking branches",
+        description=(
+            "Fetch configured tracking branches, rebuild selected skills at their "
+            "latest commits, and save the resulting pins and hashes."
+        ),
+    )
+    update_parser.add_argument(
+        "skills", nargs="*", help="skill names to process; defaults to all"
+    )
+    update_parser.add_argument(
+        "--force",
+        action="store_true",
+        help="allow overwriting local changes in managed output",
+    )
+
+    check_parser = subparsers.add_parser(
+        "check",
+        help="check vendored skills for drift",
+        description=(
+            "Verify local recipes and managed outputs against their recorded hashes "
+            "without using the network."
+        ),
+    )
+    check_parser.add_argument(
+        "skills", nargs="*", help="skill names to process; defaults to all"
+    )
+
+    return parser.parse_args(namespace=Arguments())
+
+
+def main() -> int:
+    """Run the requested vendoring command."""
+    args = parse_args()
+    try:
+        manifest = load_manifest()
+        match args.command:
+            case "sync":
+                command_sync(manifest, args.skills, force=args.force)
+            case "update":
+                command_update(manifest, args.skills, force=args.force)
+            case "check":
+                command_check(manifest, args.skills)
+    except VendorError as error:
+        print(error, file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

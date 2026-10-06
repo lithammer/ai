@@ -6,25 +6,23 @@ disable-model-invocation: true
 
 # Zero Tech Debt
 
-Rework the change from the intended end state, not from the historical path
-that produced the current patch.
+Rework the change from the intended end state, not from the historical path that produced the current patch.
 
 ## Steps
 
 1. State the intended end state in one or two sentences.
+
 2. Search for real callers before preserving compatibility.
-   If a mode, prop, wrapper, route alias, or fallback has no current caller,
-   delete it.
+   If a mode, prop, wrapper, route alias, or fallback has no current caller, delete it.
+
 3. Reshape around the final product surface.
-   Prefer one clear component or flow over mode flags. Split only when it
-   creates an obvious boundary such as state, layout, controls, or domain
-   commands.
+   Prefer one clear component or flow over mode flags. Split only when it creates an obvious boundary such as state, layout, controls, or domain commands.
+
 4. Move shared rules to one place.
-   Feature flags, permissions, route gating, URL state, and command naming
-   should not be duplicated across pages or hidden in view components.
+   Feature flags, permissions, route gating, URL state, and command naming should not be duplicated across pages or hidden in view components.
+
 5. Verify the intended flow.
-   Test the new behavior and any deleted assumptions that affect navigation,
-   permissions, or persisted state.
+   Test the new behavior and any deleted assumptions that affect navigation, permissions, or persisted state.
 
 ## Rules
 
