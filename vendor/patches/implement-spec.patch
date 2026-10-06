@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -36 +36 @@
+-7. Once all tickets are complete, call the Skill tool with `code-review` on the integration branch. Fix all issues raised by the code review in a single **implementer subagent**.
++7. Once all tickets are complete, call the Skill tool with `implement-review` on the integration branch. Fix all issues raised by the code review in a single **implementer subagent**.

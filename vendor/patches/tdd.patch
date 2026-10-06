@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -38 +38 @@
+-- **Refactoring is not part of the loop.** It belongs to the review stage (see the `code-review` skill), not the red → green implementation cycle.
++- **Refactoring is not part of the loop.** It belongs to the review stage (see the `implement-review` skill), not the red → green implementation cycle.
