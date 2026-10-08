@@ -31,16 +31,16 @@ would escape. Look for shared logic between implementation and expected
 results, cases that cannot distinguish the suspected error, and assertions
 that bind tests to internal structure.
 
-Before requesting a test, check whether the model already rules out the
-failure, and cite the mechanism that enforces it. Weigh retained coverage
-against existing checks or one-off verification. Explain why it is worth
-its fixtures and upkeep, then give a concrete case the current checks miss.
-An untested path alone is not a finding.
+Before reporting a gap, check whether the model already rules out the
+failure, and cite the mechanism that enforces it. Report a gap as a concrete
+case the current checks miss, for the implementer to verify once, not as a
+request for a retained test. An untested path alone is not a finding.
 
 ## Test value
 
 Read the added and changed tests beside the existing suite. For each, name
 the contract it protects and the credible regression that turns it red.
+Flag a new test the user did not ask for.
 Flag a test whose failure existing coverage already catches: each contract
 has one owner at the strongest boundary, and another layer needs a risk
 that owner cannot reach. Flag a near-duplicate that fits as a case in an
