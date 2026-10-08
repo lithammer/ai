@@ -14,7 +14,7 @@
     "mattpocock-skills": {
       "url": "https://github.com/mattpocock/skills.git",
       "branch": "main",
-      "revision": "2237a047bd95abfd1427df94f65165c39e24d3c1"
+      "revision": "f3fc5632f401156837ee3872f14fe33ccf1024ea"
     }
   },
   "skills": {
@@ -28,8 +28,8 @@
       "patches": [
         "vendor/patches/ask-matt.patch"
       ],
-      "recipeSha256": "2dd01b82b1e0baf1ebd6f72c8fbf2518d183e6074755043c652cfda43440298d",
-      "outputSha256": "4e441150d418490398c1354f4fef6e46bb7439e46a2d960aee80d7cdcb637613"
+      "recipeSha256": "d5566e5574aa3e5596653f6a930cb1fc75dae28927a34233078e8c5e586f58dd",
+      "outputSha256": "dc6d4eed20b134d1c7efd401f01c7be1976e42b427c51ae73df2469e42309ec1"
     },
     "implement": {
       "repository": "mattpocock-skills",
@@ -37,14 +37,14 @@
       "patches": [
         "vendor/patches/implement.patch"
       ],
-      "recipeSha256": "19f587169ff3a7f574ddbba0a7dd542f73a0d5166f3a39c86091ff88733469c5",
-      "outputSha256": "9e914f96b287f985d0a47a1e2ea7888573263258ee9cbbf0ed2aaab1a736383b"
+      "recipeSha256": "7197628f251e84f3f509f7603090be31d97248c21480a134b541badb06aaff52",
+      "outputSha256": "f878ea74efeff6c1d16047cac922d4b60909c6517ee754e1e492de1a4fc52c04"
     },
     "implement-review": {
       "repository": "mattpocock-skills",
       "source": "skills/engineering/code-review",
-      "recipeSha256": "1c98874e6206826fe6aa7d33c6a9c1c536bc85fb12395558b46ab6be73e09910",
-      "outputSha256": "aafbad5c77ace820c8e3526c558fcf0034c88d43d3d0b6fddce98e4a6692b3a6"
+      "recipeSha256": "ebc055772875ed566a30fbcdc3774ba0fe80540d0580e72c3fe7a80d89ea6537",
+      "outputSha256": "8dd402f6aa796756f32c92d53830c1befabf9963b5fa2c75e765d6cbcc377fb1"
     },
     "implement-spec": {
       "repository": "mattpocock-skills",
@@ -52,7 +52,7 @@
       "patches": [
         "vendor/patches/implement-spec.patch"
       ],
-      "recipeSha256": "1d9a6519134cdac6f13d5314155a7f0a9ea6185f883814b5086fd75e6fd411b3",
+      "recipeSha256": "25d9e7af3ecf4d44b663ebdc4979d11b9782830b0848c742ce0fb39c5550a4b6",
       "outputSha256": "34e59294a01209b743e3aba1316c6796e8e2dbb50b8cca83af08b46d0fc24527"
     },
     "self-review": {
@@ -74,8 +74,8 @@
       "patches": [
         "vendor/patches/tdd.patch"
       ],
-      "recipeSha256": "c613ee35d152e4600885136a5b54b23ccfafaf6a2faa23ee94b4b9647a3c16a4",
-      "outputSha256": "02edf68993487b2e4d06f6e347538ba24d12a1d3fc22899125b65519ef5eb206"
+      "recipeSha256": "33ba205c269b0a7f20f6ba9561c4d879001a0768880a175a5d972ce61ad08a2d",
+      "outputSha256": "974e1bd78b5be7facf8ec5e9e3bb60adb5062a2bb1b9e408935e282c69e0c519"
     },
     "zero-tech-debt": {
       "repository": "jnsahaj-skills",
