@@ -484,6 +484,7 @@ def apply_patches(skill_directory: Path, patches: list[str]) -> None:
             "patch",
             "--batch",
             "--forward",
+            "--no-backup-if-mismatch",
             "-p1",
             "-d",
             str(skill_directory),
