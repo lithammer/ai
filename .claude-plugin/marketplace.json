@@ -35,6 +35,7 @@
         "./skills/self-review",
         "./skills/simplify",
         "./skills/tdd",
+        "./skills/test-audit",
         "./skills/zero-tech-debt",
         "./skills/.experimental/self-review-docs"
       ]
