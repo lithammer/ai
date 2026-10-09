@@ -1,0 +1,3 @@
+interface:
+  display_name: "Test Audit"
+  short_description: "Find low-value tests and silent regressions, then apply the chosen changes"
