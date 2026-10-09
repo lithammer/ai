@@ -46,10 +46,10 @@ code.
 A new test encodes your reading of the requirements, the same reading the
 implementation encodes. Retain one only when the user asks for a test.
 Update existing tests the change invalidates. Propose a test only where a
-regression would go unnoticed by types, existing tests, or normal use, and a
-natural edit could bring it back. Propose every test that meets this, each
-on its own line: the contract, the edit that would break it, and how you
-verified it now.
+regression would go unnoticed by types, existing tests, or a quick real run,
+and a natural edit could bring it back. Propose every test that meets this,
+each on its own line: the contract, the edit that would break it, and how
+you verified it now.
 
 Run the relevant existing and new tests after correctness fixes. Resolve
 failures introduced by this change before refactoring; record pre-existing
