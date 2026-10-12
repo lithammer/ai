@@ -2,7 +2,7 @@
 name: refactor
 description: Find structural refactors that remove caller obligations, then implement the chosen change.
 disable-model-invocation: true
-argument-hint: "[scope or concern]"
+argument-hint: "[scope, concern, or ticket]"
 ---
 
 # Refactor
@@ -13,9 +13,11 @@ callers. No feature or diff is needed.
 ## 1. Scope
 
 Read the repository's instructions and the requested scope or concern: a
-path, subsystem, or goal such as making invalid checkout states
-unrepresentable. With no target, map the repository's major subsystems and
-choose promising areas to inspect.
+path, subsystem, goal such as making invalid checkout states
+unrepresentable, or a ticket and its map from `research-codebase`. With a
+ticket, inspect the code its change touches; a candidate's cost is what that
+change would otherwise have to work around. With no target, map the
+repository's major subsystems and choose promising areas to inspect.
 
 ## 2. Discover
 
@@ -72,3 +74,5 @@ behavior before editing.
 
 Use the `develop` skill for the chosen change. Pass the selected candidate's
 evidence, scope, accepted contracts, and risks as its requirements.
+With a ticket, finish the refactor before the ticket's change, so each
+lands as its own diff.
