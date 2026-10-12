@@ -67,6 +67,10 @@ Rank candidates by concrete benefit and migration risk. For each, give:
 State what you explored and what remains unread. Return no candidates when
 none meet the evidence bar.
 
+Render the candidates as an HTML report following
+[HTML-REPORT.md](HTML-REPORT.md), and reply with its path and the ranked
+candidate titles, one line each.
+
 Wait for the user to select a candidate and approve any changes to accepted
 behavior before editing.
 
