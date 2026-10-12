@@ -1,6 +1,6 @@
 ---
 name: research-codebase
-description: "Map how the code a ticket touches works today, then name the next step: develop or grilling."
+description: "Map how the code a ticket touches works today, then name the next step: develop or grill-with-docs."
 disable-model-invocation: true
 ---
 
@@ -19,7 +19,7 @@ configuration depend on them, and which patterns nearby code follows. Each
 question asks how the code works now.
 
 When the ticket names no area of code to change, there is nothing to map yet:
-route to `grilling` and stop.
+route to `grill-with-docs` and stop.
 
 ## 2. Investigate
 
@@ -68,7 +68,7 @@ Reply with a short summary of the map, its path, and one route:
 
 - **`develop`** when the ticket and the map leave one reasonable way to make
   the change: no open choice alters observable behavior or an interface.
-- **`grilling`** when a choice remains that is the user's to make. List each
-  choice in one line.
+- **`grill-with-docs`** when a choice remains that is the user's to make.
+  List each choice in one line.
 
 The user starts the next step, often in a fresh session given the map's path.
