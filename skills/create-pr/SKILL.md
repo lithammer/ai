@@ -39,3 +39,6 @@ a particular line in an inline comment rather than the description.
 Add an example, before/after benchmark table, log excerpt, traceback, or other
 illustration only when it makes the outcome clearer than prose alone. Let it
 replace the explanation where possible. Omit validation summaries.
+
+For each issue the PR references, read its open acceptance criteria: write
+`Closes #N` when this PR meets the last of them, and `Refs #N` otherwise.
