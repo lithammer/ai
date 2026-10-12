@@ -19,7 +19,9 @@ rationale, or the other reviewers' findings.
 
 Trace the requested behavior through the implementation and check it against
 applicable design decisions. Find missing or partial requirements, incorrect
-execution paths, and behavior added outside the agreed scope. Cite the
+execution paths, and behavior added outside the agreed scope. Walk every
+stop, cancel, and error path as well: what each wait does when a signal,
+cancel, or failure arrives part-way, and what the user is left with. Cite the
 contract or decision and the code that contradicts it. For behavior findings,
 give a concrete input or execution path that exposes the mismatch.
 
