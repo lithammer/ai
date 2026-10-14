@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Detect drift between Claude Code's built-in /simplify and its last snapshot."""
+"""Detect drift in the Claude Code built-in prompts that skills here port."""
 
 import argparse
 import difflib
@@ -9,26 +9,33 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SNAPSHOT_PATH = ROOT / "vendor" / "claude-code" / "simplify.md"
+SNAPSHOT_PATH = ROOT / "vendor" / "claude-code" / "prompts.md"
 # The bundle renames its variables every release, so find each prompt
-# template by its visible opening line instead.
-TEMPLATE_START = re.compile(r"`\\`/simplify \\u2192 ")
-INTERPOLATION = re.compile(r"\$\{(\w+)\}")
+# template by its visible opening line instead. /simplify matches both of its
+# variants; /code-review matches its extra-high tier.
+ANCHORS = {
+    "simplify": re.compile(r"`\\`/simplify \\u2192 "),
+    "code-review": re.compile(r"`\\`\$\{[\w$]+\} effort \\u2192 5\+5 angles"),
+}
+INTERPOLATION = re.compile(r"\$\{(?:([\w$]+)|[^{}]*)\}")
 CHUNK_HEADER = "// @bun"
-# Names the chunk imports, such as the subagent tool name, are renamed every
-# release; a fixed placeholder keeps that churn out of the diff.
-IMPORTED = "${...}"
-ESCAPE = re.compile(r"\\(u[0-9a-fA-F]{4}|.)", re.DOTALL)
+# Imports, parameters, expressions, and names defined more than once render as
+# a fixed placeholder, since their minified forms change every release. A
+# fragment that turns into one still shows up, as text dropping out of its
+# parent template. Text built by a function call, such as /code-review's
+# output contract, never resolves, so its drift goes unseen.
+PLACEHOLDER = "${...}"
+ESCAPE = re.compile(r"\\(u[0-9a-fA-F]{4}|x[0-9a-fA-F]{2}|.)", re.DOTALL)
 ESCAPES = {"n": "\n", "t": "\t"}
 CLI_EPILOG = """\
-skills/simplify/SKILL.md is a port of the built-in prompt with deliberate
-changes, so drift is measured against the built-in text it was last synced
-from, not against the skill. When check reports a diff, port it into the
-skill, then run update to record the new snapshot.
+skills/simplify and skills/code-review port built-in prompts with deliberate
+changes, so drift is measured against the built-in text they were last
+synced from, not against the skills. When check reports a diff, port it into
+the affected skill, then run update to record the new snapshot.
 
 examples:
-  scripts/check-simplify-upstream
-  scripts/check-simplify-upstream update
+  scripts/check-builtin-drift
+  scripts/check-builtin-drift update
 """
 
 
@@ -50,7 +57,7 @@ def unescape(text: str) -> str:
 
     def decode(match: re.Match[str]) -> str:
         escape = match.group(1)
-        if escape.startswith("u"):
+        if len(escape) > 1:
             return chr(int(escape[1:], 16))
         return ESCAPES.get(escape, escape)
 
@@ -59,39 +66,43 @@ def unescape(text: str) -> str:
 
 def render(chunk: str, template: str) -> str:
     """Fill in a template's interpolations from definitions in its chunk."""
-    return INTERPOLATION.sub(lambda m: resolve(chunk, m.group(1)), unescape(template))
+
+    def fill(match: re.Match[str]) -> str:
+        name = match.group(1)
+        return resolve(chunk, name) if name else PLACEHOLDER
+
+    return INTERPOLATION.sub(fill, unescape(template))
 
 
 def resolve(chunk: str, name: str) -> str:
-    """Return the string a minified variable holds within the prompt's chunk."""
-    definitions = list(re.finditer(rf"[\s,;]{re.escape(name)}=(.)", chunk))
-    if not definitions:
-        return IMPORTED
-    if len(definitions) > 1:
-        raise SystemExit(f"${{{name}}} is defined more than once; cannot resolve it")
+    """Return the string literal a minified variable holds within its chunk."""
+    definitions = list(re.finditer(rf"[\s,;]{re.escape(name)}=([`\"])", chunk))
+    if len(definitions) != 1:
+        return PLACEHOLDER
     start = definitions[0].end()
     quote = definitions[0].group(1)
-    if quote not in '`"':
-        raise SystemExit(f"${{{name}}} is not a string literal; cannot resolve it")
     value = chunk[start : literal_end(chunk, start, quote)]
     return render(chunk, value) if quote == "`" else unescape(value)
 
 
 def extract(binary: Path) -> str:
-    """Render the built-in /simplify prompts, with and without subagents."""
+    """Render each ported built-in prompt."""
     source = binary.read_bytes().decode("utf-8", "replace")
     prompts = []
-    for match in TEMPLATE_START.finditer(source):
-        start = match.start() + 1
-        template = source[start : literal_end(source, start, "`")]
-        prompts.append(
-            render(source[source.rfind(CHUNK_HEADER, 0, start) : start], template)
-        )
-    if not prompts:
-        raise SystemExit(
-            f"no /simplify prompt found in {binary}; "
-            "the opening line likely changed, so update TEMPLATE_START"
-        )
+    for label, anchor in ANCHORS.items():
+        matches = list(anchor.finditer(source))
+        if not matches:
+            raise SystemExit(
+                f"no {label} prompt found in {binary}; "
+                "its opening line likely changed, so update ANCHORS"
+            )
+        for match in matches:
+            start = match.start() + 1
+            template = source[start : literal_end(source, start, "`")]
+            chunk_start = source.rfind(CHUNK_HEADER, 0, start)
+            chunk_end = source.find(CHUNK_HEADER, start)
+            chunk = source[chunk_start : chunk_end if chunk_end >= 0 else None]
+            prompts.append(f"# {label}\n\n{render(chunk, template)}")
     return "\n---\n\n".join(prompts)
 
 
@@ -124,7 +135,7 @@ def parse_args() -> Arguments:
 
 
 def main() -> int:
-    """Compare or record the built-in prompt."""
+    """Compare or record the built-in prompts."""
     args = parse_args()
     binary = args.claude or find_claude()
     current = extract(binary)

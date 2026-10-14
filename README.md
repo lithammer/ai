@@ -10,5 +10,6 @@ npx skills@latest add lithammer/ai
 
 Run `scripts/vendor-skills --help` to maintain vendored third-party skills.
 
-Run `scripts/check-simplify-upstream` to see whether Claude Code's built-in
-`/simplify` has changed since `skills/simplify` was last synced.
+Run `scripts/check-builtin-drift` to see whether the Claude Code built-ins that
+`skills/simplify` and `skills/code-review` port have changed since the last
+sync.
