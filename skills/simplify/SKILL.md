@@ -31,10 +31,8 @@ reader isn't misled about what ran.
 Each angle returns its findings with `file`, `line`, a one-line `summary`, and
 the concrete cost: what is duplicated, wasted, or made harder to maintain.
 
-Once all reports are collected, release the reviewers before applying fixes.
-Also release them if the user stops the run or an error ends it. Release only
-reviewers started by this run; leave unrelated agents alone. Report cleanup
-failures in the summary.
+Once all reports are in, or if the run stops or fails, release the reviewers
+this run started and no others.
 
 ### Reuse
 
@@ -71,6 +69,5 @@ Wait for all four angles to report, dedup findings that point at the same line
 or mechanism, and fix each remaining one directly. Skip any finding whose fix
 would change intended behavior, require changes well outside the reviewed
 diff, or that you judge to be a false positive — note the skip rather than
-arguing with it. Run the relevant existing checks once the fixes are in.
-Finish with a brief summary of what was fixed and what was skipped (or confirm
-the code was already clean).
+arguing with it. Finish with a brief summary of what was fixed and what was
+skipped (or confirm the code was already clean).
