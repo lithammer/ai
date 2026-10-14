@@ -1,0 +1,153 @@
+#!/usr/bin/env python3
+"""Detect drift between Claude Code's built-in /simplify and its last snapshot."""
+
+import argparse
+import difflib
+import re
+import shutil
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+SNAPSHOT_PATH = ROOT / "vendor" / "claude-code" / "simplify.md"
+# The bundle renames its variables every release, so find each prompt
+# template by its visible opening line instead.
+TEMPLATE_START = re.compile(r"`\\`/simplify \\u2192 ")
+INTERPOLATION = re.compile(r"\$\{(\w+)\}")
+CHUNK_HEADER = "// @bun"
+# Names the chunk imports, such as the subagent tool name, are renamed every
+# release; a fixed placeholder keeps that churn out of the diff.
+IMPORTED = "${...}"
+ESCAPE = re.compile(r"\\(u[0-9a-fA-F]{4}|.)", re.DOTALL)
+ESCAPES = {"n": "\n", "t": "\t"}
+CLI_EPILOG = """\
+skills/simplify/SKILL.md is a port of the built-in prompt with deliberate
+changes, so drift is measured against the built-in text it was last synced
+from, not against the skill. When check reports a diff, port it into the
+skill, then run update to record the new snapshot.
+
+examples:
+  scripts/check-simplify-upstream
+  scripts/check-simplify-upstream update
+"""
+
+
+class Arguments(argparse.Namespace):
+    command: str
+    claude: Path | None
+
+
+def literal_end(source: str, start: int, quote: str) -> int:
+    """Return the index of the closing quote of a literal opened before start."""
+    index = start
+    while source[index] != quote:
+        index += 2 if source[index] == "\\" else 1
+    return index
+
+
+def unescape(text: str) -> str:
+    """Decode the JavaScript escapes the bundle uses in prompt text."""
+
+    def decode(match: re.Match[str]) -> str:
+        escape = match.group(1)
+        if escape.startswith("u"):
+            return chr(int(escape[1:], 16))
+        return ESCAPES.get(escape, escape)
+
+    return ESCAPE.sub(decode, text)
+
+
+def render(chunk: str, template: str) -> str:
+    """Fill in a template's interpolations from definitions in its chunk."""
+    return INTERPOLATION.sub(lambda m: resolve(chunk, m.group(1)), unescape(template))
+
+
+def resolve(chunk: str, name: str) -> str:
+    """Return the string a minified variable holds within the prompt's chunk."""
+    definitions = list(re.finditer(rf"[\s,;]{re.escape(name)}=(.)", chunk))
+    if not definitions:
+        return IMPORTED
+    if len(definitions) > 1:
+        raise SystemExit(f"${{{name}}} is defined more than once; cannot resolve it")
+    start = definitions[0].end()
+    quote = definitions[0].group(1)
+    if quote not in '`"':
+        raise SystemExit(f"${{{name}}} is not a string literal; cannot resolve it")
+    value = chunk[start : literal_end(chunk, start, quote)]
+    return render(chunk, value) if quote == "`" else unescape(value)
+
+
+def extract(binary: Path) -> str:
+    """Render the built-in /simplify prompts, with and without subagents."""
+    source = binary.read_bytes().decode("utf-8", "replace")
+    prompts = []
+    for match in TEMPLATE_START.finditer(source):
+        start = match.start() + 1
+        template = source[start : literal_end(source, start, "`")]
+        prompts.append(
+            render(source[source.rfind(CHUNK_HEADER, 0, start) : start], template)
+        )
+    if not prompts:
+        raise SystemExit(
+            f"no /simplify prompt found in {binary}; "
+            "the opening line likely changed, so update TEMPLATE_START"
+        )
+    return "\n---\n\n".join(prompts)
+
+
+def find_claude() -> Path:
+    """Return the real binary behind the claude on PATH."""
+    found = shutil.which("claude")
+    if found is None:
+        raise SystemExit("claude is not on PATH; pass --claude")
+    return Path(found).resolve()
+
+
+def parse_args() -> Arguments:
+    """Parse the command line."""
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        epilog=CLI_EPILOG,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument(
+        "command",
+        nargs="?",
+        default="check",
+        choices=["check", "update"],
+        help="check prints drift and exits 1; update rewrites the snapshot",
+    )
+    parser.add_argument(
+        "--claude", type=Path, help="Claude Code binary; defaults to claude on PATH"
+    )
+    return parser.parse_args(namespace=Arguments())
+
+
+def main() -> int:
+    """Compare or record the built-in prompt."""
+    args = parse_args()
+    binary = args.claude or find_claude()
+    current = extract(binary)
+
+    if args.command == "update":
+        SNAPSHOT_PATH.write_text(current)
+        print(f"recorded {binary.name} in {SNAPSHOT_PATH.relative_to(ROOT)}")
+        return 0
+
+    snapshot = SNAPSHOT_PATH.read_text()
+    if snapshot == current:
+        print(f"no drift: {binary.name} matches the snapshot")
+        return 0
+    sys.stdout.writelines(
+        difflib.unified_diff(
+            snapshot.splitlines(keepends=True),
+            current.splitlines(keepends=True),
+            "snapshot",
+            binary.name,
+        )
+    )
+    return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
