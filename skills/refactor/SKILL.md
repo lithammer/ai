@@ -55,7 +55,9 @@ Merge candidates that address the same underlying mechanism.
 
 ## 4. Present and wait
 
-Rank candidates by concrete benefit and migration risk. For each, give:
+Rank candidates by concrete benefit and migration risk. With a ticket, rank
+first a candidate that removes the ticket's need at its cause, making the
+ticket's change unnecessary. For each, give:
 
 - Locations and evidence of the current burden or possible misuse.
 - The proposed representation or owning module, and what callers stop doing.
@@ -79,4 +81,5 @@ behavior before editing.
 Use the `develop` skill for the chosen change. Pass the selected candidate's
 evidence, scope, accepted contracts, and risks as its requirements.
 With a ticket, finish the refactor before the ticket's change, so each
-lands as its own diff.
+lands as its own diff. When the refactor removes the ticket's need, verify
+the need is met and drop the ticket's change.
