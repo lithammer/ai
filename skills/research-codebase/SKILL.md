@@ -1,6 +1,6 @@
 ---
 name: research-codebase
-description: "Map how the code a ticket touches works today, then name the next step: develop or grill-with-docs."
+description: "Map how the code a ticket touches works today, then name the next step: develop, refactor, or grill-with-docs."
 disable-model-invocation: true
 ---
 
@@ -15,7 +15,8 @@ decides, so every choice stays open for the user.
 Read the ticket and the files it names before dispatching anything. Turn the
 ticket into questions about the current code: where the relevant parts live,
 how data and control flow through them, which callers, tests, and
-configuration depend on them, and which patterns nearby code follows. Each
+configuration depend on them, which patterns nearby code follows, and where
+the need the ticket addresses originates, such as a bug's cause. Each
 question asks how the code works now.
 
 When the ticket names no area of code to change, there is nothing to map yet:
@@ -64,8 +65,12 @@ the repository keeps working notes for tasks; when it has none, under
 ## 4. Route
 
 Before naming the route, open the cited lines for each fact it rests on.
-Reply with a short summary of the map, its path, and one route:
+Reply with a short summary of the map, its path, and the first route that
+applies:
 
+- **`refactor`** when the map traces the ticket's need to a cause outside
+  the code the ticket names, and a structural change no larger than the
+  ticket's own could remove the need.
 - **`develop`** when the ticket and the map leave one reasonable way to make
   the change: no open choice alters observable behavior or an interface.
 - **`grill-with-docs`** when a choice remains that is the user's to make.
