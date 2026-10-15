@@ -9,8 +9,8 @@ argument-hint: "[scope or concern]"
 
 Audit existing tests with one question: if the behavior a test guards broke,
 what would notice first? A test earns its upkeep only when nothing else
-would: the regression is silent, and a natural edit could cause it. No diff
-is needed.
+would: the regression is silent, and an incidental edit, made while
+changing nearby code for another reason, could cause it. No diff is needed.
 
 ## 1. Scope
 
@@ -35,7 +35,7 @@ both directions:
 - **Removal:** a test whose regression something else would catch, or that
   goes red when behavior stays the same.
 - **Addition:** behavior whose regression nothing would catch, where a
-  natural edit could cause it.
+  incidental edit could cause it.
 
 ## 3. Prove
 
