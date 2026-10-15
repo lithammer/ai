@@ -27,6 +27,13 @@ units, identities, valid states, and permitted operations. Prefer representation
 that prevent misuse over conventions, repeated checks, or tests that merely
 detect it. Validate external inputs at the boundary.
 
+**Shape the code for its production callers.** Choose the cleanest design
+for the code that runs, then bring the tests to it. When that design breaks
+an existing test that pins internal structure rather than a contract,
+rewrite the test against the contract. Reach behavior through real runs and
+throwaway probes; add a seam only tests use when nothing else can reach the
+behavior, and name it in the report.
+
 Build a coherent implementation. Run existing tests and checks, and use
 throwaway probes to resolve uncertainty. A bug reproducer may start as a
 probe before its fix.
