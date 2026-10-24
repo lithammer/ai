@@ -65,9 +65,9 @@ failures separately.
 
 ## 4. Review and finish
 
-Once the checks pass, follow [REVIEW.md](REVIEW.md) for fresh reviews against
-the spec and the documented standards. Keep the reviewed files unchanged
-while reviewers work.
+Once the checks pass, follow [FINAL-REVIEW.md](FINAL-REVIEW.md) for fresh
+reviews against the spec and the documented standards. Keep the reviewed
+files unchanged while reviewers work.
 
 Assess each finding against its evidence. Fix confirmed issues and record why
 others do not apply. Send fixes back to the affected reviewers, including the

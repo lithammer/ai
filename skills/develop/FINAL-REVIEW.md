@@ -30,8 +30,8 @@ give a concrete input or execution path that exposes the mismatch.
 
 Provide every file that documents how the repository's code should be
 written or reviewed: the `AGENTS.md` instructions that govern the changed
-files, and the repository's `CODING_STANDARDS.md`, `REVIEW.md`, and
-`CONTRIBUTING.md` when present, with the documents they point to.
+files, and `CODING_STANDARDS.md`, `REVIEW.md`, and `CONTRIBUTING.md` when
+present, with the documents they point to.
 
 Check the change against every rule in those sources. Cite the source and
 rule for each violation. Leave checks enforced by tools to those tools;
