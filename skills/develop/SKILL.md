@@ -1,45 +1,35 @@
 ---
 name: develop
-description: "Implement a feature or fix from agreed requirements, then verify it and resolve independent spec and standards reviews. Use when carrying a defined change through implementation."
+description: "Implement an agreed feature or fix, verify it, and resolve independent spec and standards reviews. Use when carrying a defined change through implementation."
 ---
 
 # Develop
 
-Carry one agreed change through implementation, verification, and reviews
-against its spec and the repository's documented standards.
-
 ## 1. Establish the scope
 
-Read the request, its spec or tickets, and the repository's instructions.
-Resolve ambiguities that would change observable behavior. Stay on the current
-branch unless the user asks otherwise; preserve unrelated changes and existing
-staging.
-
-Pin the review base before editing and record pre-existing changes. Carry the
-same scope through review: the task's branch changes, staged and unstaged
-edits, and new files. A committed diff alone may omit the work.
+Read the request, its spec or tickets, and the documented standards the
+review will hold the change to. Resolve ambiguities that would change
+observable behavior. Stay on the current branch unless the user asks
+otherwise; preserve unrelated changes and existing staging. Pin the review
+base before editing and record pre-existing changes.
 
 ## 2. Implement
 
-**Encode meaning and invariants in the model.** Use types, APIs, and enforced
-constraints to express distinctions callers would otherwise need to remember:
-units, identities, valid states, and permitted operations. Prefer representations
-that prevent misuse over conventions, repeated checks, or tests that merely
-detect it. Validate external inputs at the boundary.
+**Encode meaning and invariants in the model.** Use types, APIs, and
+enforced constraints to express distinctions callers would otherwise need to
+remember: units, identities, valid states, and permitted operations. Prefer
+representations that prevent misuse over conventions, repeated checks, or
+tests that merely detect it. Validate external inputs at the boundary.
 
 **Shape the code for its production callers.** Choose the cleanest design
 for the code that runs, then bring the tests to it. When that design breaks
 an existing test that pins internal structure rather than a contract,
-rewrite the test against the contract. Reach behavior through real runs and
-throwaway probes; add a seam only tests use when nothing else can reach the
-behavior, and name it in the report.
-
-Build a coherent implementation. Run existing tests and checks, and use
-throwaway probes to resolve uncertainty. A bug reproducer may start as a
-probe before its fix.
+rewrite the test against the contract. Reach behavior and resolve
+uncertainty through real runs and throwaway probes; add a seam only tests use
+when nothing else can reach it, and name it in the report.
 
 Continue until the requested behavior is implemented through the agreed
-interfaces and ready to verify.
+interfaces.
 
 ## 3. Establish correctness
 
@@ -52,22 +42,20 @@ code.
 
 A new test encodes your reading of the requirements, the same reading the
 implementation encodes. Retain one only when the user asks for a test.
-Update existing tests the change invalidates. Propose a test only where a
-regression would go unnoticed by types, existing tests, or a quick real run,
-and an incidental edit, made while changing nearby code for another reason,
-could bring it back. Propose every test that meets this, each on its own
-line: the contract, the incidental edit that would break it, and how you
-verified it now.
+Propose a test only where a regression would go unnoticed by types, existing
+tests, or a quick real run, and an incidental edit, made while changing
+nearby code for another reason, could bring it back. Propose every test that
+meets this, each on its own line: the contract, the incidental edit that
+would break it, and how you verified it now.
 
-Run the relevant existing and new tests after correctness fixes. Resolve
-failures introduced by this change before review; record pre-existing
+Continue until the relevant tests pass after the fixes; record pre-existing
 failures separately.
 
 ## 4. Review and finish
 
-Once the checks pass, follow [FINAL-REVIEW.md](FINAL-REVIEW.md) for fresh
-reviews against the spec and the documented standards. Keep the reviewed
-files unchanged while reviewers work.
+Follow [FINAL-REVIEW.md](FINAL-REVIEW.md) for fresh reviews against the spec
+and the documented standards. Keep the reviewed files unchanged while
+reviewers work.
 
 Assess each finding against its evidence. Fix confirmed issues and record why
 others do not apply. Send fixes back to the affected reviewers, including the

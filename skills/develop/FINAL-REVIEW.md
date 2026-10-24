@@ -1,30 +1,25 @@
 # Final review
 
 Spawn one fresh subagent per axis below, in parallel. Give each the pinned
-review base, task file list, and commands or patches that include staged,
-unstaged, and new files, plus its own axis's inputs and no others. Each
-reviewer reads the surrounding code and returns findings without editing
-files.
-
-Start the reviewers without the implementation conversation, the
-implementer's rationale, or each other's findings.
+review base, the task file list, commands or patches that include staged,
+unstaged, and new files, its own axis's section, and the Findings section.
+Withhold the implementation conversation, your rationale, and the other
+axis's inputs. Reviewers read code and return findings; the implementer runs
+checks and edits.
 
 ## Spec
 
 Provide the original requirements, including accepted clarifications. When
-present, read `GLOSSARY-MAP.md` to locate affected contexts and their
-relationships. Include relevant `GLOSSARY.md` glossaries and ADRs, both
-system-wide and context-specific. Use the glossaries for domain terms and
-current ADRs for design constraints, following status and supersession.
-Missing documents alone are not findings.
+present, use `GLOSSARY-MAP.md` to find the affected contexts, and provide
+their `GLOSSARY.md` glossaries and ADRs, system-wide and context-specific.
+Glossaries define domain terms; current ADRs, by status and supersession,
+constrain the design. A missing document alone is not a finding.
 
 Trace the requested behavior through the implementation and check it against
 applicable design decisions. Find missing or partial requirements, incorrect
 execution paths, and behavior added outside the agreed scope. Walk every
 stop, cancel, and error path as well: what each wait does when a signal,
-cancel, or failure arrives part-way, and what the user is left with. Cite the
-contract or decision and the code that contradicts it. For behavior findings,
-give a concrete input or execution path that exposes the mismatch.
+cancel, or failure arrives part-way, and what the user is left with.
 
 ## Documented standards
 
@@ -33,14 +28,14 @@ written or reviewed: the `AGENTS.md` instructions that govern the changed
 files, and `CODING_STANDARDS.md`, `REVIEW.md`, and `CONTRIBUTING.md` when
 present, with the documents they point to.
 
-Check the change against every rule in those sources. Cite the source and
-rule for each violation. Leave checks enforced by tools to those tools;
-personal style preferences and generic code-smell lists are outside this
-axis.
+Report violations of the rules in those sources that tools do not already
+enforce.
 
 ## Findings
 
-Return each finding with its file and line, consequence, and supporting
-evidence. Distinguish confirmed findings from questions that need an answer.
-Report no findings when none are supported, and state any review limits.
-The implementer owns edits and keeps each axis visible in the outcome.
+Return each finding with its file and line, its consequence, and its
+evidence: the contract, decision, or rule it breaks and where that is
+stated, and for a behavior finding, a concrete input or execution path that
+exposes it. Distinguish confirmed findings from questions that need an
+answer. Report no findings when none are supported, and state any review
+limits.
