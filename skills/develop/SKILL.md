@@ -1,12 +1,12 @@
 ---
 name: develop
-description: "Implement a feature or fix from agreed requirements, then verify it and resolve an independent spec review. Use when carrying a defined change through implementation."
+description: "Implement a feature or fix from agreed requirements, then verify it and resolve independent spec and standards reviews. Use when carrying a defined change through implementation."
 ---
 
 # Develop
 
-Carry one agreed change through implementation, verification, and a review
-against its spec.
+Carry one agreed change through implementation, verification, and reviews
+against its spec and the repository's documented standards.
 
 ## 1. Establish the scope
 
@@ -65,15 +65,17 @@ failures separately.
 
 ## 4. Review and finish
 
-Once the checks pass, follow [REVIEW.md](REVIEW.md) for a fresh review against
-the spec. Keep the reviewed files unchanged while the reviewer works.
+Once the checks pass, follow [REVIEW.md](REVIEW.md) for fresh reviews against
+the spec and the documented standards. Keep the reviewed files unchanged
+while reviewers work.
 
 Assess each finding against its evidence. Fix confirmed issues and record why
-others do not apply. Send fixes back to the reviewer. Close findings on the
-final state; a report about an earlier version is not final verification.
+others do not apply. Send fixes back to the affected reviewers, including the
+other axis when a fix changes what it reviewed. Close findings on the final
+state; a report about an earlier version is not final verification.
 
 Run the repository's required checks on the final state. Leave the task's edits
 uncommitted and unstaged unless the user asks otherwise. Report the changes,
-including fixes beyond the request, what each check showed, the review outcome,
-test proposals, and any remaining limits. If a required check or the review
-cannot complete, report that gap and leave the task open.
+including fixes beyond the request, what each check showed, each review's
+outcome, test proposals, and any remaining limits. If a required check or a
+review cannot complete, report that gap and leave the task open.
