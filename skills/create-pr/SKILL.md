@@ -36,9 +36,12 @@ a deliberate omission, a decision for reviewers, or a merge dependency. These
 are reasons to add context, not a checklist to fill out. Keep discussion tied to
 a particular line in an inline comment rather than the description.
 
-Add an example, before/after benchmark table, log excerpt, traceback, or other
-illustration only when it makes the outcome clearer than prose alone. Let it
-replace the explanation where possible. Omit validation summaries.
+Answer what a reviewer, or someone tracing this change later, would ask
+first: how do you know it works? Show what you would show a teammate at
+your desk, beside the claim it backs, and let it replace the explanation
+where possible. Reuse it from the session or capture it now; `gh pr create
+--help` covers `--attach`. Tests and CI show that logic meets a contract,
+not that the change works in practice, so they do not answer it.
 
 For each issue the PR references, read its open acceptance criteria: write
 `Closes #N` when this PR meets the last of them, and `Refs #N` otherwise.
