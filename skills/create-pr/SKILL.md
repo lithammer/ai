@@ -41,7 +41,7 @@ first: how do you know it works? Show what you would show a teammate at
 your desk, beside the claim it backs, and let it replace the explanation
 where possible. Reuse it from the session or capture it now; `gh pr create
 --help` covers `--attach`. Tests and CI show that logic meets a contract,
-not that the change works in practice, so they do not answer it.
+not that the change works in practice; leave out that they pass.
 
 For each issue the PR references, read its open acceptance criteria: write
 `Closes #N` when this PR meets the last of them, and `Refs #N` otherwise.
