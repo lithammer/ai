@@ -13,6 +13,11 @@ observable behavior. Stay on the current branch unless the user asks
 otherwise; preserve unrelated changes and existing staging. Pin the review
 base before editing and record pre-existing changes.
 
+When the change is larger than a reviewer can understand in one pass,
+propose slices before implementing: each lands on its own, leaves the code
+working, and has requirements a run can show, with shared interfaces first.
+Implement the slice the user picks.
+
 ## 2. Implement
 
 **Encode meaning and invariants in the model.** Use types, APIs, and
