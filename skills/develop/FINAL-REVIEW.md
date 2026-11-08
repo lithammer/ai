@@ -9,9 +9,10 @@ checks and edits.
 
 ## Spec
 
-Provide the original requirements, including accepted clarifications. When
-present, use `GLOSSARY-MAP.md` to find the affected contexts, and provide
-their `GLOSSARY.md` glossaries and ADRs, system-wide and context-specific.
+Provide the original requirements, including accepted clarifications, and
+the evidence record. When present, use `GLOSSARY-MAP.md` to find the
+affected contexts, and provide their `GLOSSARY.md` glossaries and ADRs,
+system-wide and context-specific.
 Glossaries define domain terms; current ADRs, by status and supersession,
 constrain the design. A missing document alone is not a finding.
 
@@ -20,6 +21,11 @@ applicable design decisions. Find missing or partial requirements, incorrect
 execution paths, and behavior added outside the agreed scope. Walk every
 stop, cancel, and error path as well: what each wait does when a signal,
 cancel, or failure arrives part-way, and what the user is left with.
+
+Read the evidence record against the requirements. A requirement it skips,
+drives around its real entry point, or shows with output that does not prove
+it is a finding. Name the behavior the implementation commits to that the
+requirements leave open; these go to the user, not into fixes.
 
 ## Documented standards
 

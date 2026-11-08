@@ -28,17 +28,27 @@ rewrite the test against the contract. Reach behavior and resolve
 uncertainty through real runs and throwaway probes; add a seam only tests use
 when nothing else can reach it, and name it in the report.
 
+**Keep evidence as you go.** In a record outside the task's changes, note
+each run or probe that settles how something behaves: the step as you took
+it and its unedited output or screenshot, beside the claim it backs. What a
+run shows outranks what documentation says.
+
 Continue until the requested behavior is implemented through the agreed
 interfaces.
 
 ## 3. Establish correctness
 
-Verify the change against real behavior with existing tests, a real run, or
-throwaway tests and probes. Derive expected results from the requirements,
+Prove each requirement with a real run through the change's entry point, the
+way its users drive it: the command, request, page, or public API. Tests show
+that logic meets a contract, not that the change works; they back a run, never
+replace it. Take one scenario per requirement from the requirements, not the
+code, in a case a plausible mistake would fail, and run against the base where
+the difference is the point. Derive expected results from the requirements,
 reviewed examples, or a trusted reference, rather than the implementation's
-current output. Choose cases that distinguish plausible mistakes. Fix defects
-the checks expose, record what each check showed, and delete the throwaway
-code.
+current output. Add the runs to the evidence record, each beside the
+requirement it shows. Fix defects the runs expose, name each requirement no
+run could show and why, and delete the throwaway code; its output stays in
+the record.
 
 A new test encodes your reading of the requirements, the same reading the
 implementation encodes. Retain one only when the user asks for a test.
@@ -48,8 +58,8 @@ nearby code for another reason, could bring it back. Propose every test that
 meets this, each on its own line: the contract, the incidental edit that
 would break it, and how you verified it now.
 
-Continue until the relevant tests pass after the fixes; record pre-existing
-failures separately.
+Continue until the requirement runs and the relevant tests pass after the
+fixes; record pre-existing failures separately.
 
 ## 4. Review and finish
 
@@ -62,8 +72,14 @@ others do not apply. Send fixes back to the affected reviewers, including the
 other axis when a fix changes what it reviewed. Close findings on the final
 state; a report about an earlier version is not final verification.
 
-Run the repository's required checks on the final state. Leave the task's edits
-uncommitted and unstaged unless the user asks otherwise. Report the changes,
-including fixes beyond the request, what each check showed, each review's
-outcome, test proposals, and any remaining limits. If a required check or a
-review cannot complete, report that gap and leave the task open.
+On the final state, repeat the runs a later fix could change and run the
+repository's required checks. Leave the task's edits uncommitted and unstaged
+unless the user asks otherwise. Report for a user who must own the change
+without reading every line. Lead with the evidence: where the record lives,
+what each requirement's final run showed, and the probe results the change
+rests on. Then the decisions the requirements left open, the spec reviewer's
+and your own: where the code commits to one, what it chose, and what it
+passed over. Name the hunks that carry the behavior, in reading order, and
+what is mechanical. Then fixes beyond the request, each review's outcome,
+test proposals, and remaining limits. If a required check, a requirement run,
+or a review cannot complete, report that gap and leave the task open.
