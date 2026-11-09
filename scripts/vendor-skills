@@ -279,7 +279,7 @@ def run(*args: str, cwd: Path | None = None, stdin: bytes | None = None) -> byte
     except FileNotFoundError as error:
         raise VendorError(f"required command not found: {args[0]}") from error
     except subprocess.CalledProcessError as error:
-        detail = error.stderr.decode(errors="replace").strip()
+        detail = (error.stderr or error.stdout).decode(errors="replace").strip()
         raise VendorError(f"{' '.join(args)} failed: {detail}") from error
 
 
