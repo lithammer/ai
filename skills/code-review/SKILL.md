@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Review changed code for correctness bugs and instruction-file violations, verify each candidate, and report the survivors without editing. Use when asked to review a diff, branch, or PR for bugs. Not for cleanup; that is simplify.
+description: Review changed code for correctness bugs and instruction-file violations, verify each candidate, and report the survivors without editing. Use when asked to review a diff, branch, or PR for bugs. Not for cleanup; that is shape.
 argument-hint: "[target]"
 ---
 
@@ -8,7 +8,7 @@ argument-hint: "[target]"
 
 You are reviewing for **recall**: catch every real bug. At this level,
 catching real bugs matters more than avoiding false positives — a missed bug
-ships. Err on the side of surfacing. Cleanup belongs to `simplify`; this
+ships. Err on the side of surfacing. Cleanup belongs to `shape`; this
 review reports findings and leaves the code as it is.
 
 ## Phase 0 — Gather the diff

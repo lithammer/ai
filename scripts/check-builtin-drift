@@ -11,10 +11,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SNAPSHOT_PATH = ROOT / "vendor" / "claude-code" / "prompts.md"
 # The bundle renames its variables every release, so find each prompt
-# template by its visible opening line instead. /simplify matches both of its
-# variants; /code-review matches its extra-high tier.
+# template by its visible opening line instead. /code-review matches its
+# extra-high tier.
 ANCHORS = {
-    "simplify": re.compile(r"`\\`/simplify \\u2192 "),
     "code-review": re.compile(r"`\\`\$\{[\w$]+\} effort \\u2192 5\+5 angles"),
 }
 INTERPOLATION = re.compile(r"\$\{(?:([\w$]+)|[^{}]*)\}")
@@ -28,10 +27,10 @@ PLACEHOLDER = "${...}"
 ESCAPE = re.compile(r"\\(u[0-9a-fA-F]{4}|x[0-9a-fA-F]{2}|.)", re.DOTALL)
 ESCAPES = {"n": "\n", "t": "\t"}
 CLI_EPILOG = """\
-skills/simplify and skills/code-review port built-in prompts with deliberate
-changes, so drift is measured against the built-in text they were last
-synced from, not against the skills. When check reports a diff, port it into
-the affected skill, then run update to record the new snapshot.
+skills/code-review ports a built-in prompt with deliberate changes, so drift
+is measured against the built-in text it was last synced from, not against
+the skill. When check reports a diff, port it into the skill, then run update
+to record the new snapshot.
 
 examples:
   scripts/check-builtin-drift
