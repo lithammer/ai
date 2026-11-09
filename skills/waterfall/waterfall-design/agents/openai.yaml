@@ -1,3 +1,5 @@
 interface:
   display_name: "Waterfall Design"
   short_description: "Explore feature approaches before choosing one"
+policy:
+  allow_implicit_invocation: false

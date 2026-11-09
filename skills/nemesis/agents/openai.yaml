@@ -1,3 +1,5 @@
 interface:
   display_name: "Nemesis"
   short_description: "Challenge plans and implementations one branch at a time"
+policy:
+  allow_implicit_invocation: false

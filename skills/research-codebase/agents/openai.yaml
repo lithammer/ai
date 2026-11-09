@@ -1,3 +1,5 @@
 interface:
   display_name: "Research Codebase"
   short_description: "Map the code a ticket touches before changing it"
+policy:
+  allow_implicit_invocation: false
