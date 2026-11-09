@@ -1,0 +1,5 @@
+interface:
+  display_name: "Correctness"
+  short_description: "Review a working change for defects and drift, then apply what you accept"
+policy:
+  allow_implicit_invocation: false

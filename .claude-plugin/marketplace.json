@@ -23,6 +23,7 @@
       "skills": [
         "./skills/ask-matt",
         "./skills/code-review",
+        "./skills/correctness",
         "./skills/create-pr",
         "./skills/develop",
         "./skills/implement",
