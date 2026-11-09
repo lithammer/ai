@@ -22,7 +22,6 @@
       "description": "General-purpose engineering and research skills.",
       "skills": [
         "./skills/ask-matt",
-        "./skills/code-review",
         "./skills/correctness",
         "./skills/create-pr",
         "./skills/develop",

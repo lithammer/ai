@@ -1,3 +1,0 @@
-interface:
-  display_name: "Code Review"
-  short_description: "Find and verify correctness bugs in changed code"
