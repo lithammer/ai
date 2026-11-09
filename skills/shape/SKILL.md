@@ -18,9 +18,10 @@ argument-hint: "[target]"
    accepted ones.
 4. Spawn one reviewer per How axis, in parallel, on the code as it now
    stands, and give each the declined Where findings.
-5. Apply each How finding whose counter-draft stays inside the diff and
-   keeps to the ticket, then run the existing checks that cover the
-   changed code. A fix that breaks a check goes back unapplied.
+5. Apply each How finding whose counter-draft stays inside the diff,
+   keeps to the ticket, preserves behavior, and leaves every test in
+   place, then run the existing checks that cover the changed code. A
+   fix that breaks a check goes back unapplied.
 6. End with the findings by axis and which you applied, one combined
    counter-draft for the rest, and the decisions they leave the person.
 
