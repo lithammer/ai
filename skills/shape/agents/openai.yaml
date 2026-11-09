@@ -1,0 +1,5 @@
+interface:
+  display_name: "Shape"
+  short_description: "Review a working change for its shape, then apply what you accept"
+policy:
+  allow_implicit_invocation: false
