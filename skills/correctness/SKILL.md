@@ -125,11 +125,13 @@ which is wrong.
 ### Conventions
 
 Does a changed line break a rule from the instruction files that govern
-it? Find them: the user-level file your task names, and each
-`AGENTS.md` or `CLAUDE.md` at the repository root or in an ancestor
-directory of a changed file, with the files they import. A directory's
-file binds only the files at or below it. Quote the rule with its file
-and the line that breaks it; the spirit of a rule is not evidence.
+it? Find them: the user-level file your task names, and each `AGENTS.md`
+or `CLAUDE.md` at the repository root or in an ancestor directory of a
+changed file, and the repository's `CODING_STANDARDS.md`, `REVIEW.md`,
+and `CONTRIBUTING.md` when present, with the files they import or point
+to. A directory's file binds only the files at or below it. Quote the
+rule with its file and the line that breaks it; the spirit of a rule is
+not evidence.
 
 ## Report
 
