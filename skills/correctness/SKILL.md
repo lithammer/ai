@@ -70,9 +70,10 @@ or a fallback that reports success under a broken assumption.
 
 What invariant can the change leave broken? Name the invariants the
 changed code relies on or maintains, then find every write that can
-break one, outside the diff as well. Where data has a single source of
-truth, find the copies, caches, and derived values the change lets drift
-from it.
+break one, outside the diff as well. An invariant can hold before and
+after a multi-step update but not between its steps; find who reads it
+there. Where data has a single source of truth, find the copies, caches,
+and derived values the change lets drift from it.
 
 ### Lifecycle
 
