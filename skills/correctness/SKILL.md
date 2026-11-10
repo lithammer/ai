@@ -1,6 +1,6 @@
 ---
 name: correctness
-description: Review a working change for defects (logic, state, lifecycle, concurrency) and for drift from its ticket, docs, and rules, then apply what you accept.
+description: Review a working change for defects (logic, state, lifecycle, concurrency, regression) and for drift from its ticket, docs, and rules, then apply what you accept.
 disable-model-invocation: true
 argument-hint: "[target]"
 ---
@@ -12,9 +12,9 @@ argument-hint: "[target]"
 1. Diff the review target: the current branch against its merge-base
    with the default branch, plus uncommitted changes, unless the
    invocation names another target.
-2. Spawn four reviewers in parallel: one for Logic and Concurrency, one
-   for State, one for Lifecycle, and one for the Contract axes, leaving
-   out Spec when the change has no ticket.
+2. Spawn five reviewers in parallel: one for Logic and Concurrency, one
+   for State, one for Lifecycle, one for Regression, and one for the
+   Contract axes, leaving out Spec when the change has no ticket.
 3. Merge findings that name the same line and mechanism, and keep the
    one with the most concrete trigger.
 4. Present each finding with its trigger and failure, the fix you would
@@ -50,9 +50,7 @@ it.
 
 Trace the change end to end on every Behavior axis: follow each changed
 path from where its input enters to where its effects land, in storage,
-events, responses, or another process, across files. For each line it
-deletes or replaces, name what that line enforced and find where the
-new code enforces it again.
+events, responses, or another process, across files.
 
 ### Logic
 
@@ -91,6 +89,15 @@ the changed code relies on, and find where nothing enforces it. A
 check-then-act breaks when the state can change between the check and
 the act. Report a race only when tasks that really run at once share
 the state.
+
+### Regression
+
+What did the old code guarantee that the new code no longer does? Read
+the old code beside the new: for each line the change deletes or
+replaces, and each path it moves or rewrites, name what it enforced (a
+guard, an order, a window, a side effect, a retry) and find where the
+new code enforces it again. Respect Chesterton's fence: a guarantee
+nobody wrote down still counts.
 
 ## Contract
 
