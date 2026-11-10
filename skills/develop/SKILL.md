@@ -1,6 +1,6 @@
 ---
 name: develop
-description: "Implement an agreed feature or fix, verify it, and resolve independent spec and standards reviews. Use when carrying a defined change through implementation."
+description: "Implement an agreed feature or fix and prove each requirement with real runs. Use when carrying a defined change through implementation."
 ---
 
 # Develop
@@ -66,25 +66,16 @@ would break it, and how you verified it now.
 Continue until the requirement runs and the relevant tests pass after the
 fixes; record pre-existing failures separately.
 
-## 4. Review and finish
+## 4. Finish
 
-Follow [FINAL-REVIEW.md](FINAL-REVIEW.md) for fresh reviews against the spec
-and the documented standards. Keep the reviewed files unchanged while
-reviewers work.
-
-Assess each finding against its evidence. Fix confirmed issues and record why
-others do not apply. Send fixes back to the affected reviewers, including the
-other axis when a fix changes what it reviewed. Close findings on the final
-state; a report about an earlier version is not final verification.
-
-On the final state, repeat the runs a later fix could change and run the
-repository's required checks. Leave the task's edits uncommitted and unstaged
-unless the user asks otherwise. Report for a user who must own the change
-without reading every line. Lead with the evidence: where the record lives,
-what each requirement's final run showed, and the probe results the change
-rests on. Then the decisions the requirements left open, the spec reviewer's
-and your own: where the code commits to one, what it chose, and what it
-passed over. Name the hunks that carry the behavior, in reading order, and
-what is mechanical. Then fixes beyond the request, each review's outcome,
-test proposals, and remaining limits. If a required check, a requirement run,
-or a review cannot complete, report that gap and leave the task open.
+Run the repository's required checks on the final state. Leave the task's
+edits uncommitted and unstaged unless the user asks otherwise. Report for a
+user who must own the change without reading every line. Lead with the
+evidence: where the record lives, what each requirement's final run showed,
+and the probe results the change rests on. Then the decisions the requirements
+left open: where the code commits to one, what it chose, and what it passed
+over. Name the hunks that carry the behavior, in reading order, and what is
+mechanical. Then fixes beyond the request, test proposals, and remaining
+limits. If a required check or a requirement run cannot complete, report that
+gap and leave the task open. End with the next step: review the change with
+shape, then correctness.
