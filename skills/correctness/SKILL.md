@@ -15,9 +15,9 @@ argument-hint: "[target]"
 2. Spawn five reviewers in parallel: one for Logic and Concurrency, one
    for State, one for Lifecycle, one for Regression, and one for the
    Contract axes, leaving out Spec when the change has no ticket.
-3. Spawn one verifier with the Verify section copied verbatim, the
-   review target, and every finding as its line, trigger, and failure,
-   without the reviewer's reasoning.
+3. Spawn one verifier with the Evidence and Verify sections copied
+   verbatim, the review target, and every finding as its line, trigger,
+   and failure, without the reviewer's reasoning.
 4. Merge the confirmed and dependent findings that one fix resolves,
    keeping each one's trigger.
 5. Present each merged finding with its triggers and failure, the fix
@@ -48,7 +48,8 @@ Report a defect only when the change causes or worsens it, or when the
 code fails an explicit requirement of the change, and cite the line
 that does. Trace the trigger through callers, guards, types, and
 configuration before you report it; a guard that rules it out refutes
-it.
+it. A defect that another defect hides today still counts; it depends
+on that fix.
 
 ## Behavior
 
@@ -149,5 +150,4 @@ configuration. Give one verdict:
   old code that had the same defect, or say that it names no failure.
 
 Refute only by citing code. A finding you doubt but cannot rule out
-depends on the fact you would need. A defect another finding masks
-today is not refuted; it depends on that fix.
+depends on the fact you would need.
