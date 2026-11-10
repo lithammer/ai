@@ -15,14 +15,18 @@ argument-hint: "[target]"
 2. Spawn five reviewers in parallel: one for Logic and Concurrency, one
    for State, one for Lifecycle, one for Regression, and one for the
    Contract axes, leaving out Spec when the change has no ticket.
-3. Merge findings that name the same line and mechanism, and keep the
-   one with the most concrete trigger.
-4. Present each finding with its trigger and failure, the fix you would
-   apply, and any fact it depends on that the code does not show, and
-   wait for the person to accept or decline it. Apply the accepted
-   ones, then run the existing checks that cover the changed code. A fix
-   that breaks a check goes back to the person.
-5. End with the findings by axis, sorted by file and line, which you
+3. Spawn one verifier with the Verify section copied verbatim, the
+   review target, and every finding as its line, trigger, and failure,
+   without the reviewer's reasoning.
+4. Merge the confirmed and dependent findings that one fix resolves,
+   keeping each one's trigger.
+5. Present each merged finding with its triggers and failure, the fix
+   you would apply, and any fact it depends on, and wait for the person
+   to accept or decline it. List the refuted ones in a line each with
+   the code the verifier cites, so the person can overrule it. Apply the
+   accepted ones, then run the existing checks that cover the changed
+   code. A fix that breaks a check goes back to the person.
+6. End with the findings by axis, sorted by file and line, which you
    applied, and the decisions they leave the person.
 
 Give every reviewer the Scope, Evidence, and Report sections and its own
@@ -130,3 +134,20 @@ and the line that breaks it; the spirit of a rule is not evidence.
 Return each finding with its file and line, its axis, the input or
 state that triggers it, the failure that follows, and any fact it
 depends on that the code does not show.
+
+## Verify
+
+Findings may repeat across reviewers; trace a shared mechanism once and
+give each finding its own verdict. For each finding, read the cited line
+and trace its trigger to its failure through callers, guards, types, and
+configuration. Give one verdict:
+
+- confirmed: the trace holds, and the change causes or worsens it.
+- depends: it holds only if a fact the code does not show is true; name
+  the fact.
+- refuted: cite the code, at file and line, that rules it out, or the
+  old code that had the same defect, or say that it names no failure.
+
+Refute only by citing code. A finding you doubt but cannot rule out
+depends on the fact you would need. A defect another finding masks
+today is not refuted; it depends on that fix.
