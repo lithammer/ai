@@ -133,6 +133,13 @@ to. A directory's file binds only the files at or below it. Quote the
 rule with its file and the line that breaks it; the spirit of a rule is
 not evidence.
 
+The design decisions bind it too: the ADRs in `docs/adr/` and the root
+`GLOSSARY.md`, and when a `GLOSSARY-MAP.md` lists contexts, the ADRs and
+glossary of each context the change touches. An ADR binds while its
+status is current and nothing supersedes it; quote its decision as you
+would a rule. A glossary defines the domain terms the code and ticket
+use. A missing document is not a finding.
+
 ## Report
 
 Return each finding with its file and line, its axis, the input or
