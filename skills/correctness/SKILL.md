@@ -23,12 +23,13 @@ argument-hint: "[target]"
 5. Apply each confirmed Contradictions finding whose fix changes only a
    comment, docstring, doc, or example to match what the code does.
 6. Present each other merged finding with its triggers and failure, the
-   fix you would apply, and any fact it depends on, and wait for the
-   person to accept or decline it. List the refuted ones in a line each
-   with the code the verifier cites, so the person can overrule it.
-   Apply the accepted ones.
+   fix you would apply, any fact it depends on, and your recommendation
+   with its reason, and wait for the person to accept or decline it.
+   List the refuted ones in a line each with the code the verifier
+   cites, so the person can overrule it. Apply the accepted ones.
 7. End with the findings by axis, sorted by file and line, which you
-   applied, and the decisions they leave the person.
+   applied, and the decisions they leave the person, each with your
+   recommendation.
 
 Give every reviewer the Scope, Evidence, and Report sections and its own
 axis sections, copied verbatim, plus the review target and the ticket.

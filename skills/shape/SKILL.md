@@ -13,16 +13,17 @@ argument-hint: "[target]"
    with the default branch, plus uncommitted changes, unless the
    invocation names another target.
 2. Spawn one reviewer for both Where axes and wait for it.
-3. If it reports findings, present each with its counter-draft and
-   cost, and wait for the person to accept or decline it. Apply the
-   accepted ones.
+3. If it reports findings, present each with its counter-draft, its
+   cost, and your recommendation with its reason, and wait for the
+   person to accept or decline it. Apply the accepted ones.
 4. Spawn one reviewer per How axis, in parallel, on the code as it now
    stands, and give each the declined Where findings.
 5. Apply each How finding whose counter-draft stays inside the diff,
    keeps to the ticket, preserves behavior, and leaves every test in
    place.
 6. End with the findings by axis and which you applied, one combined
-   counter-draft for the rest, and the decisions they leave the person.
+   counter-draft for the rest, and the decisions they leave the person,
+   each with your recommendation.
 
 Give every reviewer the Scope, Evidence, and Report sections and its own
 axis sections, copied verbatim, plus the review target and the ticket.
