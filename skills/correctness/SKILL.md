@@ -20,13 +20,17 @@ argument-hint: "[target]"
    and failure, without the reviewer's reasoning.
 4. Merge the confirmed and dependent findings that one fix resolves,
    keeping each one's trigger.
-5. Present each merged finding with its triggers and failure, the fix
-   you would apply, and any fact it depends on, and wait for the person
-   to accept or decline it. List the refuted ones in a line each with
-   the code the verifier cites, so the person can overrule it. Apply the
-   accepted ones, then run the existing checks that cover the changed
-   code. A fix that breaks a check goes back to the person.
-6. End with the findings by axis, sorted by file and line, which you
+5. Apply each confirmed Contradictions finding whose fix changes only a
+   comment, docstring, doc, or example to match what the code does, then
+   run the existing checks that cover it. A fix that breaks a check goes
+   back unapplied, with the rest.
+6. Present each other merged finding with its triggers and failure, the
+   fix you would apply, and any fact it depends on, and wait for the
+   person to accept or decline it. List the refuted ones in a line each
+   with the code the verifier cites, so the person can overrule it.
+   Apply the accepted ones, then run the existing checks that cover the
+   changed code. A fix that breaks a check goes back to the person.
+7. End with the findings by axis, sorted by file and line, which you
    applied, and the decisions they leave the person.
 
 Give every reviewer the Scope, Evidence, and Report sections and its own
