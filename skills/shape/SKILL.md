@@ -20,8 +20,7 @@ argument-hint: "[target]"
    stands, and give each the declined Where findings.
 5. Apply each How finding whose counter-draft stays inside the diff,
    keeps to the ticket, preserves behavior, and leaves every test in
-   place, then run the existing checks that cover the changed code. A
-   fix that breaks a check goes back unapplied.
+   place.
 6. End with the findings by axis and which you applied, one combined
    counter-draft for the rest, and the decisions they leave the person.
 
