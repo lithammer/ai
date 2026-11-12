@@ -70,11 +70,10 @@ fixes; record pre-existing failures separately.
 
 Leave the task's edits uncommitted and unstaged unless the user asks
 otherwise. Report for a user who must own the change without reading every
-line. Lead with the evidence: where the record lives, what each requirement's
-final run showed, and the probe results the change rests on. Then the
-decisions the requirements left open: where the code commits to one, what it
-chose, and what it passed over. Name the hunks that carry the behavior, in
-reading order, and what is mechanical. Then fixes beyond the request, test
-proposals, and remaining limits. If a requirement run cannot complete, report
-that gap and leave the task open. End with the next step: review the change
-with shape, then correctness.
+line: teach it. Open with how the change works, as a diagram, call tree, or
+before and after of the path its input now takes, and the mechanism in a few
+lines. Then, for each requirement, what its run showed and why that proves it;
+the evidence record backs the report and never stands in for it. Then the
+decisions only the user can make, each with your recommendation. Then what no
+run could show and why, which leaves the task open, and test proposals, a line
+each. End with the next step: review the change with shape, then correctness.
