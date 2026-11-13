@@ -27,14 +27,11 @@ description: Create a draft or ready-for-review PR for the current branch. Use w
 Write from the PR author's perspective, not as an assistant reporting on their
 work.
 
-Tell a teammate what this makes possible, then mention anything they'd otherwise
-be surprised by or need to decide. Assume they'll read the diff. Most PRs need
-only a short sentence describing the outcome.
-
-A heads-up might explain why the change matters now, a surprising consequence,
-a deliberate omission, a decision for reviewers, or a merge dependency. These
-are reasons to add context, not a checklist to fill out. Keep discussion tied to
-a particular line in an inline comment rather than the description.
+Tell a teammate what this makes possible, and why now if they'd ask. Assume
+they'll read the diff. Most PRs need only a short sentence describing the
+outcome. Then name only what a reviewer must decide or do before merging, such
+as a merge or deploy order. Keep discussion tied to a particular line in an
+inline comment rather than the description.
 
 Answer what a reviewer, or someone tracing this change later, would ask
 first: how do you know it works? Show what you would show a teammate at
@@ -42,6 +39,9 @@ your desk, beside the claim it backs, and let it replace the explanation
 where possible. Reuse it from the session or capture it now; `gh pr create
 --help` covers `--attach`. Tests and CI show that logic meets a contract,
 not that the change works in practice; leave out that they pass.
+
+Fold every other note into one `<details>` block after the evidence, with a
+`<summary>` that says what it holds and a blank line after `</summary>`.
 
 End the body with a line for each issue the PR references. Read its open
 acceptance criteria: write `Closes #N` when this PR meets the last of them,
