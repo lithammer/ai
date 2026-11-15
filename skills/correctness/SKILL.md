@@ -15,9 +15,10 @@ argument-hint: "[target]"
 2. Spawn five reviewers in parallel: one for Logic and Concurrency, one
    for State, one for Lifecycle, one for Regression, and one for the
    Contract axes, leaving out Spec when the change has no ticket.
-3. Spawn one verifier with the Evidence and Verify sections copied
-   verbatim, the review target, and every finding as its line, trigger,
-   and failure, without the reviewer's reasoning.
+3. If the reviewers report no findings, go to step 7. Otherwise, spawn
+   one verifier with the Evidence and Verify sections copied verbatim,
+   the review target, and every finding as its line, trigger, and
+   failure, without the reviewer's reasoning.
 4. Merge the confirmed and dependent findings that one fix resolves,
    keeping each one's trigger.
 5. Apply each confirmed Contradictions finding whose fix changes only a
