@@ -47,11 +47,11 @@ leave their findings to them.
 A finding names the input or state, the changed line, and the failure
 that follows: a wrong result, a crash, lost data, or a broken contract.
 Report a defect only when the change causes or worsens it, or when the
-code fails an explicit requirement of the change, and cite the line
-that does. Trace the trigger through callers, guards, types, and
-configuration before you report it; a guard that rules it out refutes
-it. A defect that another defect hides today still counts; it depends
-on that fix.
+code misses an outcome its ticket asks for or breaks a written rule
+that governs it, and cite the line that does. Trace the trigger through
+callers, guards, types, and configuration before you report it; a guard
+that rules it out refutes it. A defect that another defect hides today
+still counts; it depends on that fix.
 
 ## Behavior
 
@@ -111,9 +111,11 @@ nobody wrote down still counts.
 
 ### Spec
 
-Does the change do what its ticket asks? Find requirements missing or
-only partly met, requirements met wrongly, and changes to observable
-behavior that the ticket did not ask for. Quote the requirement. A
+Does the change deliver the outcomes its ticket asks for? An outcome is
+behavior a user, caller, or peer observes. The rest of a ticket is a
+first sketch, written before anyone dug in, and context for the
+implementer. Find outcomes missing, partly met, or met wrongly, and
+observable behavior the ticket did not ask for. Quote the outcome. A
 ticket title is context, not a specification; without a usable spec,
 say so and leave this axis.
 

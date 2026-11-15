@@ -17,10 +17,10 @@ argument-hint: "[target]"
    cost, and your recommendation with its reason, and wait for the
    person to accept or decline it. Apply the accepted ones.
 4. Spawn one reviewer per How axis, in parallel, on the code as it now
-   stands, and give each the declined Where findings.
+   stands, and give each the Where findings with the person's ruling on
+   each.
 5. Apply each How finding whose counter-draft stays inside the diff,
-   keeps to the ticket, preserves behavior, and leaves every test in
-   place.
+   preserves behavior, and leaves every test in place.
 6. End with the findings by axis and which you applied, one combined
    counter-draft for the rest, and the decisions they leave the person,
    each with your recommendation.
@@ -33,16 +33,17 @@ Add nothing of your own reading.
 
 Review the axes your task names. Other reviewers cover the other axes,
 and a correctness review runs on the result. When your task carries
-declined Where findings, a person has ruled on them; leave them out.
+Where findings, a person has ruled on them; leave them out.
 
 ## Evidence
 
-For each candidate, write the counter-draft: the smallest correct change
-that solves the same problem. A finding is the gap between the diff and
-that draft, and the draft is its evidence. Show that the draft preserves
-behavior against callers and tests, and name the concrete cost of the
-gap: what a maintainer must hold in mind, keep in sync, or work around.
-Line count alone is not a cost.
+For each candidate, write the counter-draft: the code that should exist,
+not the smallest diff from the old shape, and no more complex than the
+problem needs. A finding is the gap between the diff and that draft, and
+the draft is its evidence. Show that the draft preserves behavior against
+callers and tests, and name the concrete cost of the gap: what a
+maintainer must hold in mind, keep in sync, or work around. Line count
+alone is not a cost.
 
 ## Where
 
@@ -50,9 +51,9 @@ Line count alone is not a cost.
 
 Does the change fix the mechanism that produces the problem, or apply a
 band-aid downstream of it? A special case layered on shared code is the
-usual sign. Trace the problem to its cause and name the change there. A
-cause-level fix may overturn an approach the spec prescribed; report it
-all the same, for a person to decide.
+usual sign. Trace the problem to its cause and name the change there,
+even where the ticket planned another approach: a ticket's plan is a
+first sketch, written before anyone dug in.
 
 ### Ownership
 
@@ -109,5 +110,4 @@ costs little.
 ## Report
 
 Return each finding with its file and line, its axis, the counter-draft,
-the cost, and whether the draft reaches outside the diff or departs from
-the ticket.
+the cost, and whether the draft reaches outside the diff.
