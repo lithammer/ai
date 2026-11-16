@@ -28,14 +28,16 @@ need to remember into types and APIs: units, identities, valid states, and
 permitted operations. Parse, don't validate: check external input once at
 the boundary, into a type the rest of the code can trust.
 
-**Shape the code for its production callers.** Make the change easy, then
-make the easy change: when the existing structure fights the change,
-reshape it first rather than patch around it. Choose the cleanest design
-for the code that runs, then bring the tests to it. When that design breaks
-a change-detector test, rewrite it against the contract. Reach behavior and
-resolve uncertainty through real runs and throwaway probes; what a run
-shows outranks what documentation says. Add a seam only tests use when
-nothing else can reach it, and name it in the report.
+**Write the code that should exist, not the smallest diff from the old
+shape.** You will maintain this code, and your effort to change it is not a
+cost; a band-aid is a broken window the next agent copies. Make the change
+easy, then make the easy change: when the existing structure fights the
+change, reshape it first. Shape the code for its production callers, then
+bring the tests to it. When that design breaks a change-detector test,
+rewrite it against the contract. Reach behavior and resolve uncertainty
+through real runs and throwaway probes; what a run shows outranks what
+documentation says. Add a seam only tests use when nothing else can reach
+it, and name it in the report.
 
 ## 3. Establish correctness
 
@@ -60,6 +62,6 @@ Leave the task's edits uncommitted and unstaged unless the user asks
 otherwise. Report briefly; the reviews will change this code, and `close`
 teaches it once they have. Give the outcomes, each with the run that
 showed it as a step to repeat, and what no run could show and why. Then
-the decisions only the user can make, each with your recommendation. End
-with the next step: review the change with shape, then correctness, then
-close it.
+the decisions only the user can make, each with the option that leaves the
+best code as your recommendation. End with the next step: review the
+change with shape, then correctness, then close it.
