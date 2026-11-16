@@ -16,10 +16,10 @@ show. Stay on the current branch unless the user asks otherwise; preserve
 unrelated changes and existing staging. Pin the base before editing.
 
 When the change is larger than a reviewer can understand in one pass,
-propose slices before implementing: each lands on its own, leaves the code
-working, and has outcomes a run can show, with shared interfaces first.
-A restructure that makes the change easy is the first slice. Implement the
-slice the user picks.
+propose vertical slices before implementing: each lands on its own, leaves
+the code working, and has outcomes a run can show. A restructure that makes
+the change easy comes before the first slice, as its own change that leaves
+behavior as it was. Implement the part the user picks.
 
 ## 2. Implement
 
