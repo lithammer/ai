@@ -1,6 +1,6 @@
 ---
 name: develop
-description: "Implement an agreed feature or fix and prove each outcome with real runs. Use when carrying a defined change through implementation."
+description: "Implement an agreed feature or fix and prove each outcome with real runs."
 ---
 
 # Develop
@@ -39,18 +39,15 @@ uncertainty through real runs and throwaway probes; what a run shows
 outranks what documentation says. Add a seam only tests use when nothing
 else can reach it, and name it in the report.
 
-Continue until the requested outcomes are implemented.
-
 ## 3. Establish correctness
 
 Prove each outcome with a real run through the change's entry point, the
 way its users drive it: the command, request, page, or public API. Tests show
 that logic meets a contract, not that the change works; they back a run, never
-replace it. Take one scenario per outcome from the outcomes, not the code,
-in a case a plausible mistake would fail, and run against the base where the
-difference is the point. Derive expected results from the outcomes, reviewed
-examples, or a trusted reference, rather than the implementation's current
-output. Fix defects the runs expose, name each outcome no run could show and
+replace it. Take one scenario per outcome, in a case a plausible mistake
+would fail, with its expected result from the outcomes, reviewed examples,
+or a trusted reference. Run against the base where the difference is the
+point. Fix defects the runs expose, name each outcome no run could show and
 why, and delete the throwaway code.
 
 A new test encodes your reading of the outcomes, the same reading the
