@@ -52,31 +52,16 @@ why, and delete the throwaway code.
 
 A new test encodes your reading of the outcomes, the same reading the
 implementation encodes. Retain one only when the user asks for a test.
-Propose a test only where a regression would go unnoticed by types, existing
-tests, or a quick real run, and an incidental edit, made while changing
-nearby code for another reason, could bring it back. Propose every test that
-meets this, each on its own line: the contract, the incidental edit that
-would break it, and how you verified it now.
 
 Continue until each outcome's run and the relevant tests pass after the
 fixes.
 
-## 4. Finish
+## 4. Hand off
 
 Leave the task's edits uncommitted and unstaged unless the user asks
-otherwise. Report for a user who must own the change without reading every
-line: teach it, in the report itself.
-
-- **A feature:** teach how it works as a whole. Open with where it sits
-  among what was already there, as a diagram or before and after. Then walk
-  it the way its user drives it, from entry point to result: each outcome's
-  run as you took it, with the output that shows it. Name code only where
-  the user must know it to own the feature.
-- **A fix:** teach the cause. Show the path the failing input took, where it
-  went wrong, and how the fix changes that path, with the run failing on the
-  base and passing now.
-
-Then the decisions only the user can make, each with your recommendation.
-Then what no run could show and why, which leaves the task open, and test
-proposals, a line each. End with the next step: review the change with
-shape, then correctness.
+otherwise. Report briefly; the reviews will change this code, and `close`
+teaches it once they have. Give the outcomes, each with the run that
+showed it as a step to repeat, and what no run could show and why. Then
+the decisions only the user can make, each with your recommendation. End
+with the next step: review the change with shape, then correctness, then
+close it.

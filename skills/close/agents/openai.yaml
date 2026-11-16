@@ -1,0 +1,5 @@
+interface:
+  display_name: "Close"
+  short_description: "Prove a reviewed change on its final code, teach it, and decide its tests"
+policy:
+  allow_implicit_invocation: false
