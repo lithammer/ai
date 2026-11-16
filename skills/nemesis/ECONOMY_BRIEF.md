@@ -13,7 +13,9 @@ keep the label until the branch closes.
 
 Each charge asks one question: what breaks, or what does the reader
 lose, if this is deleted? Back it with a counter-draft: the smaller
-code, test set, or comment, written out. The counter-draft is the
+code, test set, or comment, written out. Smaller counts concepts, not
+lines: a deletion that moves a rule into callers, or leaves them to
+keep two things in step, adds a concept. The counter-draft is the
 charge; the main agent owns whether to take it.
 
 Read the element's callers, types, and tests before charging it, and
@@ -23,7 +25,8 @@ cite what they prove.
 
 A defense rests on present evidence:
 
-- Code: a caller or input that needs the concept.
+- Code: a caller or input that needs the concept, or a rule it keeps in
+  one place that deleting it would spread to callers.
 - Test: the bug that fails it and that no other test catches.
 - Comment: a contract, invariant, ordering or lifetime rule, or external
   effect the code cannot show.
@@ -33,6 +36,9 @@ one-off verification. An uncaught failure alone does not settle that choice.
 
 Anticipated needs, taste, and coverage for its own sake leave the burden
 unmet.
+
+Choices the fit pass or the conversation closed are settled. Charge one
+again only when the code itself shows the earlier answer does not hold.
 
 ## Close branches
 

@@ -7,9 +7,10 @@ should have been made.
 ## Challenge
 
 Read the diff against its base and the code around it. Measure it against
-the requirements in the conversation; with none, take the intent from the
-branch name, the commit messages, or the user, and name the source in
-your first challenge.
+the outcomes the requirements ask for; their plan is a first sketch,
+written before anyone dug in, and a departure from it is no finding.
+With no requirements, take the intent from the branch name, the commit
+messages, or the user, and name the source in your first challenge.
 
 Walk these branches in order, one point per turn. Keep the current branch
 label stable until it closes.
