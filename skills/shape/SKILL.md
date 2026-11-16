@@ -89,8 +89,10 @@ Does the change carry accidental complexity: concepts its problem does
 not need? A concept is anything a reader must hold in mind. Code the
 change repeats or leaves dead counts; so does compatibility with
 anything the base never shipped, and a comment that restates the code or
-recounts how the change came about. Name each concept the counter-draft
-removes.
+recounts how the change came about. A new test that repeats another's
+setup and call to check one more part of the same output is repeated
+code; the counter-draft grows that test. Name each concept the
+counter-draft removes.
 
 ### Reuse
 
