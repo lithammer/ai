@@ -11,9 +11,9 @@ Read the request, its spec or tickets, and the documented standards the
 review will hold the change to. A ticket's outcomes bind; its plan is a
 first sketch, written before anyone dug in, so depart from it when the
 code shows a better way. Resolve ambiguities that would change
-observable behavior. Stay on the current branch unless the user asks
-otherwise; preserve unrelated changes and existing staging. Pin the base
-before editing.
+observable behavior, then list the outcomes, each as something a run can
+show. Stay on the current branch unless the user asks otherwise; preserve
+unrelated changes and existing staging. Pin the base before editing.
 
 When the change is larger than a reviewer can understand in one pass,
 propose slices before implementing: each lands on its own, leaves the code

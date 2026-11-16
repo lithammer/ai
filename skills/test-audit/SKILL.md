@@ -29,13 +29,19 @@ independent subsystems.
 
 Read each test beside the production code it guards. For each guarded
 behavior, ask what would notice a regression first: types, another test, a
-crash, a visible failure in normal use, or nothing. Collect candidates in
-both directions:
+crash, a visible failure in normal use, or nothing. Collect three kinds
+of candidate:
 
 - **Removal:** a test whose regression something else would catch, or that
   goes red when behavior stays the same.
 - **Addition:** behavior whose regression nothing would catch, where a
   incidental edit could cause it.
+- **Merge:** a test that repeats another test's setup and call to check
+  one more part of the same output. The case belongs in that test, in
+  its whole-output (golden) expectation or as a row in its table. Name
+  the split tests beside it: each is a broken window that the next
+  change to that output copies. A whole-output expectation that pins
+  the part at its zero value is the sign.
 
 ## 3. Prove
 
@@ -49,6 +55,9 @@ Undo each mutation before the next.
 - Change the code without changing behavior and the test goes red: the test
   is a change detector.
 - Break the behavior and nothing goes red: propose a test.
+- For a merge, fold the case into the other test, then rerun each
+  mutation the split test caught. The folded test must go red on every
+  one. Undo the fold.
 
 Record each mutation and what caught it. A claim the environment cannot run
 stays unproven; drop it with the candidates the proof does not support.
@@ -65,6 +74,7 @@ Rank candidates by upkeep removed or risk guarded. For each, give:
 - For a removal, the lines it removes, including production code that only
   the test uses.
 - For an addition, the contract and the edit that would break it.
+- For a merge, the test it folds into and the tests it removes.
 
 State what you explored and what remains unread. Return no candidates when
 none hold.
@@ -74,5 +84,5 @@ Wait for the user to select candidates before editing.
 ## 5. Implement
 
 Use the `develop` skill for the selected candidates. Pass each candidate's
-mutation record as its requirements; a selected addition is the user asking
+mutation record as its spec; a selected addition is the user asking
 for that test.

@@ -79,7 +79,7 @@ behavior before editing.
 ## 5. Implement
 
 Use the `develop` skill for the chosen change. Pass the selected candidate's
-evidence, scope, accepted contracts, and risks as its requirements.
+evidence, scope, accepted contracts, and risks as its spec.
 With a ticket, finish the refactor before the ticket's change, so each
 lands as its own diff. When the refactor removes the ticket's need, verify
 the need is met and drop the ticket's change.
