@@ -41,7 +41,8 @@ of candidate:
   its whole-output (golden) expectation or as a row in its table. Name
   the split tests beside it: each is a broken window that the next
   change to that output copies. A whole-output expectation that pins
-  the part at its zero value is the sign.
+  the part at its zero value is the sign. A table that varies one input
+  across its values is that test, not a split from it.
 
 ## 3. Prove
 
