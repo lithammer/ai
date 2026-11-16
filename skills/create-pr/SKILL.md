@@ -9,8 +9,7 @@ description: Create a draft or ready-for-review PR for the current branch. Use w
    intended changes, including uncommitted work, and use the conversation context
    already available. Check claims against the actual branch rather than relying
    on memory.
-2. Write the title and description in the current session using the guidance
-   below.
+2. Write the title and description using the guidance below.
 3. Read the description as a teammate about to review the diff. Keep the
    outcome, the visual, the evidence, and what the reviewer must decide or do;
    cut prose that narrates the implementation or explains what the changed code
