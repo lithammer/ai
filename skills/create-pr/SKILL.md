@@ -11,9 +11,10 @@ description: Create a draft or ready-for-review PR for the current branch. Use w
    on memory. Preserve file contents, unrelated changes, and unrelated staging.
 2. Write the title and description in the current session using the guidance
    below.
-3. Read the description as a teammate about to review the diff. Keep the outcome
-   and useful heads-ups; cut implementation narration and explanations already
-   present in the changed code or documents.
+3. Read the description as a teammate about to review the diff. Keep the
+   outcome, the visual, the evidence, and what the reviewer must decide or do;
+   cut prose that narrates the implementation or explains what the changed code
+   or documents already say.
 4. If asked only for a description, return the title and body without changing
    Git state or creating a PR. Otherwise, prepare the PR branch locally, creating
    one if needed. Commit only the intended changes if needed, then push that
