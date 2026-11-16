@@ -30,8 +30,9 @@ work.
 Tell a teammate what this makes possible, and why now if they'd ask. Assume
 they'll read the diff. Most PRs need only a short sentence describing the
 outcome. Then name only what a reviewer must decide or do before merging, such
-as a merge or deploy order. Keep discussion tied to a particular line in an
-inline comment rather than the description.
+as a merge or deploy order, or a change that cannot be rolled back. Keep
+discussion tied to a particular line in an inline comment rather than the
+description.
 
 Answer what a reviewer, or someone tracing this change later, would ask
 first: how do you know it works? Show what you would show a teammate at
