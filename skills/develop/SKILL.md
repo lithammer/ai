@@ -23,32 +23,30 @@ slice the user picks.
 
 ## 2. Implement
 
-**Encode meaning and invariants in the model.** Use types, APIs, and
-enforced constraints to express distinctions callers would otherwise need to
-remember: units, identities, valid states, and permitted operations. Prefer
-representations that prevent misuse over conventions, repeated checks, or
-tests that merely detect it. Validate external inputs at the boundary.
+**Make illegal states unrepresentable.** Put what callers would otherwise
+need to remember into types and APIs: units, identities, valid states, and
+permitted operations. Parse, don't validate: check external input once at
+the boundary, into a type the rest of the code can trust.
 
 **Shape the code for its production callers.** Make the change easy, then
 make the easy change: when the existing structure fights the change,
 reshape it first rather than patch around it. Choose the cleanest design
 for the code that runs, then bring the tests to it. When that design breaks
-an existing test that pins internal structure rather than a contract,
-rewrite the test against the contract. Reach behavior and resolve
-uncertainty through real runs and throwaway probes; what a run shows
-outranks what documentation says. Add a seam only tests use when nothing
-else can reach it, and name it in the report.
+a change-detector test, rewrite it against the contract. Reach behavior and
+resolve uncertainty through real runs and throwaway probes; what a run
+shows outranks what documentation says. Add a seam only tests use when
+nothing else can reach it, and name it in the report.
 
 ## 3. Establish correctness
 
 Prove each outcome with a real run through the change's entry point, the
 way its users drive it: the command, request, page, or public API. Tests show
 that logic meets a contract, not that the change works; they back a run, never
-replace it. Take one scenario per outcome, in a case a plausible mistake
-would fail, with its expected result from the outcomes, reviewed examples,
-or a trusted reference. Run against the base where the difference is the
-point. Fix defects the runs expose, name each outcome no run could show and
-why, and delete the throwaway code.
+replace it. Take one scenario per outcome that a plausible mistake turns
+red, with its expected result from the outcomes, reviewed examples, or a
+trusted reference. For a fix, show it red on the base first. Fix defects
+the runs expose, name each outcome no run could show and why, and delete
+the throwaway code.
 
 A new test encodes your reading of the outcomes, the same reading the
 implementation encodes. Retain one only when the user asks for a test.
