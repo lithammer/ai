@@ -30,9 +30,7 @@ work.
 Tell a teammate what this makes possible, and why now if they'd ask. Assume
 they'll read the diff. Most PRs need only a short sentence of prose describing
 the outcome. Then name only what a reviewer must decide or do before merging,
-such as a merge or deploy order, or a change that cannot be rolled back. Keep
-discussion tied to a particular line in an inline comment rather than the
-description.
+such as a merge or deploy order, or a change that cannot be rolled back.
 
 Follow the outcome with a visual of the change's shape, so the reviewer knows
 what the PR is about before they open the diff. A person cannot build that
