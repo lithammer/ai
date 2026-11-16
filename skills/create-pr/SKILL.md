@@ -37,9 +37,10 @@ description.
 Answer what a reviewer, or someone tracing this change later, would ask
 first: how do you know it works? Show what you would show a teammate at
 your desk, beside the claim it backs, and let it replace the explanation
-where possible. Reuse it from the session or capture it now; `gh pr create
---help` covers `--attach`. Tests and CI show that logic meets a contract,
-not that the change works in practice; leave out that they pass.
+where possible. For a fix or a behaviour change, show before and after.
+Reuse it from the session or capture it now; `gh pr create --help` covers
+`--attach`. Tests and CI show that logic meets a contract, not that the
+change works in practice; leave out that they pass.
 
 Fold every other note into one `<details>` block after the evidence, with a
 `<summary>` that says what it holds and a blank line after `</summary>`.
