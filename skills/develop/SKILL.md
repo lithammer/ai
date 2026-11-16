@@ -12,8 +12,8 @@ review will hold the change to. A ticket's outcomes bind; its plan is a
 first sketch, written before anyone dug in, so depart from it when the
 code shows a better way. Resolve ambiguities that would change
 observable behavior. Stay on the current branch unless the user asks
-otherwise; preserve unrelated changes and existing staging. Pin the review
-base before editing and record pre-existing changes.
+otherwise; preserve unrelated changes and existing staging. Pin the base
+before editing.
 
 When the change is larger than a reviewer can understand in one pass,
 propose slices before implementing: each lands on its own, leaves the code
@@ -35,13 +35,9 @@ reshape it first rather than patch around it. Choose the cleanest design
 for the code that runs, then bring the tests to it. When that design breaks
 an existing test that pins internal structure rather than a contract,
 rewrite the test against the contract. Reach behavior and resolve
-uncertainty through real runs and throwaway probes; add a seam only tests use
-when nothing else can reach it, and name it in the report.
-
-**Keep evidence as you go.** In a record outside the task's changes, note
-each run or probe that settles how something behaves: the step as you took
-it and its unedited output or screenshot, beside the claim it backs. What a
-run shows outranks what documentation says.
+uncertainty through real runs and throwaway probes; what a run shows
+outranks what documentation says. Add a seam only tests use when nothing
+else can reach it, and name it in the report.
 
 Continue until the requested outcomes are implemented.
 
@@ -54,9 +50,8 @@ replace it. Take one scenario per outcome from the outcomes, not the code,
 in a case a plausible mistake would fail, and run against the base where the
 difference is the point. Derive expected results from the outcomes, reviewed
 examples, or a trusted reference, rather than the implementation's current
-output. Add the runs to the evidence record, each beside the outcome it
-shows. Fix defects the runs expose, name each outcome no run could show and
-why, and delete the throwaway code; its output stays in the record.
+output. Fix defects the runs expose, name each outcome no run could show and
+why, and delete the throwaway code.
 
 A new test encodes your reading of the outcomes, the same reading the
 implementation encodes. Retain one only when the user asks for a test.
@@ -67,16 +62,24 @@ meets this, each on its own line: the contract, the incidental edit that
 would break it, and how you verified it now.
 
 Continue until each outcome's run and the relevant tests pass after the
-fixes; record pre-existing failures separately.
+fixes.
 
 ## 4. Finish
 
 Leave the task's edits uncommitted and unstaged unless the user asks
 otherwise. Report for a user who must own the change without reading every
-line: teach it. Open with how the change works, as a diagram, call tree, or
-before and after of the path its input now takes, and the mechanism in a few
-lines. Then, for each outcome, what its run showed and why that proves it;
-the evidence record backs the report and never stands in for it. Then the
-decisions only the user can make, each with your recommendation. Then what no
-run could show and why, which leaves the task open, and test proposals, a line
-each. End with the next step: review the change with shape, then correctness.
+line: teach it, in the report itself.
+
+- **A feature:** teach how it works as a whole. Open with where it sits
+  among what was already there, as a diagram or before and after. Then walk
+  it the way its user drives it, from entry point to result: each outcome's
+  run as you took it, with the output that shows it. Name code only where
+  the user must know it to own the feature.
+- **A fix:** teach the cause. Show the path the failing input took, where it
+  went wrong, and how the fix changes that path, with the run failing on the
+  base and passing now.
+
+Then the decisions only the user can make, each with your recommendation.
+Then what no run could show and why, which leaves the task open, and test
+proposals, a line each. End with the next step: review the change with
+shape, then correctness.
