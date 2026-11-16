@@ -29,8 +29,7 @@ work.
 
 Tell a teammate what this makes possible, and why now if they'd ask. Assume
 they'll read the diff. Most PRs need only a short sentence of prose describing
-the outcome. Then name only what a reviewer must decide or do before merging,
-such as a merge or deploy order, or a change that cannot be rolled back.
+the outcome.
 
 Follow the outcome with a visual of the change's shape, so the reviewer knows
 what the PR is about before they open the diff. A person cannot build that
@@ -40,6 +39,9 @@ to each other, and draw it as a `diff` block when the surrounding shape
 already exists. Pick the smallest view that gives the overview, and keep only
 the calls, files, and states it needs. Leave it out when the change has no
 shape to show, such as a one-line fix.
+
+Then name only what a reviewer must decide or do before merging, such as a
+merge or deploy order, or a change that cannot be rolled back.
 
 Answer what a reviewer, or someone tracing this change later, would ask
 first: how do you know it works? Show what you would show a teammate at
