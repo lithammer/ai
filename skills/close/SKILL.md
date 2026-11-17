@@ -41,9 +41,11 @@ Propose a test only where a regression would go unnoticed by types,
 existing tests, or a quick real run, and an incidental edit, made while
 changing nearby code for another reason, could bring it back. A defect
 the reviews or these runs found is a mistake already made once; weigh
-each first. Propose every test that meets this, each on its own line: the
-contract, the incidental edit that would break it, and how you verified
-it now.
+each first. Prefer a form that does not share your reading of the
+outcomes: a walk of every reachable state, generated inputs, or the base
+as the oracle. Propose every test that meets this, each on its own line:
+the contract, the incidental edit that would break it, and how you
+verified it now.
 
 ## 4. Teach
 
@@ -51,10 +53,11 @@ Report for a user who must own the change without reading every line:
 teach it, in the report itself.
 
 - **A feature:** teach how it works as a whole. Open with where it sits
-  among what was already there, as a diagram or before and after. Then walk
-  it the way its user drives it, from entry point to result: each outcome's
-  run as you took it, with the output that shows it. Name code only where
-  the user must know it to own the feature.
+  among what was already there, as a diagram or before and after; for a
+  feature that moves between states, a statechart in the user's words.
+  Then walk it the way its user drives it, from entry point to result:
+  each outcome's run as you took it, with the output that shows it. Name
+  code only where the user must know it to own the feature.
 - **A fix:** teach the cause. Show the path the failing input took, where it
   went wrong, and how the fix changes that path, with the run failing on the
   base and passing now.
