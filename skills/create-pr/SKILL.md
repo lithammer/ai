@@ -61,4 +61,5 @@ such as deploy steps and pending checks, go in your reply to them.
 
 End the body with a line for each issue the PR references. Read its open
 acceptance criteria: write `Closes #N` when this PR meets the last of them,
-and `Refs #N` otherwise.
+and `Refs #N` otherwise. Add `Refs #N` for each related PR outside this PR's
+stack; GitHub already shows the stack.
