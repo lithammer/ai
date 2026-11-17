@@ -11,17 +11,18 @@ description: Create a draft or ready-for-review PR for the current branch. Use w
    on memory.
 2. Write the title and description using the guidance below.
 3. Read the description as a teammate about to review the diff. Keep the
-   outcome, the visual, the evidence, and what the reviewer must decide or do;
-   cut prose that narrates the implementation or explains what the changed code
-   or documents already say.
+   outcome, the visual, the evidence, and what the review must settle; cut
+   prose that narrates the implementation or explains what the changed code or
+   documents already say.
 4. If asked only for a description, return the title and body without changing
    Git state or creating a PR. Otherwise, prepare the PR branch locally, creating
    one if needed. Commit only the intended changes if needed, then push that
    branch. Preserve file contents, unrelated changes, and unrelated staging.
    Keep the local checkout on the PR branch.
 5. Create the PR as a draft unless explicitly requested ready for review.
-   Confirm the published body matches the intended text. Return the URL, or the
-   title, body, and blocker if preparation or creation fails.
+   Confirm the published body matches the intended text. Return the URL and
+   the author's remaining steps, or the title, body, and blocker if preparation
+   or creation fails.
 
 ## Description
 
@@ -41,8 +42,9 @@ already exists. Pick the smallest view that gives the overview, and keep only
 the calls, files, and states it needs. Leave it out when the change has no
 shape to show, such as a one-line fix.
 
-Then name only what a reviewer must decide or do before merging, such as a
-merge or deploy order, or a change that cannot be rolled back.
+Then name any decision the review must settle, such as a change that cannot
+be rolled back or a PR that must merge first. What the author still has to do,
+such as deploy steps and pending checks, goes in your reply to them.
 
 Answer what a reviewer, or someone tracing this change later, would ask
 first: how do you know it works? Show what you would show a teammate at
