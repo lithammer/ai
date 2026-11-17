@@ -43,8 +43,7 @@ the calls, files, and states it needs. Leave it out when the change has no
 shape to show, such as a one-line fix.
 
 Then name any decision the review must settle, such as a change that cannot
-be rolled back or a PR that must merge first. What the author still has to do,
-such as deploy steps and pending checks, goes in your reply to them.
+be rolled back or a PR that must merge first.
 
 Answer what a reviewer, or someone tracing this change later, would ask
 first: how do you know it works? Show what you would show a teammate at
@@ -54,8 +53,11 @@ Reuse it from the session or capture it now; `gh pr create --help` covers
 `--attach`. Tests and CI show that logic meets a contract, not that the
 change works in practice; leave out that they pass.
 
-Fold every other note into one `<details>` block after the evidence, with a
-`<summary>` that says what it holds and a blank line after `</summary>`.
+Fold what someone tracing this change later would want, such as a limit of
+the evidence or a path not taken, into one `<details>` block after the
+evidence, with a `<summary>` that says what it holds and a blank line after
+`</summary>`. How the change rolls out and what the author still has to do,
+such as deploy steps and pending checks, go in your reply to them.
 
 End the body with a line for each issue the PR references. Read its open
 acceptance criteria: write `Closes #N` when this PR meets the last of them,
