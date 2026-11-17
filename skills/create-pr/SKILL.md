@@ -43,7 +43,7 @@ the calls, files, and states it needs. Leave it out when the change has no
 shape to show, such as a one-line fix.
 
 Then name any decision the review must settle, such as a change that cannot
-be rolled back or a PR that must merge first.
+be rolled back.
 
 Answer what a reviewer, or someone tracing this change later, would ask
 first: how do you know it works? Show what you would show a teammate at
