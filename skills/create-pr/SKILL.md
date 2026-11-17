@@ -59,7 +59,8 @@ evidence, with a `<summary>` that says what it holds and a blank line after
 `</summary>`. How the change rolls out and what the author still has to do,
 such as deploy steps and pending checks, go in your reply to them.
 
-End the body with a line for each issue the PR references. Read its open
-acceptance criteria: write `Closes #N` when this PR meets the last of them,
-and `Refs #N` otherwise. Add `Refs #N` for each related PR outside this PR's
-stack; GitHub already shows the stack.
+End the body with a line for each issue the PR references that a reviewer
+can open; a ticket that lives only on this machine, such as a `tk` id, is not
+one. Read its open acceptance criteria: write `Closes #N` when this PR meets
+the last of them, and `Refs #N` otherwise. Add `Refs #N` for each related PR
+outside this PR's stack; GitHub already shows the stack.
