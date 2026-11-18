@@ -78,10 +78,11 @@ callers and types, and the code it deletes.
 ### Precision
 
 Do names, types, and comments say less than the code knows? Name the
-precise replacement, in the ubiquitous language. When a comment explains
-what a name could say, the name is the finding. When the code relies on
-a constraint no name or type can show, the missing comment is the
-finding.
+precise replacement, in the ubiquitous language. Local names count: a
+variable named for a type it does not hold is a finding. When a comment
+explains what a name could say, the name is the finding. When the code
+relies on a constraint no name or type can show, the missing comment is
+the finding.
 
 ### Proportion
 
