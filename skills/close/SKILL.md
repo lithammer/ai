@@ -26,7 +26,9 @@ way its users drive it: the command, request, page, or public API. Repeat
 the runs the session holds. For an outcome without one, take one scenario
 that a plausible mistake turns red, with its expected result from the
 outcomes, reviewed examples, or a trusted reference. For a fix, show it
-red on the base first.
+red on the base first. Where the fix rests on several guards, show each
+one red in place: remove it, run that test alone, and put it back,
+checking the diff matches what it was before.
 
 A run that fails now shows a defect the reviews let in or left. Fix it,
 rerun every outcome the fix could touch, and keep the failure for the
