@@ -49,6 +49,11 @@ as the oracle. Propose every test that meets this, each on its own line:
 the contract, the incidental edit that would break it, and how you
 verified it now.
 
+A shim, code that bridges data or callers about to age out, such as a
+fill-in for records saved before a recent format change, gets a
+throwaway run in place of a test: its regression ends when the old data
+does. Name in the report when the shim can go.
+
 ## 4. Teach
 
 Report for a user who must own the change without reading every line:

@@ -34,8 +34,9 @@ of candidate:
 
 - **Removal:** a test whose regression something else would catch, or that
   goes red when behavior stays the same.
-- **Addition:** behavior whose regression nothing would catch, where a
-  incidental edit could cause it.
+- **Addition:** behavior whose regression nothing would catch, where an
+  incidental edit could cause it. A shim, code that bridges data or
+  callers about to age out, stays out: its regression ends with them.
 - **Merge:** a test that repeats another test's setup and call to check
   one more part of the same output. The case belongs in that test, in
   its whole-output (golden) expectation or as a row in its table. Name
