@@ -10,8 +10,8 @@ description: Create a draft or ready-for-review PR for the current branch. Use w
    already available. Check claims against the actual branch rather than relying
    on memory.
 2. Get the evidence the guidance below asks for before you write: reuse it
-   from the session or capture it now. Done when each claim the description
-   will make has its evidence in hand, or a reason none could be captured.
+   from the session or capture it now. Done when the outcome has its evidence
+   in hand, or a reason none could be captured.
 3. Write the title and description using the guidance below.
 4. Read the description as a teammate about to review the diff. Keep the
    outcome, the visual, the evidence, and what the review must settle; cut
@@ -54,9 +54,12 @@ your desk, in the form the change takes there: a recording where it plays
 out as actions and responses over time, a screenshot or output where the
 result stands still. Put it beside the claim it backs, and let it replace
 the explanation where possible. For a fix or a behaviour change, show before
-and after. `gh pr create --help` covers `--attach`. Tests and CI show that
-logic meets a contract, not that the change works in practice; leave out
-that they pass.
+and after. `gh pr create --help` covers `--attach`.
+
+Evidence is the thing itself, and one showing of the outcome is enough. Tests
+and CI show that logic meets a contract, not that the change works in
+practice, and an account of the cases you ran, what you saw, or what you
+cleaned up asks the reviewer to take your word. Leave both out.
 
 Fold what someone tracing this change later would want, such as a limit of
 the evidence or a path not taken, into one `<details>` block after the
