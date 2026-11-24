@@ -19,8 +19,9 @@ argument-hint: "[target]"
 4. Spawn one reviewer per How axis, in parallel, on the code as it now
    stands, and give each the Where findings with the person's ruling on
    each.
-5. Apply each How finding whose counter-draft stays inside the diff,
-   preserves behavior, and leaves every test in place.
+5. Apply each How finding whose counter-draft makes the code the change
+   works on easier to maintain, preserves behavior, and leaves every
+   test in place.
 6. End with the findings by axis and which you applied, one combined
    counter-draft for the rest, and the decisions they leave the person,
    each with your recommendation.
@@ -28,6 +29,10 @@ argument-hint: "[target]"
 Give every reviewer the Scope, Evidence, and Report sections and its own
 axis sections, copied verbatim, plus the review target and the ticket.
 Add nothing of your own reading.
+
+Recommend toward the best code the change can leave behind. Accept a
+finding whose draft makes the code the change works on easier to
+maintain, wherever its lines fall; when in doubt, accept.
 
 ## Scope
 
@@ -39,11 +44,12 @@ Where findings, a person has ruled on them; leave them out.
 
 For each candidate, write the counter-draft: the code that should exist,
 not the smallest diff from the old shape, and no more complex than the
-problem needs. A finding is the gap between the diff and that draft, and
-the draft is its evidence. Show that the draft preserves behavior against
-callers and tests, and name the concrete cost of the gap: what a
-maintainer must hold in mind, keep in sync, or work around. Line count
-alone is not a cost.
+problem needs. Follow the draft to where the better code lives, into
+callers and neighbors the diff leaves untouched. A finding is the gap
+between the diff and that draft, and the draft is its evidence. Show
+that the draft preserves behavior against callers and tests, and name
+the concrete cost of the gap: what a maintainer must hold in mind, keep
+in sync, or work around. Line count alone is not a cost.
 
 ## Where
 
@@ -113,4 +119,4 @@ costs little.
 ## Report
 
 Return each finding with its file and line, its axis, the counter-draft,
-the cost, and whether the draft reaches outside the diff.
+and the cost.

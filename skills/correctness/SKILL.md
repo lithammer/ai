@@ -38,6 +38,11 @@ Give each Behavior reviewer the paragraph under Behavior as well, and
 the Contract reviewer the path of the user-level instruction file your
 harness loads. Add nothing of your own reading.
 
+Draft each fix where the defect's cause lives, and recommend toward the
+best result the change can leave behind. Accept a fix that keeps the
+changed behavior correct for the long run, wherever its lines fall;
+when in doubt, accept.
+
 ## Scope
 
 Review the axes your task names. Other reviewers cover the other axes;
