@@ -9,20 +9,23 @@ description: Create a draft or ready-for-review PR for the current branch. Use w
    intended changes, including uncommitted work, and use the conversation context
    already available. Check claims against the actual branch rather than relying
    on memory.
-2. Write the title and description using the guidance below.
-3. Read the description as a teammate about to review the diff. Keep the
+2. Get the evidence the guidance below asks for before you write: reuse it
+   from the session or capture it now. Done when each claim the description
+   will make has its evidence in hand, or a reason none could be captured.
+3. Write the title and description using the guidance below.
+4. Read the description as a teammate about to review the diff. Keep the
    outcome, the visual, the evidence, and what the review must settle; cut
    prose that narrates the implementation or explains what the changed code or
    documents already say.
-4. If asked only for a description, return the title and body without changing
+5. If asked only for a description, return the title and body without changing
    Git state or creating a PR. Otherwise, prepare the PR branch locally, creating
    one if needed. Commit only the intended changes if needed, then push that
    branch. Preserve file contents, unrelated changes, and unrelated staging.
    Keep the local checkout on the PR branch.
-5. Create the PR as a draft unless explicitly requested ready for review.
-   Confirm the published body matches the intended text. Return the URL and
-   the author's remaining steps, or the title, body, and blocker if preparation
-   or creation fails.
+6. Create the PR as a draft unless explicitly requested ready for review.
+   Confirm the published body matches the intended text. Return the URL, the
+   author's remaining steps, and any evidence you could not capture, or the
+   title, body, and blocker if preparation or creation fails.
 
 ## Description
 
@@ -47,11 +50,13 @@ be rolled back.
 
 Answer what a reviewer, or someone tracing this change later, would ask
 first: how do you know it works? Show what you would show a teammate at
-your desk, beside the claim it backs, and let it replace the explanation
-where possible. For a fix or a behaviour change, show before and after.
-Reuse it from the session or capture it now; `gh pr create --help` covers
-`--attach`. Tests and CI show that logic meets a contract, not that the
-change works in practice; leave out that they pass.
+your desk, in the form the change takes there: a recording where it plays
+out as actions and responses over time, a screenshot or output where the
+result stands still. Put it beside the claim it backs, and let it replace
+the explanation where possible. For a fix or a behaviour change, show before
+and after. `gh pr create --help` covers `--attach`. Tests and CI show that
+logic meets a contract, not that the change works in practice; leave out
+that they pass.
 
 Fold what someone tracing this change later would want, such as a limit of
 the evidence or a path not taken, into one `<details>` block after the
