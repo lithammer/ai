@@ -32,8 +32,11 @@ behavior, ask what would notice a regression first: types, another test, a
 crash, a visible failure in normal use, or nothing. Collect three kinds
 of candidate:
 
-- **Removal:** a test whose regression something else would catch, or that
-  goes red when behavior stays the same.
+- **Removal:** a test whose regression something else would catch, that
+  goes red when behavior stays the same, or that only reads back a value
+  the code states. Judge the test as a whole: name the logic it runs and
+  the mistake that would make it go red. Choosing a different value is
+  not such a mistake unless it breaks a contract outside the test.
 - **Addition:** behavior whose regression nothing would catch, where an
   incidental edit could cause it. A shim, code that bridges data or
   callers about to age out, stays out: its regression ends with them.
@@ -56,6 +59,10 @@ Undo each mutation before the next.
   the test is redundant.
 - Change the code without changing behavior and the test goes red: the test
   is a change detector.
+- Change the stated value and check that the test goes red. Trace the value
+  from the code to the assertion. Use callers and requirements to show
+  the edit changes a choice, not a contract. The test's name is not a
+  requirement.
 - Break the behavior and nothing goes red: propose a test.
 - For a merge, fold the case into the other test, then rerun each
   mutation the split test caught. The folded test must go red on every
