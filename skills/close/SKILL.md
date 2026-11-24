@@ -32,7 +32,8 @@ checking the diff matches what it was before.
 
 A run that fails now shows a defect the reviews let in or left. Fix it,
 rerun every outcome the fix could touch, and keep the failure for the
-report. Delete the throwaway code.
+report. Read each run's output as its user would, and report what would
+surprise them, even where the outcome passes. Delete the throwaway code.
 
 Done when each outcome has a passing run on the final code, or is named
 with the reason no run could show it.

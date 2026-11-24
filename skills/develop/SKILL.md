@@ -46,8 +46,9 @@ way its users drive it: the command, request, page, or public API. Tests show
 that logic meets a contract, not that the change works; they back a run, never
 replace it. Take one scenario per outcome that a plausible mistake turns
 red, with its expected result from the outcomes, reviewed examples, or a
-trusted reference. For a fix, show it red on the base first. Fix defects
-the runs expose, name each outcome no run could show and why, and delete
+trusted reference. For a fix, show it red on the base first. Read each
+run's output as its user would, and report what would surprise them,
+even where the outcome passes. Fix defects the runs expose, name each outcome no run could show and why, and delete
 the throwaway code.
 
 A new test encodes your reading of the outcomes, the same reading the
