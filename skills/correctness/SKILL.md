@@ -26,7 +26,9 @@ argument-hint: "[target]"
 6. Present each other merged finding with its triggers and failure, the
    fix you would apply, any fact it depends on, whether it is
    pre-existing, and your recommendation with its reason, and wait for
-   the person to accept or decline it.
+   the person to accept or decline it. Open each with one case in the
+   person's words: what someone does, what happens now, and what the
+   fix changes.
    List the refuted ones in a line each with the code the verifier
    cites, so the person can overrule it. Apply the accepted ones.
 7. End with the findings by axis, sorted by file and line, which you

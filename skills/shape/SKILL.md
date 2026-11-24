@@ -15,7 +15,9 @@ argument-hint: "[target]"
 2. Spawn one reviewer for both Where axes and wait for it.
 3. If it reports findings, present each with its counter-draft, its
    cost, and your recommendation with its reason, and wait for the
-   person to accept or decline it. Apply the accepted ones.
+   person to accept or decline it. Open each with one case in the
+   person's words: what someone does, what happens now, and what the
+   counter-draft changes. Apply the accepted ones.
 4. Spawn one reviewer per How axis, in parallel, on the code as it now
    stands, and give each the Where findings with the person's ruling on
    each.
