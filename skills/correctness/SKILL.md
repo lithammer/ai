@@ -24,8 +24,9 @@ argument-hint: "[target]"
 5. Apply each confirmed Contradictions finding whose fix changes only a
    comment, docstring, doc, or example to match what the code does.
 6. Present each other merged finding with its triggers and failure, the
-   fix you would apply, any fact it depends on, and your recommendation
-   with its reason, and wait for the person to accept or decline it.
+   fix you would apply, any fact it depends on, whether it is
+   pre-existing, and your recommendation with its reason, and wait for
+   the person to accept or decline it.
    List the refuted ones in a line each with the code the verifier
    cites, so the person can overrule it. Apply the accepted ones.
 7. End with the findings by axis, sorted by file and line, which you
@@ -52,9 +53,11 @@ leave their findings to them.
 
 A finding names the input or state, the changed line, and the failure
 that follows: a wrong result, a crash, lost data, or a broken contract.
-Report a defect only when the change causes or worsens it, or when the
-code misses an outcome its ticket asks for or breaks a written rule
-that governs it, and cite the line that does. Trace the trigger through
+Report a defect when the change causes or worsens it, when it is pre-
+existing on a path the changed code runs, or when the code misses an
+outcome its ticket asks for or breaks a written rule that governs it,
+and cite the line that does. For a pre-existing defect, cite the changed
+line that reaches it and mark it pre-existing. Trace the trigger through
 callers, guards, types, and configuration before you report it; a guard
 that rules it out refutes it. A defect that another defect hides today
 still counts; it depends on that fix.
@@ -153,8 +156,8 @@ use. A missing document is not a finding.
 ## Report
 
 Return each finding with its file and line, its axis, the input or
-state that triggers it, the failure that follows, and any fact it
-depends on that the code does not show.
+state that triggers it, the failure that follows, whether it is
+pre-existing, and any fact it depends on that the code does not show.
 
 ## Verify
 
@@ -163,11 +166,13 @@ give each finding its own verdict. For each finding, read the cited line
 and trace its trigger to its failure through callers, guards, types, and
 configuration. Give one verdict:
 
-- confirmed: the trace holds, and the change causes or worsens it.
+- confirmed: the trace holds. Mark it pre-existing when the old code
+  had the same defect and a changed line reaches it.
 - depends: it holds only if a fact the code does not show is true; name
   the fact.
 - refuted: cite the code, at file and line, that rules it out, or the
-  old code that had the same defect, or say that it names no failure.
+  old code that had the same defect on a path no changed line reaches,
+  or say that it names no failure.
 
 Refute only by citing code. A finding you doubt but cannot rule out
 depends on the fact you would need.
