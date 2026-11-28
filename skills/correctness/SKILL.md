@@ -18,7 +18,8 @@ argument-hint: "[target]"
 3. If the reviewers report no findings, go to step 7. Otherwise, spawn
    one verifier with the Evidence and Verify sections copied verbatim,
    the review target, and every finding as its line, trigger, and
-   failure, without the reviewer's reasoning.
+   failure, without the reviewer's reasoning. Include any existing run
+   output that exercises those triggers.
 4. Merge the confirmed and dependent findings that one fix resolves,
    keeping each one's trigger.
 5. Apply each confirmed Contradictions finding whose fix changes only a
@@ -48,8 +49,9 @@ when in doubt, accept.
 
 ## Scope
 
-Review the axes your task names. Other reviewers cover the other axes;
-leave their findings to them.
+Review the axes your task names. Work independently: trace each finding
+in the code and give the verifier a trigger it can replay. Leave new
+repros and test runs to the verifier.
 
 ## Evidence
 
@@ -163,10 +165,13 @@ pre-existing, and any fact it depends on that the code does not show.
 
 ## Verify
 
-Findings may repeat across reviewers; trace a shared mechanism once and
-give each finding its own verdict. For each finding, read the cited line
-and trace its trigger to its failure through callers, guards, types, and
-configuration. Give one verdict:
+Findings may repeat across reviewers. Group them by the mechanism that
+causes the failure, keeping every trigger. Trace each mechanism once. If
+the trace does not settle a fact you can check by running the code, reuse
+any output that exercises it or run one repro for the group that covers
+the unresolved triggers. Run only the checks needed to settle those facts.
+Give each finding its own verdict after checking its cited line, callers,
+guards, types, and configuration:
 
 - confirmed: the trace holds. Mark it pre-existing when the old code
   had the same defect and a changed line reaches it.
