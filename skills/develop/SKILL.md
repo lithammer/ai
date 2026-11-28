@@ -12,7 +12,10 @@ review will hold the change to. A ticket's outcomes bind; its plan is a
 first sketch, written before anyone dug in, so depart from it when the
 code shows a better way. Resolve ambiguities that would change
 observable behavior, then list the outcomes, each as something a run can
-show. Stay on the current branch unless the user asks otherwise; preserve
+show. Show each product rule an outcome sets (what skips, pauses, fails,
+retries, or resumes) as a table of cases against the sides it touches,
+and build once the user confirms it, a rule the ticket states included.
+Stay on the current branch unless the user asks otherwise; preserve
 unrelated changes and existing staging. Pin the base before editing.
 
 When the change is larger than a reviewer can understand in one pass,
